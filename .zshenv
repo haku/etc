@@ -23,8 +23,8 @@ autoload -U compinit compinit
 setopt COMPLETEALIASES
 
 zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=36=31"
-zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
-zstyle ':completion:*:warnings' format '%BNo matches for: %d%b'
+zstyle ':completion:*:descriptions' format '%U%d%u'
+zstyle ':completion:*:warnings' format 'No matches for: %B%d%b'
 zstyle ':completion:*' menu select=2 # show menu when at least 2 options.
 
 # show waiting dots.
