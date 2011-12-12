@@ -1,0 +1,5 @@
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias bc='bc -l'
+alias go='gnome-open'
