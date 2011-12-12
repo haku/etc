@@ -18,7 +18,8 @@ setopt NOBANGHIST
 
 # == Auto-complete ==
 
-autoload -U compinit compinit
+autoload -Uz compinit
+compinit
 
 setopt COMPLETEALIASES
 
