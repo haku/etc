@@ -89,6 +89,8 @@ bindkey '^a' beginning-of-line # Home
 bindkey '^e' end-of-line # End
 bindkey '^R' history-incremental-search-backward
 bindkey "\e[Z" reverse-menu-complete # Shift+Tab
+bindkey "^[[3~" delete-char
+bindkey "^[3;5~" delete-char
 
 # == Aliases ==
 
