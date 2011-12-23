@@ -1,5 +1,11 @@
 alias ll='ls -alF'
 alias la='ls -A'
+alias l1='ls -1'
 alias l='ls -CF'
 alias bc='bc -l'
 alias go='gnome-open'
+alias md5='md5sum'                    
+alias xc='xclip -selection clip-board'
+alias g='grep'                        
+alias fr='file-roller'                
+
