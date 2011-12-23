@@ -1,0 +1,19 @@
+#!/bin/bash
+F="$HOME/.irssi/activity_file"
+if [ ! -s "$F" ] ; then exit ; fi
+for I in `cat $F`; do
+  W=`echo $I | cut -d ',' -f 1`
+  S=`echo $I | cut -d ',' -f 2`
+  if [ "$S" == "0" ] ; then
+    A='#[fg=blue]'
+    B=''
+  elif [ "$S" == "1" ] ; then
+    A='#[fg=colour11]'
+    B=''
+  elif [ "$S" == "2" ] ; then
+    A='#[fg=colour15]>'
+    B='<'
+  fi
+  echo -n "${A}${W}${B}#[fg=default] "
+done 
+
