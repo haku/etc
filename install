@@ -10,7 +10,11 @@ link () {
   TO="$HOME/$1"
   if [ ! -e "$TO" ] ; then
     echo "Linking: $TO --> $FROM"
-    ln -s -t "`dirname $TO`" "$FROM"
+
+    OLDDIR="`pwd`"
+    cd "`dirname $TO`"
+    ln -s "$FROM"
+    cd "$OLDDIR"
   else
     echo "Exists: $TO"
   fi
@@ -19,6 +23,7 @@ link () {
 link ".aliases"
 link ".SciTEUser.properties"
 link ".tmux.conf"
+link ".zprofile"
 link ".zshenv"
 link ".zshrc"
 
