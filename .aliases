@@ -8,4 +8,4 @@ alias md5='md5sum'
 alias xc='xclip -selection clip-board'
 alias g='grep'                        
 alias fr='file-roller'                
-
+alias gmp='gnome-mplayer'
