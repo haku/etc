@@ -1,0 +1,27 @@
+#!/bin/bash
+set -eu
+
+if [ ! -d "$HOME" ] ; then echo "Not found: $HOME" ; exit 1 ; fi
+ETC="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+link () {
+  FROM="$ETC/$1"
+  if [ ! -e "$FROM" ] ; then echo "Not found: $FROM" ; exit 1 ; fi
+  TO="$HOME/$1"
+  if [ ! -e "$TO" ] ; then
+    echo "Linking: $TO --> $FROM"
+    ln -s -t "`dirname $TO`" "$FROM"
+  else
+    echo "Exists: $TO"
+  fi
+}
+
+link ".aliases"
+link ".SciTEUser.properties"
+link ".tmux.conf"
+link ".zshenv"
+link ".zshrc"
+
+mkdir -p "$HOME/bin"
+link "bin/tmux-irssi-act"
+
