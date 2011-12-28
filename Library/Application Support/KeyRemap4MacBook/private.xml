@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<root>
+  <list>
+    
+    <item>
+      <name>Real PC home and end</name>
+      <appendix>Only in Eclipse, Firefox, TextEditor</appendix>
+      <identifier>private.real_pc_home_and_end</identifier>
+      <only>ECLIPSE, EDITOR, FIREFOX</only>
+      <autogen>--KeyToKey-- KeyCode::HOME, KeyCode::CURSOR_LEFT, ModifierFlag::COMMAND_L</autogen>
+      <autogen>--KeyToKey-- KeyCode::END, KeyCode::CURSOR_RIGHT, ModifierFlag::COMMAND_L</autogen>
+    </item>
+  
+    <item>
+      <name>Real PC home and end 2</name>
+      <appendix>Only in Terminal</appendix>
+      <identifier>private.real_pc_home_and_end_2</identifier>
+      <only>TERMINAL</only>
+      <autogen>--KeyToKey-- KeyCode::HOME, KeyCode::A, ModifierFlag::CONTROL_L</autogen>
+      <autogen>--KeyToKey-- KeyCode::END, KeyCode::E, ModifierFlag::CONTROL_L</autogen>
+    </item>
+   
+    <item>
+      <name>Menu to option R</name>
+      <identifier>private.menu_to_option_r</identifier>
+      <autogen>--KeyToKey-- KeyCode::PC_APPLICATION, KeyCode::OPTION_R</autogen>
+    </item> 
+
+  </list>
+</root>
