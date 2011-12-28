@@ -12,7 +12,7 @@ link () {
     echo "Linking: $TO --> $FROM"
 
     OLDDIR="`pwd`"
-    cd "`dirname $TO`"
+    cd "`dirname \"$TO\"`"
     ln -s "$FROM"
     cd "$OLDDIR"
   else
@@ -30,3 +30,5 @@ link ".zshrc"
 mkdir -p "$HOME/bin"
 link "bin/tmux-irssi-act"
 
+mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
+link "Library/Application Support/KeyRemap4MacBook/private.xml"
