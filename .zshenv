@@ -39,7 +39,7 @@ bindkey "^I" expand-or-complete-with-dots
 
 # == Corrections ==
 
-setopt CORRECTALL
+#setopt CORRECTALL
 
 # == Extra prompt info ==
 
