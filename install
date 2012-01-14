@@ -26,6 +26,7 @@ link ".tmux.conf"
 link ".zprofile"
 link ".zshenv"
 link ".zshrc"
+link ".vimrc"
 
 mkdir -p "$HOME/bin"
 link "bin/tmux-irssi-act"
