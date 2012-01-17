@@ -3,7 +3,7 @@ set -eu
 
 for input in "$@" ; do
   echo -n "$input ==> "
-  output="`basename $input`.1920.jpg"
+  output="`basename $input`.thumb.jpg"
   echo  "$output"
-  convert "$input" -size 1920x1080 "$output"
+  convert "$input" -define jpeg:size={1920x1080} -quality 60 "$output"
 done
