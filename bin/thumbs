@@ -5,5 +5,5 @@ for input in "$@" ; do
   echo -n "$input ==> "
   output="`basename $input`.thumb.jpg"
   echo  "$output"
-  convert "$input" -define jpeg:size={1920x1080} -quality 60 "$output"
+  convert "$input" -define jpeg:size={1920x1080} -quality 45 "$output"
 done
