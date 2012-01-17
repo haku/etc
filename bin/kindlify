@@ -1,0 +1,9 @@
+#!/bin/bash
+set -eu
+
+for input in "$@" ; do
+  echo -e "\n == $input == \n"
+  output="`basename $input`.kindle.mobi"
+  echo -e "    => $output"
+  ebook-convert "$input" "$output" --output-profile kindle
+done

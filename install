@@ -30,6 +30,8 @@ link ".vimrc"
 
 mkdir -p "$HOME/bin"
 link "bin/tmux-irssi-act"
+link "bin/kindlify"
+link "bin/thumbs"
 
 mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
 link "Library/Application Support/KeyRemap4MacBook/private.xml"

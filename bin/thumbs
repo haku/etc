@@ -1,0 +1,9 @@
+#!/bin/bash
+set -eu
+
+for input in "$@" ; do
+  echo -n "$input ==> "
+  output="`basename $input`.1920.jpg"
+  echo  "$output"
+  convert "$input" -size 1920x1080 "$output"
+done
