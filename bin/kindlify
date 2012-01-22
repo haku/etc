@@ -2,8 +2,8 @@
 set -eu
 
 for input in "$@" ; do
-  echo -e "\n == $input == \n"
-  output="`basename $input`.kindle.mobi"
-  echo -e "    => $output"
+  echo -e "\n == $input =="
+  output="`basename "$input"`.kindle.mobi"
+  echo -e "    => $output\n"
   ebook-convert "$input" "$output" --output-profile kindle
 done
