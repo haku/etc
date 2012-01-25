@@ -10,6 +10,7 @@ set go-=T " remove toolbar in gvim
 nnoremap <C-t> :tabnew<CR>
 
 " appearance
+:syntax on
 colorscheme slate
 
 " stop typos
