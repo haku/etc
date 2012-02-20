@@ -99,21 +99,23 @@ if [ -f ~/.aliases ]; then
     . ~/.aliases
 fi
 
+# == tmp config helper ==
+
+export ZSH_TMP="/tmp/$USER/"
+mkdir -p $ZSH_TMP
+chmod 700 $ZSH_TMP
+
 # == New shells in same dir ==
 
-export ZSH_CURRENT_PATH=$HOME/.zshpwd
+export ZSH_CURRENT_PATH="$ZSH_TMP/.zshpwd"
 
 function chpwd {
   echo $(pwd) >! $ZSH_CURRENT_PATH
 }
 
-cd_current() {
-  if [[ -f $ZSH_CURRENT_PATH ]]; then
-    cd "$(cat $ZSH_CURRENT_PATH)"
-  fi
-}
-
-cd_current
+if [[ -f $ZSH_CURRENT_PATH ]]; then
+  cd "$(cat $ZSH_CURRENT_PATH)"
+fi
 
 # ==Helpers ==
 
