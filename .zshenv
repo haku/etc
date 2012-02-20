@@ -99,6 +99,22 @@ if [ -f ~/.aliases ]; then
     . ~/.aliases
 fi
 
+# == New shells in same dir ==
+
+export ZSH_CURRENT_PATH=$HOME/.zshpwd
+
+function chpwd {
+  echo $(pwd) >! $ZSH_CURRENT_PATH
+}
+
+cd_current() {
+  if [[ -f $ZSH_CURRENT_PATH ]]; then
+    cd "$(cat $ZSH_CURRENT_PATH)"
+  fi
+}
+
+cd_current
+
 # ==Helpers ==
 
 # Alt-S inserts "sudo " at the start of line.
