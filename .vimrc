@@ -11,6 +11,7 @@ nnoremap <C-t> :tabnew<CR>
 
 " appearance
 :syntax on
+set background=dark
 colorscheme slate
 
 " stop typos
