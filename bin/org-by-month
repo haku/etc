@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+for f in ARGV
+  next if !File.file?(f)
+  d = File.mtime(f).strftime('%Y-%m')
+  Dir.mkdir(d) if !File.directory?(d)
+  `mv "#{f}" "#{d}"`
+end
+
