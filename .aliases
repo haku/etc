@@ -14,4 +14,5 @@ alias vis='vim -O'
 alias kcat='jps -lm | grep catalina | cut -d " " -f 1 | xargs kill -9'
 alias lcat='jps -lm | grep catalina'
 alias getmvnsrc='mvn dependency:sources && mvn dependency:resolve -Dclassifier=javadoc'
-alias svngrep='egrep --exclude=\*.svn\*'
+alias svngrep="find . \( \( ! -name .svn -and ! -name target \) -o -prune \) -type f -print0 | xargs -0 grep"
+
