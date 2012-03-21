@@ -79,7 +79,7 @@ setopt CDABLEVARS
 setopt INTERACTIVECOMMENTS
 setopt NOCLOBBER # prevents accidentally overwriting an existing file.
 setopt SH_WORD_SPLIT # var are split into words when passed.
-setopt NOHUP # do not kil background jobs on logout.
+setopt NOHUP # do not kill background jobs on logout.
 setopt NOMATCH # If a pattern for filename has no matches = error.
 setopt PRINT_EXIT_VALUE
 setopt LONG_LIST_JOBS
