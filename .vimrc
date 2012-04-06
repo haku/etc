@@ -4,6 +4,7 @@ set report=0 " report everything
 set wildmenu " menu autocomplete
 set smartcase " searching
 set go-=T " remove toolbar in gvim
+set directory=~/.vimswp " .swp files go here
 
 " tabs
 " navigate: gt and gT

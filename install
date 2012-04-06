@@ -37,3 +37,5 @@ link "bin/org-by-month"
 
 mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
 link "Library/Application Support/KeyRemap4MacBook/private.xml"
+
+mkdir -p "$HOME/.vimswp"
