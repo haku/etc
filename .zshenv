@@ -94,6 +94,9 @@ bindkey "\e[Z" reverse-menu-complete # Shift+Tab
 bindkey "^[[3~" delete-char
 bindkey "^[3;5~" delete-char
 
+bindkey '\e[1~' beginning-of-line
+bindkey '\e[4~' end-of-line
+
 # == Aliases ==
 
 if [ -f ~/.aliases ]; then
