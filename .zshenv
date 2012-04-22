@@ -85,6 +85,8 @@ setopt NOMATCH # If a pattern for filename has no matches = error.
 setopt PRINT_EXIT_VALUE
 setopt LONG_LIST_JOBS
 
+REPORTTIME=1 # notify on slow commands
+
 # == Keyboard ==
 
 bindkey '^a' beginning-of-line # Home
