@@ -100,12 +100,13 @@ export ZSH_TMP="/tmp/$USER/"
 mkdir -p $ZSH_TMP
 chmod 700 $ZSH_TMP
 
-# == New shells in same dir ==
+# == Current directory ==
 
 export ZSH_CURRENT_PATH="$ZSH_TMP/.zshpwd"
 
 function chpwd {
   echo $(pwd) >! $ZSH_CURRENT_PATH
+  if [[ -t 1 ]] ; then print -Pn "\e]2;%~\a" ; fi
 }
 
 if [[ -f $ZSH_CURRENT_PATH ]]; then
