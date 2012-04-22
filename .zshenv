@@ -97,6 +97,9 @@ bindkey "^[3;5~" delete-char
 bindkey '\e[1~' beginning-of-line
 bindkey '\e[4~' end-of-line
 
+bindkey '^[[A' up-line-or-history   # Fix cursor position on history recall
+bindkey '^[[B' down-line-or-history # as on Debian these default to vi-*.
+
 # == Aliases ==
 
 if [ -f ~/.aliases ]; then
