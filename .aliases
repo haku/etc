@@ -20,5 +20,5 @@ alias kcat='jps -lm | grep catalina | cut -d " " -f 1 | xargs kill -9'
 alias lcat='jps -lm | grep catalina'
 alias getmvnsrc='mvn dependency:sources && mvn dependency:resolve -Dclassifier=javadoc'
 alias svngrep="find . \( \( ! -name .svn -and ! -name target \) -o -prune \) -type f -print0 | xargs -0 grep"
-alias pip-upgrade 'pip freeze --local | cut -d = -f 1  | xargs pip install -U'
+alias pip-upgrade='pip freeze --local | cut -d = -f 1  | xargs pip install -U'
 
