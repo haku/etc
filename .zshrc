@@ -121,4 +121,4 @@ REPORTTIME=1 # notify on slow commands
 [[ -r "$HOME/.zshrc_local" ]] && source "$HOME/.zshrc_local"
 
 # == always tmux. ==
-[[ $TERM == "xterm" ]] && tmux && exit
+[[ $TERM == "xterm" ]] && tmux attach && exit
