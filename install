@@ -10,11 +10,9 @@ link () {
   TO="$HOME/$1"
   if [ ! -e "$TO" ] ; then
     echo "Linking: $TO --> $FROM"
-
-    OLDDIR="`pwd`"
-    cd "`dirname \"$TO\"`"
+    pushd $(dirname "$TO") > /dev/null
     ln -s "$FROM"
-    cd "$OLDDIR"
+    popd > /dev/null
   else
     echo "Exists: $TO"
   fi
