@@ -1,6 +1,7 @@
 alias ll='ls -alF'
 alias la='ls -A'
 alias l1='ls -1'
+alias 1='l1'
 alias la1='ls -A1'
 alias l='ls -CF'
 alias bc='bc -l'

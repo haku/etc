@@ -34,6 +34,7 @@ link "bin/tmux-renum"
 link "bin/kindlify"
 link "bin/thumbs"
 link "bin/org-by-month"
+link "bin/pull-all"
 
 mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
 link "Library/Application Support/KeyRemap4MacBook/private.xml"
