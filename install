@@ -10,7 +10,7 @@ link () {
   TO="$HOME/$1"
   if [ ! -e "$TO" ] ; then
     echo "Linking: $TO --> $FROM"
-    pushd $(dirname "$TO") > /dev/null
+    pushd "$(dirname "$TO")" > /dev/null
     ln -s "$FROM"
     popd > /dev/null
   else
