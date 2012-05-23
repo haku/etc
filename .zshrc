@@ -29,6 +29,11 @@ zstyle ':completion:*:warnings' format 'No matches for: %B%d%b'
 zstyle ':completion:*' menu select=2 # show menu when at least 2 options.
 zstyle ':completion::complete:cd::' tag-order '! users' - # do not auto complete user names
 
+# speed up git autocomplete
+__git_files() {
+  _wanted files expl 'local files' _files
+}	
+
 # show waiting dots.
 expand-or-complete-with-dots() {
   echo -n "\e[1;34m.....\e[0m"
