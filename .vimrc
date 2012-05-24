@@ -20,3 +20,21 @@ colorscheme slate
 :command Wq wq
 :command W w
 :command Q q
+
+" format xml
+function! DoPrettyXML()
+     let l:origft = &ft
+     set ft=
+     1s/<?xml .*?>//e
+     0put ='<PrettyXML>'
+     $put ='</PrettyXML>'
+     silent %!xmllint --format -
+     2d
+     $d
+     silent %<
+     1
+     exe "set ft=" . l:origft
+     endfunction
+command! PrettyXML call DoPrettyXML()
+map <F6> :PrettyXML<CR>
+
