@@ -33,6 +33,7 @@ link "bin/kindlify"
 link "bin/thumbs"
 link "bin/org-by-month"
 link "bin/pull-all"
+link "bin/listening"
 
 mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
 link "Library/Application Support/KeyRemap4MacBook/private.xml"

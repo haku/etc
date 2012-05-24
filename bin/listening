@@ -1,0 +1,2 @@
+#!/bin/bash
+lsof -Pni | grep LISTEN
