@@ -25,3 +25,4 @@ alias getmvnsrc='mvn dependency:sources && mvn dependency:resolve -Dclassifier=j
 alias svngrep="find . \( \( ! -name .svn -and ! -name target \) -o -prune \) -type f -print0 | xargs -0 grep"
 alias pip-upgrade='pip freeze --local | cut -d = -f 1  | xargs pip install -U'
 alias poke='gnome-screensaver-command -d'
+alias dus='du -sh *'
