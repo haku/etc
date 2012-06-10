@@ -12,7 +12,7 @@ for input in "$@" ; do
   if [ -e "$kindle" ] ; then
     dest="$kindle/$output"
     if ! [ -e "$dest" ] ; then
-      echo -e "    => $dest\n"
+      echo -e "\n    => $dest\n"
       cp "$output" "$dest"
     fi
   fi
