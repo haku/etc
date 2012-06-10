@@ -16,3 +16,7 @@ setopt NOHUP # do not kill background jobs on logout.
 setopt NOMATCH # If a pattern for filename has no matches = error.
 setopt PRINT_EXIT_VALUE
 setopt LONG_LIST_JOBS
+
+if [ -d "$HOME/.rvm/bin" ] ; then
+  PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+fi
