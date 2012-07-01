@@ -1,0 +1,3 @@
+#!/bin/sh
+#source: http://blog.evan.pro/list-git-branches-with-last-commit-timestamp
+git for-each-ref --shell --format="echo %(refname:short) && git log -n 1 --format=format:\"    %%cd%%n    %%B\" %(refname)" refs/ | sh
