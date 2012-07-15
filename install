@@ -36,6 +36,7 @@ link "bin/pull-all"
 link "bin/listening"
 link "bin/list-git-branches"
 link "bin/gitbox"
+link "bin/fndi"
 
 mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
 link "Library/Application Support/KeyRemap4MacBook/private.xml"
