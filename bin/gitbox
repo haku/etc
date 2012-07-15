@@ -1,0 +1,23 @@
+#!/bin/bash
+
+GBDIR="$HOME/Dropbox/git"
+REMNAME="dropbox"
+
+ACT="$1"
+if [ "$ACT" == "init" ] ; then
+  D="${GBDIR}/$(basename $(pwd)).git"
+  if [ -e "$D" ] ; then
+    echo "Already exists: $D"
+    exit 2
+  fi
+  mkdir "$D"
+  pushd "$D"
+  git init --bare
+  popd
+  git remote add "$REMNAME" "file://$D"
+  git push "$REMNAME" master
+else
+  echo "Unknown action: $ACT"
+  exit 1
+fi
+

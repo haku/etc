@@ -35,6 +35,7 @@ link "bin/org-by-month"
 link "bin/pull-all"
 link "bin/listening"
 link "bin/list-git-branches"
+link "bin/gitbox"
 
 mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
 link "Library/Application Support/KeyRemap4MacBook/private.xml"
