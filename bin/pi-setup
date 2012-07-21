@@ -1,0 +1,11 @@
+#!/bin/bash
+set -eu
+
+if [ -z "$1" ] ; then echo "Usage: pinit <host>" ; exit 1; fi
+TGT="pi@$1"
+echo "Target: ${TGT}"
+
+cat "$HOME/.ssh/id_rsa.pub" | ssh "${TGT}" 'cd ; if [ -e .ssh ] ; then echo "ssh already configured." ; else echo -n "configuring ssh keys... " && mkdir -p .ssh && chmod 700 .ssh && cat - >> .ssh/authorized_keys && chmod 600 .ssh/authorized_keys && echo "done." ; fi'
+ssh "${TGT}" 'sudo aptitude update && sudo aptitude install tmux zsh screen git tree vim'
+ssh "${TGT}" 'cd ; if [ -e etc ] ; then cd etc && git pull ; else git clone https://github.com/haku/etc.git ; fi && $HOME/etc/install'
+ssh "${TGT}" 'if ! which zsh ; then echo "zsh not found." ; exit 1 ; fi ; if [ "$0" != "zsh" ] ; then echo -n "configuring shell... " && chsh -s `which zsh` && echo "done."; else echo "shell alredy configured." ; fi'
