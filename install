@@ -38,6 +38,7 @@ link "bin/list-git-branches"
 link "bin/gitbox"
 link "bin/fndi"
 link "bin/pi-setup"
+link "bin/shared-pacmd"
 
 mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
 link "Library/Application Support/KeyRemap4MacBook/private.xml"
