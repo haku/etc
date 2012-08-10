@@ -1,0 +1,45 @@
+#!/usr/bin/env ruby
+#encoding: utf-8
+HIRAGANA = [
+  "あ","い","う","え","お",
+  "か","き","く","け","こ",
+  "さ","し","す","せ","そ",
+  "た","ち","つ","て","と",
+  "な","に","ぬ","ね","の",
+  "は","ひ","ふ","へ","ほ",
+  "ま","み","む","め","も",
+  "や","ゆ","よ",
+  "ら","り","る","れ","ろ",
+  "わ",               "を",
+  "が","ざ","だ","ば","ぱ",
+  "ぎ","じ",     "び","ぴ",
+  "ぐ","ず",     "ぶ","ぷ",
+  "げ","ぜ","で","べ","ぺ",
+  "ご","ぞ","ど","ぼ","ぽ"
+]
+ROMANJI = [
+  "a", "i", "u", "e", "o",
+  "ka","ki","ku","ke","ko",
+  "sa","shi","su","se","so",
+  "ta","chi","tsu","te","to",
+  "ta","ni","nu","ne","no",
+  "ha","hi","fu","he","ho",
+  "ma","mi","mu","me","mo",
+  "ya","yu","yo",
+  "ra","ri","ru","re","ro",
+  "wa",               "wo",
+  "ga","za","da","ba","pa",
+  "gi","ji",     "bi","pi",
+  "gu","zu",     "bu","pu",
+  "ge","ze","de","be","pe",
+  "go","zo","do","bo","po"
+]
+def mkname
+  ns = (0..(2 + rand(2))).map{rand(HIRAGANA.length)}
+  h = HIRAGANA.values_at(*ns).join('')
+  r = ROMANJI.values_at(*ns).join('')
+  return "#{h}|#{r}"
+end
+(0..ARGV[0].to_i).each do
+  puts mkname
+end
