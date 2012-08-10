@@ -5,10 +5,10 @@ adjs = [
   "patient", "twilight", "dawn", "crimson", "wispy", "weathered", "blue",
   "billowing", "broken", "cold", "damp", "falling", "frosty", "green",
   "long", "late", "lingering", "bold", "little", "morning", "muddy", "old",
-  "red", "rough", "still", "small", "sparkling", "throbbing", "shy",
+  "red", "rough", "sandy", "still", "small", "sparkling", "throbbing", "shy",
   "wandering", "withered", "wild", "black", "young", "holy", "solitary",
   "fragrant", "aged", "snowy", "proud", "floral", "restless", "divine",
-  "polished", "ancient", "purple", "lively", "nameless"
+  "polished", "ancient", "purple", "lively", "nameless", "distant", "shiny"
 ]
 nouns = [
   "waterfall", "river", "breeze", "moon", "rain", "wind", "sea", "morning",
@@ -19,7 +19,7 @@ nouns = [
   "snowflake", "silence", "sound", "sky", "shape", "surf", "thunder",
   "violet", "water", "wildflower", "wave", "water", "resonance", "sun",
   "wood", "dream", "cherry", "tree", "fog", "frost", "voice", "paper",
-  "frog", "smoke", "star"
+  "frog", "smoke", "star", "oak"
 ]
 (0..ARGV[0].to_i).each do
   puts "#{adjs.sample}-#{nouns.sample}"
