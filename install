@@ -41,6 +41,7 @@ link "bin/pi-setup"
 link "bin/shared-pacmd"
 link "bin/heroku-name-gen"
 link "bin/kana-name-gen"
+link "bin/install-ssh-key"
 
 mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
 link "Library/Application Support/KeyRemap4MacBook/private.xml"
