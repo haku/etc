@@ -42,6 +42,7 @@ link "bin/shared-pacmd"
 link "bin/heroku-name-gen"
 link "bin/kana-name-gen"
 link "bin/install-ssh-key"
+link "bin/unlimited-cucumber-works"
 
 mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
 link "Library/Application Support/KeyRemap4MacBook/private.xml"
