@@ -43,6 +43,10 @@ link "bin/heroku-name-gen"
 link "bin/kana-name-gen"
 link "bin/install-ssh-key"
 link "bin/unlimited-cucumber-works"
+link "bin/aac-to-mp3"
+link "bin/extract-audio"
+link "bin/midentify"
+
 
 mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
 link "Library/Application Support/KeyRemap4MacBook/private.xml"
