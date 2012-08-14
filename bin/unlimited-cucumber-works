@@ -12,6 +12,6 @@ trap "print_report" EXIT
 echo "log: $LOG"
 while true ; do
   COUNTER=`expr $COUNTER + 1`
-  bundle exec cucumber "$@" | tee -a "$LOG" | grep -m 1 "Failing Scenarios" && break
+  bundle exec cucumber "$@" 2>&1 | tee -a "$LOG" | grep -m 1 "Failing Scenarios" && break
   echo -n "$COUNTER"
 done
