@@ -1,0 +1,25 @@
+#!/bin/bash
+set -eu
+
+for IN in "$@" ; do
+  echo "f=$IN"
+  CODEC=$(midentify "$IN" | grep "AUDIO_CODEC" | cut -d '=' -f 2)
+  echo "c=$CODEC"
+  if [[ "$CODEC" == *mp3* ]] ; then
+    EXT="mp3"
+  elif [[ "$CODEC" == *aac* ]] ; then
+    EXT="aac"
+  else
+    echo "Unknown codec: $CODEC"
+    exit 1
+  fi
+  echo "e=$EXT"
+  OUT="$(basename "$IN").$EXT"
+  echo "o=$OUT"
+  if [ -e "$OUT" ] ; then
+    echo "Already exists: $OUT"
+    exit 1
+  fi
+  ffmpeg -i "$IN" -acodec copy "$OUT"
+  echo ""
+done
