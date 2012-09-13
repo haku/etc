@@ -41,6 +41,7 @@ inkspace
 iostat
 irssi
 kanatest
+lame
 libarchive-zip-perl
 libbluetooth
 libbluetooth-dev
