@@ -9,6 +9,7 @@ elyxer
 etckeeper
 evtest
 fail2ban
+fdupes
 ffmpeg
 g++-4.2
 gcc
@@ -115,6 +116,7 @@ scite
 screen
 sensors-applet
 smbfs
+sox
 sqlite3
 sysstat
 terminator
@@ -124,6 +126,7 @@ tmux
 tree
 ttf-liberation
 ttf-lyx
+update-notifier-common
 vim
 vim-gnome
 virtualbox-ose
