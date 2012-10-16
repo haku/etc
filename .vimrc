@@ -20,6 +20,7 @@ colorscheme slate
 :command Wq wq
 :command W w
 :command Q q
+:noremap ; :
 
 " format xml
 function! DoPrettyXML()
