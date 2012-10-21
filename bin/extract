@@ -1,18 +1,19 @@
 #!/bin/bash
 F=$1
-if [[ "$F" == *.tar.gz ]] ; then
-  C=$(tar tf "$F" | wc -l | tr -d " ")
-  if [ "$C" -gt 1 ] ; then
+if [[ "$F" == *.tar.gz ]] || [[ "$F" == *.tar ]] ; then
+  if [ "$(tar tf "$F" | egrep -v "/.+" | wc -l | tr -d " ")" -gt 1 ] ; then
     N="$(basename "$F")"
-    N="${N%.tar.gz}"
+    N="${N%.gz}"
+    N="${N%.tar}"
     if [ -e "$N" ] ; then
       echo "exists: $N"
       exit 1
     fi
-    echo "mkdir: $N"
+    echo "mkdir: $N/"
     mkdir "$N"
     tar xf "$@" -C "$N" 
   else
+    echo "root: $(tar tf "$F" | egrep -v "/.+")"
     tar xf "$@"
   fi
 else
