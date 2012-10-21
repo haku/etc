@@ -5,6 +5,7 @@ calibre
 calibre-bin
 chromium-browser
 curl
+dnsutils
 elyxer
 etckeeper
 evtest
