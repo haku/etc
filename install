@@ -47,6 +47,7 @@ link "bin/aac-to-mp3"
 link "bin/extract-audio"
 link "bin/midentify"
 link "bin/extract"
+link "bin/sspurge"
 
 
 mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
