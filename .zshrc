@@ -101,7 +101,7 @@ bindkey "^[s" insert-sudo
 
 # == tmp config helper ==
 
-export ZSH_TMP="/tmp/$USER/"
+export ZSH_TMP="/tmp/zsh_$USER/"
 mkdir -p $ZSH_TMP
 chmod 700 $ZSH_TMP
 
