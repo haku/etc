@@ -5,16 +5,26 @@ if [[ "$F" == *.tar.gz ]] || [[ "$F" == *.tar ]] ; then
     N="$(basename "$F")"
     N="${N%.gz}"
     N="${N%.tar}"
-    if [ -e "$N" ] ; then
-      echo "exists: $N"
-      exit 1
-    fi
+    if [ -e "$N" ] ; then echo "exists: $N" ;  exit 1 ; fi
     echo "mkdir: $N/"
     mkdir "$N"
     tar xf "$@" -C "$N" 
   else
-    echo "root: $(tar tf "$F" | egrep -v "/.+")"
+    R="$(tar tf "$F" | egrep -v "/.+")"
+    if [ -e "$R" ] ; then echo "exists: $R" ; exit 1 ; fi
+    echo "root: $R"
     tar xf "$@"
+  fi
+elif [[ "$F" == *.zip ]] ; then
+  if [ "$(unzip -l "$F" | tail -n +4 | head -n -2 | egrep -v "/.+" | wc -l | tr -d " ")" -gt 1 ] ; then
+    N="$(basename "$F")"
+    N="${N%.zip}"
+    if [ -e "$N" ] ; then echo "exists: $N" ;  exit 1 ; fi
+    echo "mkdir: $N/"
+    mkdir "$N"
+    unzip "$@" -d "$N"
+  else
+    unzip "$@"
   fi
 else
   echo "Unknown archive type."
