@@ -39,3 +39,15 @@ alias tf='tail -f'
 function b() {
   echo "$@" | bc
 }
+funcation b-fromhex() {
+  echo "ibase=16; $1"|bc
+}
+funcation b-tohex() {
+  echo "obase=16; $1"|bc
+}
+funcation b-frombin() {
+  echo "ibase=2; $1"|bc
+}
+funcation b-tobin() {
+  echo "obase=2; $1"|bc
+}
