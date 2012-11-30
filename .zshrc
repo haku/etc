@@ -28,6 +28,7 @@ zstyle ':completion:*:descriptions' format '%U%d%u'
 zstyle ':completion:*:warnings' format 'No matches for: %B%d%b'
 zstyle ':completion:*' menu select=2 # show menu when at least 2 options.
 zstyle ':completion::complete:cd::' tag-order '! users' - # do not auto complete user names
+zstyle ':completion:*' tag-order '! users' # listing all users takes ages.
 
 # speed up git autocomplete
 __git_files() {
