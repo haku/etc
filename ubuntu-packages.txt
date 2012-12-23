@@ -136,3 +136,9 @@ virtualbox-ose-qt
 vlc
 x264
 zsh
+libimage-exiftool-perl
+gpac
+libdvdread4
+lsdvd
+sound-juicer
+xclip
