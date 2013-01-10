@@ -48,6 +48,16 @@ bindkey "^I" expand-or-complete-with-dots
 
 #setopt CORRECTALL
 
+# == Colors ==
+
+export CLICOLORS=1
+export LSCOLORS=Gxfxcxdxbxegedabagacad
+
+solarized_green="\e[0;32m"
+solarized_red="\e[0;31m"
+solarized_blue="\e[0;34m"
+solarized_yellow="\e[0;33m"
+
 # == Extra prompt info ==
 
 setopt PROMPT_SUBST
@@ -66,10 +76,9 @@ zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
 
 # == Prompt config ==
 
-export PS1="$(print '%{\e[1;34m%}%n%{\e[0;34m@\e[1;34m%}%m%{\e[0m:\e[0;34m%}%~%{\e[0m%}')
+export PS1="$(print '%{\e[0;33m%}%n%{\e[0;34m@\e[0;33m%}%m%{\e[0m:\e[0;34m%}%~%{\e[0m%}')
 $ "
 export PS2="$(print '%{\e[0;34m%}>%{\e[0m%} ')"
-#export RPS1="$(print '%{\e[0;32m%}[%?]%{\e[0m%}')"
 export RPS1=$'$(vcs_info_wrapper)'
 
 # == Keyboard ==
@@ -127,4 +136,4 @@ REPORTTIME=1 # notify on slow commands
 [[ -r "$HOME/.zshrc_local" ]] && source "$HOME/.zshrc_local"
 
 # == always tmux. ==
-[[ $TERM == "xterm" ]] && (tmux attach || tmux) && exit
+[[ -z "$TMUX" ]] && (tmux attach || tmux) && exit
