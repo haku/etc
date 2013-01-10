@@ -7,10 +7,10 @@ for I in `cat $F`; do
   S=`echo $I | cut -d ',' -f 2`
   if [ "$S" != "0" ] ; then
     if [ "$S" = "1" ] ; then
-      A='#[fg=blue]'
+      A='#[fg=colour8]'
       B=''
     elif [ "$S" = "2" ] ; then
-      A='#[fg=white]'
+      A='#[fg=yellow]'
       B=''
     elif [ "$S" = "3" ] ; then
       A='#[fg=white]>'
