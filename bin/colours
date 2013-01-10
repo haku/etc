@@ -1,4 +1,7 @@
 #!/bin/zsh
-for i in {0..255} ; do
-    printf "\x1b[38;5;${i}mcolour${i}\n"
+for i in $(seq -f "%03g" 0 255) ; do
+  printf "\e[0m "
+  printf "\x1b[38;5;${i}m${i}"
+  printf "\e[0m "
+  if (( $i % 8 == 7 )) ; then printf "\n" ; fi
 done
