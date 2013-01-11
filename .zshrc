@@ -135,6 +135,15 @@ REPORTTIME=1 # notify on slow commands
 # == Any local changes? ==
 [[ -r "$HOME/.zshrc_local" ]] && source "$HOME/.zshrc_local"
 
+# == is ssh? ==
+if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+  SESSION_TYPE=ssh
+else
+  case $(ps -o comm= -p $PPID) in
+    sshd|*/sshd) SESSION_TYPE=ssh;;
+  esac
+fi
+
 # == always tmux. ==
 export TERM="xterm-256color"
-[[ -z "$TMUX" ]] && (tmux attach || tmux) && exit
+[ -z "$SESSION_TYPE" ] && [[ -z "$TMUX" ]] && (tmux attach || tmux) && exit
