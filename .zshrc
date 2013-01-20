@@ -148,5 +148,5 @@ if [ -n "$SUDO_USER" ] || [ -n "$SUDO_COMMAND" ]; then
 fi
 
 # == always tmux. ==
-export TERM="xterm-256color"
+export TERM="screen-256color"
 [ -z "$SESSION_TYPE" ] && [[ -z "$TMUX" ]] && (tmux attach || tmux) && exit
