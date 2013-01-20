@@ -143,6 +143,9 @@ else
     sshd|*/sshd) SESSION_TYPE=ssh;;
   esac
 fi
+if [ -n "$SUDO_USER" ] || [ -n "$SUDO_COMMAND" ]; then
+  SESSION_TYPE=sudo
+fi
 
 # == always tmux. ==
 export TERM="xterm-256color"
