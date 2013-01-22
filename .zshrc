@@ -90,8 +90,18 @@ bindkey "\e[Z" reverse-menu-complete # Shift+Tab
 bindkey "^[[3~" delete-char
 bindkey "^[3;5~" delete-char
 
-bindkey '\e[1~' beginning-of-line
-bindkey '\e[4~' end-of-line
+# various fixes for HOME / END keys.
+bindkey "\e[1~" beginning-of-line
+bindkey "\e[4~" end-of-line
+#bindkey "\e[5~" beginning-of-history
+#bindkey "\e[6~" end-of-history
+#bindkey "\e[7~" beginning-of-line
+#bindkey "\e[8~" end-of-line
+bindkey "\eOH" beginning-of-line
+bindkey "\eOF" end-of-line
+#bindkey "\e[H" beginning-of-line
+#bindkey "\e[F" end-of-line
+# if this goes wrong again try here: https://wiki.archlinux.org/index.php/Zsh
 
 bindkey '^[[A' up-line-or-history   # Fix cursor position on history recall
 bindkey '^[[B' down-line-or-history # as on Debian these default to vi-*.
