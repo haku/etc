@@ -48,6 +48,7 @@ link "bin/extract-audio"
 link "bin/midentify"
 link "bin/extract"
 link "bin/sspurge"
+link "bin/video-profile"
 
 
 mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
