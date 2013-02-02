@@ -1,7 +1,6 @@
 #!/bin/sh
 # source: https://github.com/pengwynn/dotfiles/blob/master/bin/tmux-ssh-split
 
-#WINDOW_INDEX=$(tmux display-message -p '#I')
 WINDOW_INDEX=$(tmux display-message -p '#D' | sed 's/%//')
 SESSION_VARIABLE_NAME="window_${WINDOW_INDEX}_ssh_args"
 
