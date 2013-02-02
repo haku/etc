@@ -1,0 +1,14 @@
+#!/bin/zsh
+#source: https://github.com/pengwynn/dotfiles/blob/master/tmux/tmux.zsh
+if [ -n "$TMUX" ] ; then
+  #window_index=$(tmux display-message -p '#I')
+  window_index=$(tmux display-message -p '#D' | sed 's/%//')
+  session_variable_name="window_${window_index}_ssh_args"
+  tmux setenv $session_variable_name "$*"
+  tmux rename-window $*
+  /usr/bin/ssh $*
+  tmux setenv -u $session_variable_name
+else
+  /usr/bin/ssh $*
+fi
+tmux rename-window zsh

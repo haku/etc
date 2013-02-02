@@ -49,6 +49,8 @@ link "bin/midentify"
 link "bin/extract"
 link "bin/sspurge"
 link "bin/video-profile"
+link "bin/ssh"
+link "bin/tmux-ssh-split"
 
 
 mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
