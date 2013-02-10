@@ -7,5 +7,5 @@ if [ -n "$TMUX" ] ; then
   /usr/bin/ssh $*
   tmux setenv -u $session_variable_name
 else
-  /usr/bin/ssh $*
+  exec /usr/bin/ssh $*
 fi
