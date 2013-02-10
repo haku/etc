@@ -122,14 +122,18 @@ bindkey "^[s" insert-sudo
 # == Current directory ==
 
 function chpwd {
-  window_index=$(tmux display-message -p '#D' | sed 's/%//')
-  tmux setenv "window_${window_index}_pwd" "$(pwd)"
+  if [ -n "$TMUX" ] ; then
+    window_index=$(tmux display-message -p '#D' | sed 's/%//')
+    tmux setenv "window_${window_index}_pwd" "$(pwd)"
+  fi
   if [[ -t 1 ]] ; then print -Pn "\e]2;%~\a" ; fi
 }
 
 function zshexit {
-  window_index=$(tmux display-message -p '#D' | sed 's/%//')
-  tmux setenv -u "window_${window_index}_pwd"
+  if [ -n "$TMUX" ] ; then
+    window_index=$(tmux display-message -p '#D' | sed 's/%//')
+    tmux setenv -u "window_${window_index}_pwd"
+  fi
 }
 
 # == Other options ==
