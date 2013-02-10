@@ -119,24 +119,18 @@ insert_sudo () { zle beginning-of-line; zle -U "sudo " }
 zle -N insert-sudo insert_sudo
 bindkey "^[s" insert-sudo
 
-# == tmp config helper ==
-
-export ZSH_TMP="/tmp/zsh_$USER/"
-mkdir -p $ZSH_TMP
-chmod 700 $ZSH_TMP
-
 # == Current directory ==
 
-export ZSH_CURRENT_PATH="$ZSH_TMP/.zshpwd"
-
 function chpwd {
-  echo $(pwd) >! $ZSH_CURRENT_PATH
+  window_index=$(tmux display-message -p '#D' | sed 's/%//')
+  tmux setenv "window_${window_index}_pwd" "$(pwd)"
   if [[ -t 1 ]] ; then print -Pn "\e]2;%~\a" ; fi
 }
 
-if [[ -f $ZSH_CURRENT_PATH ]]; then
-  cd "$(cat $ZSH_CURRENT_PATH)"
-fi
+function zshexit {
+  window_index=$(tmux display-message -p '#D' | sed 's/%//')
+  tmux setenv -u "window_${window_index}_pwd"
+}
 
 # == Other options ==
 

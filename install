@@ -50,7 +50,7 @@ link "bin/extract"
 link "bin/sspurge"
 link "bin/video-profile"
 link "bin/ssh"
-link "bin/tmux-ssh-split"
+link "bin/tmux-split"
 
 
 mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
