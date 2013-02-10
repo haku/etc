@@ -37,6 +37,7 @@ alias gitst='git st'
 alias svnst='svn st'
 alias t='tail'
 alias tf='tail -f'
+alias mtr='mtr -o LDSNABWV'
 
 function b() {
   echo "$@" | bc
