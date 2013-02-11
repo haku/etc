@@ -141,9 +141,11 @@ function zshexit {
 REPORTTIME=1 # notify on slow commands
 
 # == Any local changes? ==
+
 [[ -r "$HOME/.zshrc_local" ]] && source "$HOME/.zshrc_local"
 
-# == is ssh? ==
+# == is ssh or sudo? ==
+
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
   SESSION_TYPE=ssh
 else
@@ -151,10 +153,18 @@ else
     sshd|*/sshd) SESSION_TYPE=ssh;;
   esac
 fi
+
 if [ -n "$SUDO_USER" ] || [ -n "$SUDO_COMMAND" ]; then
   SESSION_TYPE=sudo
 fi
 
 # == always tmux. ==
-export TERM="screen-256color"
-[ -z "$SESSION_TYPE" ] && [[ -z "$TMUX" ]] && (tmux attach || tmux) && exit
+
+if [ -z "$SESSION_TYPE" ] && [ -z "$TMUX" ] ; then
+  export TERM="screen-256color"
+  if tmux server-info ; then
+    exec tmux attach
+  else
+    exec tmux 
+  fi
+fi
