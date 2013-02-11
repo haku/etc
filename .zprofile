@@ -1,4 +1,6 @@
 #emulate sh
-. ~/.profile
+if [ -e ~/.profile ] ; then
+  . ~/.profile
+fi
 #emulate zsh
 
