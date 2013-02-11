@@ -7,7 +7,7 @@ if [ -n "$ssh_args" ] ; then
   # load full zsh env to get PATH and ssh agent.
   # then leave a local split with ssh cmd in history.
   # this is an ugly hack.
-  tmux splitw $1 "exec zsh -lc 'ssh $ssh_args ; fc -W ; exec zsh'"
+  tmux splitw $1 "exec zsh -lc 'ssh $ssh_args ;  exec zsh'"
 else
   last_pwd="$(tmux showenv | grep -F "window_${window_index}_pwd" | sed 's/^.*=//')"
   if [ -n "$last_pwd" ] ; then 
