@@ -18,6 +18,7 @@ setopt NOBANGHIST
 
 # == Auto-complete ==
 
+zmodload zsh/complist
 autoload -Uz compinit
 compinit
 
@@ -34,6 +35,10 @@ zstyle ':completion:*' tag-order '! users' # listing all users takes ages.
 __git_files() {
   _wanted files expl 'local files' _files
 }	
+
+# use + or = key to accept multiple autocompletes
+bindkey -M menuselect "+" accept-and-menu-complete
+bindkey -M menuselect "=" accept-and-menu-complete
 
 # show waiting dots.
 expand-or-complete-with-dots() {
