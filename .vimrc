@@ -1,4 +1,6 @@
-execute pathogen#infect()
+" reference: http://blog.sanctum.geek.nz/gracefully-degrading-vimrc/
+
+silent! execute pathogen#infect()
 
 set nocompatible
 set noerrorbells
@@ -54,4 +56,10 @@ function! DoPrettyXML()
      endfunction
 command! PrettyXML call DoPrettyXML()
 map <F6> :PrettyXML<CR>
+
+" file types
+if exists("g:loaded_pathogen")
+"if exists('g:loaded_octopress') " not sure why this does not work :(
+  autocmd BufNewFile,BufRead *.markdown set filetype=octopress
+endif
 
