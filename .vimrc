@@ -1,3 +1,5 @@
+execute pathogen#infect()
+
 set nocompatible
 set noerrorbells
 set report=0 " report everything
@@ -23,6 +25,18 @@ colorscheme slate
 :command Q q
 :noremap ; :
 :map q: :q
+
+" tabs
+set autoindent
+set cindent
+set tabstop=2
+set shiftwidth=2
+set expandtab
+
+" fix auto indent
+filetype on
+filetype plugin on
+filetype indent on
 
 " format xml
 function! DoPrettyXML()
