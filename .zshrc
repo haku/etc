@@ -1,3 +1,7 @@
+# == Resets ==
+
+bindkey -e
+
 # == History ==
 
 export HISTFILE=~/.zsh_history
