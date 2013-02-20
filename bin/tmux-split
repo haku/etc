@@ -9,7 +9,7 @@ if [ -n "$ssh_args" ] ; then
 else
   last_pwd="$(tmux showenv | grep -F "window_${window_index}_pwd" | sed 's/^.*=//')"
   if [ -n "$last_pwd" ] ; then 
-    tmux splitw $1 "exec zsh -lic 'cd \"$last_pwd\" ; exec zsh'"
+    tmux splitw $1 "exec zsh -lic 'cd \"$last_pwd\" ; exec zsh -li'"
   else
     tmux splitw $1
   fi
