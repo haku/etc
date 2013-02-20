@@ -51,6 +51,7 @@ link "bin/sspurge"
 link "bin/video-profile"
 link "bin/ssh"
 link "bin/tmux-split"
+link "bin/mvn-dbg"
 
 
 mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
