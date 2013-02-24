@@ -52,7 +52,8 @@ link "bin/video-profile"
 link "bin/ssh"
 link "bin/tmux-split"
 link "bin/mvn-dbg"
-
+link "bin/gateway-mac"
+link "bin/ssh-router"
 
 mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
 link "Library/Application Support/KeyRemap4MacBook/private.xml"

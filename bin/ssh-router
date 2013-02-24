@@ -1,0 +1,43 @@
+#!/bin/bash
+set -eu
+
+do_usage(){
+  echo>&2 "Usage: `basename $0` [...]"
+  exit 1
+}
+
+test_if_last_argument() {
+  if [ $# -gt 0 ]; then
+    do_usage
+  fi
+}
+
+lan_port=22
+wan_port=22
+
+while [ $# -gt 0 ]
+do
+  case "$1" in
+    --lan-gwmac) lan_gwmac="$2"; shift;;
+    --lan-host) lan_host="$2"; shift;;
+    --lan-port) lan_port="$2"; shift;;
+    --wan-host) wan_host="$2"; shift;;
+    --wan-port) wan_port="$2"; shift;;
+    --) shift; break;;
+    -) filename="-"; shift; test_if_last_argument "$@"; break;;
+    -*) do_usage;;
+    *) break;; # terminate while loop
+  esac
+  shift
+done
+
+if [ "$(gateway-mac)" == "$lan_gwmac" ] ; then
+  host="$lan_host"
+  port="$lan_port"
+else
+  host="$wan_host"
+  port="$wan_port"
+fi
+
+echo>&2 "  => ${host}:${port}"
+nc -w 120 "$host" "$port"
