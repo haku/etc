@@ -1,7 +1,21 @@
 #!/bin/bash
 #https://code.google.com/p/plazes/wiki/FindingMACAddress
 
-gateway=`netstat -rn | grep "^0.0.0.0" | cut -c17-31`
-mac=`arp -n $gateway | tail -n1 | cut -c34-50`
-mac=`echo $mac | sed 'y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/'`
+case "$(uname)" in
+  Linux)
+    gateway=`netstat -rn | grep "^0.0.0.0" | cut -c17-31`
+    mac=`arp -n $gateway | tail -n1 | cut -c34-50`
+    mac=`echo $mac | sed 'y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/'`
+    ;;
+  Darwin)
+    gateway=`netstat -rn | grep default | cut -c20-35`
+    mac=`arp -n $gateway | cut -f4 -d' '`
+    mac=`echo $mac | \
+      sed "s/^\(.\):/0\1:/" | \
+      sed "s/:\(.\):/:0\1:/g" | \
+      sed "s/:\(.\):/:0\1:/g" | \
+      sed "s/:\(.\)$/:0\1/"`
+    ;;
+esac
+
 echo "$mac"
