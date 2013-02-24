@@ -26,6 +26,7 @@ alias apti='sudo aptitude install --without-recommends'
 alias kcat='jps -lm | grep catalina | cut -d " " -f 1 | xargs kill -9'
 alias lcat='jps -lm | grep catalina'
 alias svngrep="find . \( \( ! -name .svn -and ! -name target \) -o -prune \) -type f -print0 | xargs -0 grep --color"
+alias sg='svngrep'
 alias gitgrep="find . \( \( ! -name .git -and ! -name target \) -o -prune \) -type f -print0 | xargs -0 grep --color"
 alias pip-upgrade='pip freeze --local | cut -d = -f 1  | xargs pip install -U'
 alias poke='gnome-screensaver-command -d'
