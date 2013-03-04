@@ -1,0 +1,2 @@
+#!/bin/bash
+echo keycode 58 = Escape | sudo loadkeys
