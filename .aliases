@@ -39,9 +39,11 @@ alias gst='git st && git lg'
 alias svnst='svn st'
 alias ss='svn st'
 alias svd='svn diff -x -b | vim -'
+alias sl='svn log -l 30 | nicelogs'
 alias t='tail'
 alias tf='tail -f'
 alias mtr='mtr -o LDSNABWV'
+alias colerr='exec 2>>( while read X; do print "\e[91m${X}\e[0m" > /dev/tty; done & )'
 
 function b() {
   echo "$@" | bc
