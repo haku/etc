@@ -56,6 +56,7 @@ link "bin/gateway-mac"
 link "bin/ssh-router"
 link "bin/tmux-wifi"
 link "bin/remap-keys"
+link "bin/sssh"
 
 mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
 link "Library/Application Support/KeyRemap4MacBook/private.xml"
