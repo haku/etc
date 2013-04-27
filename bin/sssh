@@ -1,5 +1,7 @@
 #!/bin/bash
+s=${SLEEP:-3}
 while true ; do
   ssh "$@"
-  sleep 3
+  echo "reconnect in ${s}s ..."
+  sleep $s
 done
