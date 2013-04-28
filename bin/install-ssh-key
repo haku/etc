@@ -7,4 +7,4 @@ set -u
 TGT="$1"
 echo "Target: ${TGT}"
 
-cat "$HOME/.ssh/id_rsa.pub" | ssh "${TGT}" 'cd ; echo -n "configuring ssh keys... " && mkdir -p .ssh && chmod 700 .ssh && cat - >> .ssh/authorized_keys && chmod 600 .ssh/authorized_keys && echo "done."'
+cat "$HOME/.ssh/id_rsa.pub" | ssh "${TGT}" 'cd ; echo -n "configuring ssh keys... " && mkdir -p .ssh && chmod 700 .ssh && touch .ssh/authorized_keys && cat - >> .ssh/authorized_keys && chmod 600 .ssh/authorized_keys && echo "done."'
