@@ -1,0 +1,9 @@
+#!/bin/sh
+echo Core `/usr/bin/vcgencmd measure_temp`
+echo Core `/usr/bin/vcgencmd measure_volts`
+echo sdram phy `/usr/bin/vcgencmd measure_volts sdram_p`
+echo sdram i/o `/usr/bin/vcgencmd measure_volts sdram_i`
+echo sdram controller `/usr/bin/vcgencmd measure_volts sdram_c`
+echo Arm `/usr/bin/vcgencmd measure_clock arm`
+echo Core `/usr/bin/vcgencmd measure_clock core`
+echo v3d `/usr/bin/vcgencmd measure_clock v3d`
