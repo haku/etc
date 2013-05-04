@@ -1,4 +1,5 @@
 #!/bin/sh
+# http://openelec.tv/forum/134-usage/36686-openelec-on-rpi-video-is-constantly-buffering?limit=20&start=40#46291
 echo Core `/usr/bin/vcgencmd measure_temp`
 echo Core `/usr/bin/vcgencmd measure_volts`
 echo sdram phy `/usr/bin/vcgencmd measure_volts sdram_p`
