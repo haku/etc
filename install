@@ -25,6 +25,7 @@ link ".zprofile"
 link ".zshenv"
 link ".zshrc"
 link ".vimrc"
+link ".screenrc"
 
 mkdir -p "$HOME/bin"
 link "bin/tmux-irssi-act"
