@@ -45,6 +45,7 @@ alias t='tail'
 alias tf='tail -f'
 alias mtr='mtr -o LDSNABWV'
 alias colerr='exec 2>>( while read X; do print "\e[91m${X}\e[0m" > /dev/tty; done & )'
+alias fcount='find . -xdev -type f | cut -d "/" -f 2 | sort | uniq -c | sort -n'
 
 function b() {
   echo "$@" | bc
