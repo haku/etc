@@ -1,0 +1,44 @@
+#!/bin/bash
+set -eu
+
+files="
+org.eclipse.ant.ui.prefs
+org.eclipse.cdt.ui.prefs
+org.eclipse.debug.ui.prefs
+org.eclipse.jdt.ui.prefs
+org.eclipse.mylyn.wikitext.ui.prefs
+org.eclipse.pde.ui.prefs
+org.eclipse.php.ui.prefs
+org.eclipse.ui.editors.prefs
+org.eclipse.wst.css.ui.prefs
+org.eclipse.wst.html.ui.prefs
+org.eclipse.wst.xml.ui.prefs 
+org.epic.perleditor.prefs
+"
+settingsdir="./.metadata/.plugins/org.eclipse.core.runtime/.settings"
+outfile="eclipse-ui-prefs.tar.gz"
+
+if ! [ -d "./.metadata" ] ; then
+  echo "Not an Eclipse workspace."
+  exit 1
+fi
+
+if [ -e "$outfile" ] ; then
+  echo "Already exists: $outfile"
+  exit 2
+fi
+
+paths=""
+while read file ; do 
+  if [ -z "$file" ] ; then continue ; fi
+  path="$settingsdir/$file"
+  if [ -e "$path" ] ; then 
+    paths="$paths $path"
+    echo "$file"
+  else
+    echo "Not found: $path"
+  fi
+done < <(echo "$files")
+
+tar czf "$outfile" $paths
+echo "Created: $outfile"

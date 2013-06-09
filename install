@@ -58,6 +58,7 @@ link "bin/remap-keys"
 link "bin/sssh"
 link "bin/logts"
 link "bin/pihw"
+link "bin/eclipse-prefs"
 
 #disabled ssh split
 #link "bin/ssh"
