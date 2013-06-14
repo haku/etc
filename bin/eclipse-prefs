@@ -10,6 +10,7 @@ org.eclipse.mylyn.wikitext.ui.prefs
 org.eclipse.pde.ui.prefs
 org.eclipse.php.ui.prefs
 org.eclipse.ui.editors.prefs
+org.eclipse.ui.prefs
 org.eclipse.wst.css.ui.prefs
 org.eclipse.wst.html.ui.prefs
 org.eclipse.wst.xml.ui.prefs 
