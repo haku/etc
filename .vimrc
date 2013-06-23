@@ -63,3 +63,7 @@ if exists("g:loaded_pathogen")
   autocmd BufNewFile,BufRead *.markdown set filetype=octopress
 endif
 
+" emacs follow
+" http://stackoverflow.com/questions/6873076/auto-scrollable-pagination-with-vim-using-vertical-split
+:nmap <silent> <Leader>ef :vsplit<bar>wincmd l<bar>exe "norm! Ljz<c-v><cr>"<cr>:set scb<cr>:wincmd h<cr> :set scb<cr>
+
