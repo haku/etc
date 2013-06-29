@@ -40,6 +40,9 @@ filetype on
 filetype plugin on
 filetype indent on
 
+" spelling ( [s ]s z= )
+map <F5> :setlocal spell! spelllang=en_gb<cr>
+
 " format xml
 function! DoPrettyXML()
      let l:origft = &ft
