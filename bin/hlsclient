@@ -1,0 +1,22 @@
+#!/bin/bash
+set -eu
+
+mnf="$1"
+last_chunk=''
+
+while true ; do
+  while read line ; do
+    if [[ "$line" =~ ^([^#].*)$ ]] ; then
+      chunk="${BASH_REMATCH[1]}"
+      if [ "$chunk" != "$last_chunk" ] ; then
+        echo -n "chunk: $chunk "
+        curl --silent "$(dirname "$mnf")/$chunk" > "./$chunk"
+        echo "done."
+        last_chunk="$chunk"
+      fi
+      break
+    fi
+  done < <(curl --silent "$mnf")
+  sleep 1
+done
+
