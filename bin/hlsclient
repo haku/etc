@@ -2,21 +2,24 @@
 set -eu
 
 mnf="$1"
-last_chunk=''
+
+fetch() {
+  curl --silent --user-agent 'hlsclient' "$@"
+}
 
 while true ; do
+  chunks=()
   while read line ; do
     if [[ "$line" =~ ^([^#].*)$ ]] ; then
-      chunk="${BASH_REMATCH[1]}"
-      if [ "$chunk" != "$last_chunk" ] ; then
-        echo -n "chunk: $chunk "
-        curl --silent "$(dirname "$mnf")/$chunk" > "./$chunk"
-        echo "done."
-        last_chunk="$chunk"
-      fi
-      break
+      chunks+=("${BASH_REMATCH[1]}")
     fi
-  done < <(curl --silent "$mnf")
+  done < <(fetch "$mnf")
+  for chunk in ${chunks[@]}; do
+    if [ -e "$chunk" ] ; then continue ; fi
+    echo -n "chunk: $chunk "
+    fetch "$(dirname "$mnf")/$chunk" > "./$chunk"
+    echo "done."
+  done
   sleep 1
 done
 
