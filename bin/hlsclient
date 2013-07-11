@@ -14,12 +14,14 @@ while true ; do
       chunks+=("${BASH_REMATCH[1]}")
     fi
   done < <(fetch "$mnf")
-  for chunk in ${chunks[@]}; do
-    if [ -e "$chunk" ] ; then continue ; fi
-    echo -n "chunk: $chunk "
-    fetch "$(dirname "$mnf")/$chunk" > "./$chunk"
-    echo "done."
-  done
+  if [ ${#chunks[@]} -gt 0 ]; then
+    for chunk in ${chunks[@]}; do
+      if [ -e "$chunk" ] ; then continue ; fi
+      echo -n "chunk: $chunk "
+      fetch "$(dirname "$mnf")/$chunk" > "./$chunk"
+      echo "done."
+    done
+  fi
   sleep 1
 done
 
