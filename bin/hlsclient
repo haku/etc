@@ -4,7 +4,7 @@ set -eu
 mnf="$1"
 
 fetch() {
-  curl --silent --user-agent 'hlsclient' "$@"
+  curl --silent --user-agent '${USERAGENT:-hlsclient}' "$@"
 }
 
 while true ; do
