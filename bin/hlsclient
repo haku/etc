@@ -7,6 +7,17 @@ fetch() {
   curl --silent --user-agent "${USERAGENT:-hlsclient}" "$@"
 }
 
+# search string, the array.
+containsElement() {
+  local e
+  for e in "${@:2}"; do [[ "$e" == "$1" ]] && return 0; done
+  return 1
+}
+
+chunk_hist_count=30
+all_chunks=("")
+for n in $(seq 1 $chunk_hist_count) ; do all_chunks+=("") ; done
+
 while true ; do
   chunks=()
   while read line ; do
@@ -16,12 +27,14 @@ while true ; do
   done < <(fetch "$mnf")
   if [ ${#chunks[@]} -gt 0 ]; then
     for chunk in ${chunks[@]}; do
-      if [ -e "$chunk" ] ; then continue ; fi
+      if containsElement "$chunk" "${all_chunks[@]}" ; then continue ; fi
       echo -n "chunk: $chunk "
-      fetch "$(dirname "$mnf")/$chunk" > "./$chunk"
+      fetch "$(dirname "$mnf")/$chunk" > /dev/null
+      all_chunks+=("$chunk")
       echo "done."
     done
   fi
+  all_chunks=("${all_chunks[@]:${#all_chunks[@]}-$chunk_hist_count}")
   sleep 1
 done
 
