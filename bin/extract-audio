@@ -9,6 +9,7 @@ for IN in "$@" ; do
     EXT="mp3"
   elif [[ "$CODEC" == *aac* ]] ; then
     EXT="aac"
+    echo "INFO: convert to m4a with: MP4Box --add in.aac -new out.m4a"
   else
     echo "Unknown codec: $CODEC"
     exit 1
@@ -20,6 +21,6 @@ for IN in "$@" ; do
     echo "Already exists: $OUT"
     exit 1
   fi
-  ffmpeg -i "$IN" -acodec copy "$OUT"
+  ffmpeg -i "$IN" -vn -acodec copy "$OUT"
   echo ""
 done
