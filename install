@@ -59,6 +59,8 @@ link "bin/sssh"
 link "bin/logts"
 link "bin/pihw"
 link "bin/eclipse-prefs"
+link "bin/fmt-json"
+link "bin/hlsclient"
 
 #disabled ssh split
 #link "bin/ssh"
