@@ -1,3 +1,5 @@
 #!/bin/sh
-find . -iname "*$1*"
+s="$1"
+shift
+find . -iname "*$s*" "$@"
 
