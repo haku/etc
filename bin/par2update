@@ -26,7 +26,7 @@ def ver_par(dir, all_files)
       end
       err = e.readlines
       err.each{|l| puts "    #{l}"}
-      t.value.success? ? nil : ([ "veriry failed: #{dir} [#{t.value}]" ] + err)
+      t.value.success? ? nil : ([ "verify failed: #{dir} [#{t.value}]" ] + err)
     end
   end
   return res if res
