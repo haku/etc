@@ -35,6 +35,9 @@ def ver_par(dir, all_files)
 
   puts "  #{prot_files.size} files verified (#{Filesize.new(par_size(dir)).pretty} of par2)."
 
+  # TODO sanity check prot_files incase par2 output format changes.
+  # TODO backup existing par2 files before generating new ones.
+
   new_files = all_files - prot_files
   if new_files.size > 0
     puts "  #{new_files.size} unprotected files:"
