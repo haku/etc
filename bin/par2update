@@ -20,15 +20,22 @@ end
 def ver_par(dir, all_files)
   puts "  verifying #{all_files.size} files... "
   prot_files = []
+  err_files = []
   res = Dir.chdir(dir) do
     Open3.popen3('par2', 'v', '-q', '--', "#{File.basename(dir)}.par2") do |i, o, e, t|
       while line = o.gets
         prot_file = line[/^Target: "(.+)" - found\.$/, 1]
         prot_files << prot_file if prot_file
+
+        if !prot_file
+          err_file = line[/^Target: (.+)$/, 1]
+          err_files << err_file if err_file
+        end
       end
       err = e.readlines
       err.each{|l| puts "    #{l}"}
-      t.value.success? ? nil : ([ "[#{dir}] verify failed: [#{t.value}]" ] + err)
+      err_files.each{|l| puts "    #{l}"}
+      t.value.success? ? nil : ([ "[#{dir}] verify failed: [#{t.value}]" ] + err + err_files)
     end
   end
   return res if res
@@ -84,7 +91,7 @@ Find.find(base_dir) do |d|
 end
 
 if errors.size > 0
-  puts "#{errors.size} errors:"
+  puts "directories with errors: #{errors.size}"
   errors.each do |e|
     puts "  #{e.shift}"
     e.each{|l| puts "    #{l}"}
