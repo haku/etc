@@ -66,7 +66,9 @@ link "bin/hlsclient"
 #link "bin/ssh"
 #link "bin/tmux-split"
 
-mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
-link "Library/Application Support/KeyRemap4MacBook/private.xml"
+if [ "$(uname)" = "Darwin" ] ; then
+  mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
+  link "Library/Application Support/KeyRemap4MacBook/private.xml"
+fi
 
 mkdir -p "$HOME/.vimswp"
