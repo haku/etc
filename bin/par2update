@@ -53,6 +53,7 @@ def par_size(dir)
 end
 
 def backup_par(dir)
+  puts "  backing up par files... "
   Dir.chdir(dir) do
     par_files = Dir.entries(dir).select{|e| e.end_with?('.par2')}
     res = system('tar', 'cf', "#{File.basename(dir)}.parbackup.#{Time.now.strftime('%Y%m%d-%H%M%S')}.tar", *par_files)
