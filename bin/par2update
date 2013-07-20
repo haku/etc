@@ -1,0 +1,50 @@
+#!/usr/bin/env ruby
+require 'find'
+
+def gen_par(dir, files)
+  Dir.chdir(dir) do
+    res = system('par2', 'c', '-r10', '--', "#{File.basename(dir)}.par2", *files)
+    res ? nil : "generate failed: #{dir} [#{$?}]"
+  end
+end
+
+def ver_par(dir, files)
+  # TODO check for files not in output.
+  Dir.chdir(dir) do
+    res = system('par2', 'v', '--', "#{File.basename(dir)}.par2")
+    res ? nil : "veriry failed: #{dir} [#{$?}]"
+  end
+end
+
+errors = []
+base_dir = "#{Dir.pwd}/"
+Find.find(base_dir) do |d|
+  next if !FileTest.directory?(d)
+
+  files = Dir.entries(d)
+  par2_files = files.select{|e| e.end_with?('.par2')}
+  data_files = (files - par2_files).select{|e| File.file?("#{d}/#{e}")}
+
+  if data_files.size > 0
+    puts d.gsub(base_dir, './')
+
+    if par2_files.size > 0
+      print "  verifying #{data_files.size} files... "
+      ver_par d, data_files
+      puts 'done.'
+    else
+      print "  protecting #{data_files.size} files ... "
+      res = gen_par d, data_files
+      errors << res if res
+      puts 'done.'
+    end
+  end
+end
+
+if errors.size > 0
+  puts "#{errors.size} errors:"
+  errors.each{|e| puts "  #{e}"}
+  exit 1
+end
+
+puts 'success.'
