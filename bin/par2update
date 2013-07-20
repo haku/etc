@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 require 'find'
 require 'open3'
+require 'filesize'
 
 def gen_par(dir, files)
   puts "  protecting #{files.size} files ... "
@@ -13,6 +14,7 @@ def gen_par(dir, files)
       t.value.success? ? nil : ([ "generate failed: #{dir} [#{t.value}]" ] + err)
     end
   end
+  puts "  #{files.size} files protected (#{Filesize.new(par_size(dir)).pretty} of par2)."
 end
 
 def ver_par(dir, all_files)
@@ -31,11 +33,19 @@ def ver_par(dir, all_files)
   end
   return res if res
 
+  puts "  #{prot_files.size} files verified (#{Filesize.new(par_size(dir)).pretty} of par2)."
+
   new_files = all_files - prot_files
   if new_files.size > 0
     puts "  #{new_files.size} unprotected files:"
     new_files.each{|f| puts "    #{f}"}
     gen_par(dir, all_files)
+  end
+end
+
+def par_size(dir)
+  Dir.chdir(dir) do
+    Dir.entries(dir).select{|e| e.end_with?('.par2')}.inject(0){|sum, f| sum += File.size(f)}
   end
 end
 
