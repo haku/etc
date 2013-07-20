@@ -1,18 +1,41 @@
 #!/usr/bin/env ruby
 require 'find'
+require 'open3'
 
 def gen_par(dir, files)
+  puts "  protecting #{files.size} files ... "
   Dir.chdir(dir) do
-    res = system('par2', 'c', '-r10', '--', "#{File.basename(dir)}.par2", *files)
-    res ? nil : "generate failed: #{dir} [#{$?}]"
+    Open3.popen3('par2', 'c', '-r10', '-q', '--', "#{File.basename(dir)}.par2", *files) do |i, o, e, t|
+      while line = o.gets
+      end
+      err = e.readlines
+      err.each{|l| puts "    #{l}"}
+      t.value.success? ? nil : ([ "generate failed: #{dir} [#{t.value}]" ] + err)
+    end
   end
 end
 
-def ver_par(dir, files)
-  # TODO check for files not in output.
-  Dir.chdir(dir) do
-    res = system('par2', 'v', '--', "#{File.basename(dir)}.par2")
-    res ? nil : "veriry failed: #{dir} [#{$?}]"
+def ver_par(dir, all_files)
+  puts "  verifying #{all_files.size} files... "
+  prot_files = []
+  res = Dir.chdir(dir) do
+    Open3.popen3('par2', 'v', '-q', '--', "#{File.basename(dir)}.par2") do |i, o, e, t|
+      while line = o.gets
+        prot_file = line[/^Target: "(.+)" - found\.$/, 1]
+        prot_files << prot_file if prot_file
+      end
+      err = e.readlines
+      err.each{|l| puts "    #{l}"}
+      t.value.success? ? nil : ([ "veriry failed: #{dir} [#{t.value}]" ] + err)
+    end
+  end
+  return res if res
+
+  new_files = all_files - prot_files
+  if new_files.size > 0
+    puts "  #{new_files.size} unprotected files:"
+    new_files.each{|f| puts "    #{f}"}
+    gen_par(dir, all_files)
   end
 end
 
@@ -29,21 +52,21 @@ Find.find(base_dir) do |d|
     puts d.gsub(base_dir, './')
 
     if par2_files.size > 0
-      print "  verifying #{data_files.size} files... "
-      ver_par d, data_files
-      puts 'done.'
-    else
-      print "  protecting #{data_files.size} files ... "
-      res = gen_par d, data_files
+      res = ver_par(d, data_files)
       errors << res if res
-      puts 'done.'
+    else
+      res = gen_par(d, data_files)
+      errors << res if res
     end
   end
 end
 
 if errors.size > 0
   puts "#{errors.size} errors:"
-  errors.each{|e| puts "  #{e}"}
+  errors.each do |e|
+    puts "  #{e.shift}"
+    e.each{|l| puts "    #{l}"}
+  end
   exit 1
 end
 
