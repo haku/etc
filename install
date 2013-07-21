@@ -62,6 +62,7 @@ link "bin/eclipse-prefs"
 link "bin/fmt-json"
 link "bin/hlsclient"
 link "bin/par2update"
+link "bin/rename-zip-order"
 
 #disabled ssh split
 #link "bin/ssh"

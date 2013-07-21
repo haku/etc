@@ -1,0 +1,40 @@
+#!/bin/bash
+set -eu
+
+zip="${1:-}"
+if ! [[ "$zip" == *.zip ]] ; then
+  echo "not a zip: $zip"
+  exit 1
+fi
+
+started=false
+count=0
+while read line ; do
+
+  if [[ "$line" == ---* ]] ; then
+    if $started ; then
+      break
+    else
+      started=true
+      continue
+    fi
+  fi
+
+  if $started ; then 
+    if [[ "$line" =~ ^.+\ (.+)$ ]] ; then
+      name="${BASH_REMATCH[1]}"
+      printf -v new_name "%03d.$name" $count
+      echo "$name --> $new_name"
+      if ! [ -f "$name" ] ; then
+        echo "not found: $name"
+        exit 1
+      fi
+      mv "$name" "$new_name"
+      (( count += 1 ))
+    else
+      echo "unknown line: $line"
+      exit 2
+    fi
+  fi
+
+done < <(unzip -l "$zip")
