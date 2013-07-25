@@ -1,2 +1,3 @@
 #!/bin/bash
+set -eu
 echo keycode 58 = Escape | sudo loadkeys
