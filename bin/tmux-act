@@ -37,7 +37,7 @@ network() {
     echo -n "${ssid}/${qual} "
   else
     ipaddr="$(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')"
-    echo -n "$ipaddr "
+    echo -n "#[fg=green]$ipaddr#[fg=default] "
   fi
 }
 
