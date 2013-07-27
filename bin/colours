@@ -4,5 +4,6 @@ for i in $(seq -f "%03g" 0 255) ; do
   printf "\e[0m "
   printf "\x1b[38;5;${i}m${i}"
   printf "\e[0m "
-  if (( $i % 8 == 7 )) ; then printf "\n" ; fi
+  if (($i <= 15)) && (( $i % 8 == 7 )) ; then printf "\n" ; fi
+  if (($i >= 16)) && (( ($i - 16) % 6 == 5 )) ; then printf "\n" ; fi
 done
