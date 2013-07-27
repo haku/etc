@@ -67,6 +67,7 @@ if exists("g:loaded_pathogen")
 endif
 
 " markdown
+" https://github.com/plasticboy/vim-markdown
 let g:vim_markdown_folding_disabled=1
 
 " emacs follow
