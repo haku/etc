@@ -7,7 +7,7 @@ haku's dot files
 ```shell
 cd
 sudo aptitude install zsh tmux
-git clone https://github.com/plasticboy/vim-markdown.git
+git clone https://github.com/haku/etc
 cd etc && ./install
 chsh -s "$(which zsh)"
 ```
