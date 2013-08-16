@@ -62,6 +62,7 @@ link "bin/fmt-json"
 link "bin/hlsclient"
 link "bin/par2update"
 link "bin/rename-zip-order"
+link "bin/namecheap"
 
 #disabled ssh split
 #link "bin/ssh"

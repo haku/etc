@@ -1,0 +1,28 @@
+#!/bin/bash
+set -eu
+source ~/.namecheap
+
+host="$(hostname)"
+my_ip="$(curl --silent http://whatismyip.akamai.com)"
+old_ip_file="$HOME/tmp/namecheap"
+
+log() {
+  echo $(date +'%Y%m%d-%H%M%S') $@
+}
+
+if [ -e "$old_ip_file" ] ; then
+  old_ip="$(head -n 1 "$old_ip_file")"
+  if [ "$my_ip" = "$old_ip" ] ; then
+    log "unchanged ${host}.${domain} ${my_ip}"
+    exit 0
+  fi
+fi
+echo "$my_ip" > "$old_ip_file"
+
+u="http://dynamicdns.park-your-domain.com/update?domain=${domain}&password=${apikey}&host=${host}&ip=${my_ip}"
+resp="$(curl --silent "$u")"
+if ! [[ "$resp" = *"<ErrCount>0</ErrCount>"* ]] ; then
+  log "Update failed: $resp"
+  exit 1
+fi
+log "set ${host}.${domain} ${my_ip}"
