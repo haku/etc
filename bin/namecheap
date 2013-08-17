@@ -19,7 +19,7 @@ if [ -e "$old_ip_file" ] ; then
 fi
 echo "$my_ip" > "$old_ip_file"
 
-u="http://dynamicdns.park-your-domain.com/update?domain=${domain}&password=${apikey}&host=${host}&ip=${my_ip}"
+u="https://dynamicdns.park-your-domain.com/update?domain=${domain}&password=${apikey}&host=${host}&ip=${my_ip}"
 resp="$(curl --silent "$u")"
 if ! [[ "$resp" = *"<ErrCount>0</ErrCount>"* ]] ; then
   log "Update failed: $resp"
