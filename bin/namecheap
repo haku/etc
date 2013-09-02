@@ -17,7 +17,6 @@ if [ -e "$old_ip_file" ] ; then
     exit 0
   fi
 fi
-echo "$my_ip" > "$old_ip_file"
 
 u="https://dynamicdns.park-your-domain.com/update?domain=${domain}&password=${apikey}&host=${host}&ip=${my_ip}"
 resp="$(curl --silent "$u")"
@@ -26,3 +25,5 @@ if ! [[ "$resp" = *"<ErrCount>0</ErrCount>"* ]] ; then
   exit 1
 fi
 log "set ${host}.${domain} ${my_ip}"
+
+echo "$my_ip" > "$old_ip_file"
