@@ -49,6 +49,7 @@ alias colerr='exec 2>>( while read X; do print "\e[91m${X}\e[0m" > /dev/tty; don
 alias fcount='find . -xdev -type f | cut -d "/" -f 2 | sort | uniq -c | sort -n'
 alias uwc='tr -s " " | tr " " "\n" | tr "[:upper:]" "[:lower:]" | sort | uniq -c | sort -gr'
 alias gnome-disc-util='palimpsest'
+alias vissh='vi ~/.ssh/config'
 
 function b() {
   echo "$@" | bc
