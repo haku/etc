@@ -11,6 +11,7 @@ alias bc='bc -ql'
 alias go='gnome-open'
 alias md5='md5sum'                    
 alias xc='xclip -selection clip-board'
+alias grep='grep --color=auto'                        
 alias g='grep'                        
 alias fr='file-roller'                
 alias gmp='gnome-mplayer'
@@ -50,6 +51,7 @@ alias fcount='find . -xdev -type f | cut -d "/" -f 2 | sort | uniq -c | sort -n'
 alias uwc='tr -s " " | tr " " "\n" | tr "[:upper:]" "[:lower:]" | sort | uniq -c | sort -gr'
 alias gnome-disc-util='palimpsest'
 alias vissh='vi ~/.ssh/config'
+alias v-='v -'
 
 function b() {
   echo "$@" | bc
