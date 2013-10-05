@@ -9,6 +9,6 @@ for IN in "$@" ; do
   echo "wav=$OUT_WAV"
   mplayer -ao pcm "$IN" -ao pcm:file="$OUT_WAV"
   OUT_MP3="$(basename "$IN").mp3"
-  echo "mp3=OUT_MP3"
+  echo "mp3=$OUT_MP3"
   lame $LAME_OPTS "$OUT_WAV" "$OUT_MP3"
 done
