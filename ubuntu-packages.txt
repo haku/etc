@@ -156,3 +156,4 @@ handbrake-cli
 dvdbackup
 libfaac0
 paris-traceroute
+pandoc
