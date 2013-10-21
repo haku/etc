@@ -9,9 +9,15 @@ print_report () {
 trap "exit" INT TERM
 trap "print_report" EXIT
 
+cmd='bundle exec cucumber'
+if [ -x './test' ] ; then
+  cmd='./test'
+fi
+echo "cmd: $cmd"
+
 echo "log: $LOG"
 while true ; do
   COUNTER=`expr $COUNTER + 1`
-  bundle exec cucumber "$@" 2>&1 | tee -a "$LOG" | grep -m 1 "Failing Scenarios" && break
+  $cmd "$@" 2>&1 | tee -a "$LOG" | grep -m 1 "Failing Scenarios" && break
   echo -n "$COUNTER"
 done
