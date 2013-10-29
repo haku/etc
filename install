@@ -63,6 +63,7 @@ link "bin/hlsclient"
 link "bin/par2update"
 link "bin/rename-zip-order"
 link "bin/namecheap"
+link "bin/aws-pry"
 
 #disabled ssh split
 #link "bin/ssh"

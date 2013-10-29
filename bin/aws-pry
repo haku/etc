@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+
+require 'aws'
+require 'aws-sdk'
+require 'pry'
+
+def self.get_proxy
+  e = ENV['https_proxy']
+  if e && !e.empty?
+    if !e.start_with? "http"
+      e = "https://" + e
+    end
+  end
+  return e
+end
+
+AWS.config({
+  :region => 'eu-west-1',
+  :http_wire_trace => ENV.include?("AWS_DEBUG"),
+  :proxy_uri => get_proxy
+})
+
+module AWS
+  class SNS
+    class TopicCollection
+
+      if !self.respond_to? :named
+        def named(name)
+          each do |topic|
+            return topic if topic.name == name
+          end
+          nil
+        end
+      end
+
+    end
+  end
+end
+
+sqs = AWS::SQS.new
+sns = AWS::SNS.new
+s3 = AWS::S3.new
+ec2 = AWS::EC2.new
+as = AWS::AutoScaling.new
+cw = AWS::CloudWatch.new
+sdb = AWS::SimpleDB.new
+
+print 'http://docs.aws.amazon.com/AWSRubySDK/latest/'
+print 'https://github.com/pry/pry'
+print 'Available: sqs, sns, s3, ec2, as, cw, sdb'
+
+binding.pry
