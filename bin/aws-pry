@@ -21,6 +21,7 @@ AWS.config({
 })
 
 module AWS
+
   class SNS
     class TopicCollection
 
@@ -35,10 +36,28 @@ module AWS
 
     end
   end
-end
 
+  #http://docs.aws.amazon.com/AWSRubySDK/latest/AWS/EC2.html
+  class EC2
+    
+    def find_by_name(name)
+      instances.tagged('Name').tagged_values(name)
+    end
 
-module AWS
+    class InstanceCollection
+      def info
+        map(&:info).to_a()
+      end
+    end
+
+    class Instance
+      def info
+        "#{id()} #{tags['Name']}"
+      end
+    end
+
+  end
+
   class AutoScaling
 
     def find_from_instance_id(instance_id)
@@ -59,6 +78,7 @@ module AWS
     end
 
   end
+
 end
 
 sqs = AWS::SQS.new
@@ -69,8 +89,8 @@ as = AWS::AutoScaling.new
 cw = AWS::CloudWatch.new
 sdb = AWS::SimpleDB.new
 
-print 'http://docs.aws.amazon.com/AWSRubySDK/latest/'
-print 'https://github.com/pry/pry'
-print 'Available: sqs, sns, s3, ec2, as, cw, sdb'
+puts 'http://docs.aws.amazon.com/AWSRubySDK/latest/'
+puts 'https://github.com/pry/pry'
+puts 'Available: sqs, sns, s3, ec2, as, cw, sdb'
 
 binding.pry
