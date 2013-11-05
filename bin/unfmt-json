@@ -1,0 +1,3 @@
+#!/usr/bin/env ruby
+require 'json'
+puts JSON.parse($stdin.read).to_json()
