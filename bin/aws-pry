@@ -79,6 +79,28 @@ module AWS
 
   end
 
+  # http://docs.aws.amazon.com/AWSRubySDK/latest/AWS/CloudFormation.html
+  class CloudFormation
+
+    def find_by_name(name)
+      stacks[name]
+    end
+
+    class Stack
+
+      def info
+        sr = status_reason()
+        "#{name()} (#{status()}#{sr.nil? ? '' : ' :' + sr})"
+      end
+
+      def save_template(path)
+        File.open(path, 'w'){|f| f.write JSON.pretty_generate(JSON.parse(template()))}
+      end
+
+    end
+
+  end
+
 end
 
 sqs = AWS::SQS.new
@@ -88,6 +110,7 @@ ec2 = AWS::EC2.new
 as = AWS::AutoScaling.new
 cw = AWS::CloudWatch.new
 sdb = AWS::SimpleDB.new
+cf = AWS::CloudFormation.new
 
 puts 'http://docs.aws.amazon.com/AWSRubySDK/latest/'
 puts 'https://github.com/pry/pry'
