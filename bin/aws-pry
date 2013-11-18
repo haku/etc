@@ -97,6 +97,13 @@ module AWS
         File.open(path, 'w'){|f| f.write JSON.pretty_generate(JSON.parse(template()))}
       end
 
+      def set_param(key, value)
+        p = parameters()
+        raise "Invalid param '#{key}'." if p[key].nil?
+        p[key] = value
+        update :template => template, :parameters => p, :capabilities => ['CAPABILITY_IAM']
+      end
+
     end
 
   end
