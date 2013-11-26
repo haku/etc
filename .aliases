@@ -53,6 +53,7 @@ alias uwc='tr -s " " | tr " " "\n" | tr "[:upper:]" "[:lower:]" | sort | uniq -c
 alias gnome-disc-util='palimpsest'
 alias vissh='vi ~/.ssh/config'
 alias v-='v -'
+alias mgsvc='sysv-rc-conf'
 
 function b() {
   echo "$@" | bc
