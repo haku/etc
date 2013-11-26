@@ -1,0 +1,3 @@
+#!/bin/bash
+set -eu
+for i in `ls -1A`; do echo "`sudo find $i | sort -u | wc -l` $i"; done | sort -rn | head -5

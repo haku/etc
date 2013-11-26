@@ -65,6 +65,7 @@ link "bin/par2update"
 link "bin/rename-zip-order"
 link "bin/namecheap"
 link "bin/aws-pry"
+link "bin/inode-count"
 
 #disabled ssh split
 #link "bin/ssh"
