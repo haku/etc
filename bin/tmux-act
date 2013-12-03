@@ -10,8 +10,9 @@ irssi() {
       S=`echo $I | cut -d ',' -f 2`
       if [ "$S" != "0" ] ; then
         if [ "$S" = "1" ] ; then
-          A='#[fg=colour8]'
-          B=''
+          continue
+          #A='#[fg=colour8]'
+          #B=''
         elif [ "$S" = "2" ] ; then
           A='#[fg=yellow]'
           B=''
