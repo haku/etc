@@ -66,6 +66,7 @@ link "bin/rename-zip-order"
 link "bin/namecheap"
 link "bin/aws-pry"
 link "bin/inode-count"
+link "bin/splunkstorm-post"
 
 #disabled ssh split
 #link "bin/ssh"

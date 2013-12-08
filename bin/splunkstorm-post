@@ -1,0 +1,16 @@
+#!/bin/bash
+set -eu
+
+URL_SCHEME='https'
+API_HOST='api.2fwa-xwxc.data.splunkstorm.com'
+API_VERSION=1
+API_ENDPOINT='inputs/http'
+source ~/.splunkstormrc
+
+event_params="sourcetype=syslog&host=$(hostname)&project=$PROJECT_ID"
+endpoint_url="$URL_SCHEME://$API_HOST/$API_VERSION/$API_ENDPOINT?$event_params"
+curl --silent \
+  -u "x:$ACCESS_TOKEN" \
+  -H "Content-type: text/plain"\
+  -d "$*" \
+  "$endpoint_url"
