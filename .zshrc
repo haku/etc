@@ -182,7 +182,7 @@ fi
 
 # == always tmux. ==
 
-if [ -z "$SESSION_TYPE" ] && [ -z "$TMUX" ] ; then
+if which tmux > /dev/null 2>&1 && [ -z "$SESSION_TYPE" ] && [ -z "$TMUX" ] ; then
   export TERM="screen-256color"
   if tmux server-info ; then
     exec tmux attach
