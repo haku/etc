@@ -60,15 +60,23 @@ alias mgsvc='sysv-rc-conf'
 function b() {
   echo "$@" | bc
 }
-funcation b-fromhex() {
-  echo "ibase=16; $1"|bc
+funcation hextobin() {
+  in=$(echo $1 | tr "[:lower:]" "[:upper:]")
+  echo "ibase=16; obase=2; $in"|bc
 }
-funcation b-tohex() {
+funcation bintohex() {
+  echo "ibase=2; obase=16; $1"|bc
+}
+funcation hextodec() {
+  in=$(echo $1 | tr "[:lower:]" "[:upper:]")
+  echo "ibase=16; $in"|bc
+}
+funcation dectohex() {
   echo "obase=16; $1"|bc
 }
-funcation b-frombin() {
+funcation bintodec() {
   echo "ibase=2; $1"|bc
 }
-funcation b-tobin() {
+funcation dectobin() {
   echo "obase=2; $1"|bc
 }
