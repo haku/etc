@@ -1,10 +1,22 @@
 #!/bin/bash
 set -eu
 
-mnf="$1"
+while [ $# -gt 0 ]
+do
+  case "$1" in
+    --curlargs) p_curlargs="$2"; shift;;
+    --) shift; break;;
+    -*) echo - "Illegal arguments" "$@" ; exit 1 ;;
+    *) p_manifest="$1"; break;; # terminate while loop
+  esac
+  shift
+done
+
+echo "manifest=$p_manifest" >&2
+echo "curlargs=$p_curlargs" >&2
 
 fetch() {
-  curl --silent --user-agent "${USERAGENT:-hlsclient}" "$@"
+  curl --user-agent "${USERAGENT:-hlsclient}" $p_curlargs "$@"
 }
 
 # search string, the array.
@@ -24,14 +36,14 @@ while true ; do
     if [[ "$line" =~ ^([^#].*)$ ]] ; then
       chunks+=("${BASH_REMATCH[1]}")
     fi
-  done < <(fetch "$mnf")
+  done < <(fetch "$p_manifest")
   if [ ${#chunks[@]} -gt 0 ]; then
     for chunk in ${chunks[@]}; do
       if containsElement "$chunk" "${all_chunks[@]}" ; then continue ; fi
-      echo -n "chunk: $chunk "
-      fetch "$(dirname "$mnf")/$chunk" > /dev/null
+      echo -n "chunk: $chunk " >&2
+      fetch "$(dirname "$p_manifest")/$chunk"
       all_chunks+=("$chunk")
-      echo "done."
+      echo "done." >&2
     done
   fi
   all_chunks=("${all_chunks[@]:${#all_chunks[@]}-$chunk_hist_count}")
