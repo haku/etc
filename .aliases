@@ -65,7 +65,7 @@ funcation hextobin() {
   echo "ibase=16; obase=2; $in"|bc
 }
 funcation bintohex() {
-  echo "ibase=2; obase=16; $1"|bc
+  echo "obase=16; ibase=2; $1"|bc
 }
 funcation hextodec() {
   in=$(echo $1 | tr "[:lower:]" "[:upper:]")
