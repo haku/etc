@@ -18,6 +18,6 @@ echo "cmd: $cmd"
 echo "log: $LOG"
 while true ; do
   COUNTER=`expr $COUNTER + 1`
-  $cmd "$@" 2>&1 | tee -a "$LOG" | grep -m 1 "Failing Scenarios" && break
+  $cmd "$@" 2>&1 | tee -a "$LOG" | grep -q -m 1 "Failing Scenarios" && break
   echo -n "$COUNTER"
 done
