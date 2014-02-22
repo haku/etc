@@ -1,0 +1,64 @@
+# https://pthree.org/2008/10/22/ivy-league-theme-for-mutt/
+
+# The chosen color selection
+# 34 - green
+# 111 - blue
+# 124 - red
+# 142 - orange
+# 193 - tan
+# 233 - black
+
+# general-doesn't-fit stuff
+color normal color193 color233
+color error color193 color124
+color markers color142 color233
+color tilde color142 color233
+color status color142 color233
+
+# index stuff
+color tree color124 color233
+color indicator color233 color193
+color index color193 color233 ~A
+color index color34 color233 ~N
+color index color34 color233 ~O
+color index color124 color233 ~F
+
+# header stuff
+color hdrdefault color124 color233
+color header color111 color233 "^Subject"
+
+# gpg stuff
+color body color34 color233 "^gpg: Good signature.*"
+color body color193 color124 "^gpg: BAD signature.*"
+color body color142 color233 "^gpg: Can't check signature.*"
+color body color142 color233 "^-----BEGIN PGP SIGNED MESSAGE-----"
+color body color142 color233 "^-----BEGIN PGP SIGNATURE-----"
+color body color142 color233 "^-----END PGP SIGNED MESSAGE-----"
+color body color142 color233 "^-----END PGP SIGNATURE-----"
+color body color142 color233 "^Version: GnuPG.*"
+color body color142 color233 "^Comment: .*"
+#color body color142 color233 "^[[:alnum:]/\+=]+[[:space:]]+$"
+
+
+# url, email and web stuff
+color body color111 color233 "(finger|ftp|http|https|news|telnet)://[^ >]*"
+color body color111 color233 "<URL:[^ ]*>"
+color body color111 color233 "www\\.[-.a-z0-9]+\\.[a-z][a-z][a-z]?([-_./~a-z0-9]+)?"
+color body color111 color233 "mailto: *[^ ]+\(\\i?subject=[^ ]+\)?"
+color body color111 color233 "[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
+
+# misc body stuff
+color attachment color111 color233
+color signature color142 color233
+
+# quote levels
+color quoted color34 color233
+color quoted1 color142 color233
+color quoted2 color34 color233
+color quoted3 color142 color233
+color quoted4 color34 color233
+color quoted5 color142 color233
+color quoted6 color34 color233
+color quoted7 color142 color233
+color quoted8 color34 color233
+color quoted9 color142 color233
