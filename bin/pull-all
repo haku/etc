@@ -13,8 +13,8 @@ set +e # Can not find an alt for $?
 for GITDIR in $(find . -type d -name '.git') ; do
   PRJDIR=$(dirname "$GITDIR")
   echo -e "\n == $PRJDIR ==\n"
-  pushd "$PRJDIR"
+  pushd "$PRJDIR" > /dev/null
   git pull
   REPORT="$REPORT $? $PRJDIR \n"
-  popd
+  popd > /dev/null
 done
