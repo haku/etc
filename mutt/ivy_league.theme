@@ -9,19 +9,19 @@
 # 233 - black
 
 # general-doesn't-fit stuff
-color normal color193 color233
+color normal color193 default
 color error color193 color124
 color markers color142 color233
 color tilde color142 color233
 color status color142 color233
 
 # index stuff
-color tree color124 color233
+color tree color124 default
 color indicator color233 color193
-color index color193 color233 ~A
-color index color34 color233 ~N
-color index color34 color233 ~O
-color index color124 color233 ~F
+color index color193 default ~A
+color index color34 default ~N
+color index color34 default ~O
+color index color124 default ~F
 
 # header stuff
 color hdrdefault color124 color233
