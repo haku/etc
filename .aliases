@@ -61,23 +61,23 @@ alias wifi='wicd-curses'
 function b() {
   echo "$@" | bc
 }
-funcation hextobin() {
-  in=$(echo $1 | tr "[:lower:]" "[:upper:]")
+function hextobin() {
+  in="$(echo $1 | tr "[:lower:]" "[:upper:]")"
   echo "ibase=16; obase=2; $in"|bc
 }
-funcation bintohex() {
+function bintohex() {
   echo "obase=16; ibase=2; $1"|bc
 }
-funcation hextodec() {
+function hextodec() {
   in=$(echo $1 | tr "[:lower:]" "[:upper:]")
   echo "ibase=16; $in"|bc
 }
-funcation dectohex() {
+function dectohex() {
   echo "obase=16; $1"|bc
 }
-funcation bintodec() {
+function bintodec() {
   echo "ibase=2; $1"|bc
 }
-funcation dectobin() {
+function dectobin() {
   echo "obase=2; $1"|bc
 }
