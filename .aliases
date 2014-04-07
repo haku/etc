@@ -81,3 +81,6 @@ function bintodec() {
 function dectobin() {
   echo "obase=2; $1"|bc
 }
+
+alias utime='date +%s'
+alias etime='date -r'
