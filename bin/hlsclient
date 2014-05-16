@@ -1,6 +1,8 @@
 #!/bin/bash
 set -eu
 
+p_curlargs=''
+
 while [ $# -gt 0 ]
 do
   case "$1" in
