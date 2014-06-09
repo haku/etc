@@ -1,0 +1,9 @@
+#!/bin/bash
+set -eu
+
+for in in "$@" ; do
+  profile=$(mediainfo --Inform="Audio;%Format_Profile%" "$in")
+  bitrate=$(mediainfo --Inform="Audio;%BitRate/String%" "$in")
+  if [ -z "$bitrate" ] ; then bitrate="    ?     " ; fi
+  echo -e "$profile $bitrate $in"
+done
