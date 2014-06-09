@@ -1,3 +1,5 @@
 #!/bin/bash
 set -eu
-for i in `ls -1A`; do echo "`sudo find $i | sort -u | wc -l` $i"; done | sort -rn | head -5
+while read line ; do
+  echo "$(find "$line" | sort -u | wc -l) $line"
+done < <(ls -1A) > >(sort -rn | head -5)
