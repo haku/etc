@@ -7,6 +7,7 @@ for in in "$@" ; do
   width=$(mediainfo --Inform="Video;%Width%" "$in")
   height=$(mediainfo --Inform="Video;%Height%" "$in")
   fps=$(mediainfo --Inform="Video;%FrameRate%" "$in")
+  duration=$(mediainfo --Inform="General;%Duration/String%" "$in")
   if [ -z "$bitrate" ] ; then bitrate="    ?     " ; fi
-  echo -e "$profile $bitrate ${width}x${height} ${fps} $in"
+  echo -e "$profile $bitrate ${width}x${height} ${fps} ${duration} $in"
 done
