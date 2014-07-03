@@ -14,6 +14,7 @@ org.eclipse.ui.prefs
 org.eclipse.wst.css.ui.prefs
 org.eclipse.wst.html.ui.prefs
 org.eclipse.wst.xml.ui.prefs 
+org.eclipse.wst.jsdt.ui.prefs
 org.epic.perleditor.prefs
 "
 settingsdir="./.metadata/.plugins/org.eclipse.core.runtime/.settings"
