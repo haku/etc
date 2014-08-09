@@ -47,7 +47,7 @@ def ver_par(dir, all_files)
   if new_files.size > 0
     puts "  #{new_files.size} unprotected files:"
     new_files.each{|f| puts "    #{f}"}
-    res = backup_par dir
+    res = backup_par(dir)
     return res if res
     gen_par(dir, all_files)
   end
@@ -68,26 +68,44 @@ def backup_par(dir)
   end
 end
 
-errors = []
-base_dir = "#{Dir.pwd}/"
-Find.find(base_dir) do |d|
-  next if !FileTest.directory?(d)
+def check_and_update_par(base_dir)
+  errors = []
+  Find.find(base_dir) do |d|
+    next if !FileTest.directory?(d)
 
-  files = Dir.entries(d)
-  par2_files = files.select{|e| e.end_with?('.par2')}
-  data_files = (files - par2_files).select{|e| File.file?("#{d}/#{e}")}
+    files = Dir.entries(d)
+    par2_files = files.select{|e| e.end_with?('.par2')}
+    data_files = (files - par2_files).select{|e| File.file?("#{d}/#{e}")}
 
-  if data_files.size > 0
-    puts d.gsub(base_dir, './')
+    if data_files.size > 0
+      puts d.gsub(base_dir, './')
 
-    if par2_files.size > 0
-      res = ver_par(d, data_files)
-      errors << res if res
-    else
-      res = gen_par(d, data_files)
-      errors << res if res
+      if par2_files.size > 0
+        res = ver_par(d, data_files)
+        errors << res if res
+      else
+        res = gen_par(d, data_files)
+        errors << res if res
+      end
     end
   end
+  return errors
+end
+
+dirs = []
+for a in ARGV
+  d = File.expand_path(a)
+  raise "Not a directory: #{d}" if !FileTest.directory?(d)
+  dirs << d
+end
+dirs << Dir.pwd if dirs.size < 1
+
+errors = []
+dirs.each do |dir|
+  puts ">> #{dir}"
+  dir_errors = check_and_update_par(dir)
+  errors += dir_errors if dir_errors.size > 0
+  puts "<< #{dir}"
 end
 
 if errors.size > 0
