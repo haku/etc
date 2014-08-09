@@ -3,10 +3,12 @@ require 'find'
 require 'open3'
 require 'filesize'
 
+LEVEL_OF_REDUNDANCY=10
+
 def gen_par(dir, files)
   puts "  protecting #{files.size} files ... "
   Dir.chdir(dir) do
-    Open3.popen3('par2', 'c', '-r10', '-q', '--', "#{File.basename(dir)}.par2", *files) do |i, o, e, t|
+    Open3.popen3('par2', 'c', "-r#{LEVEL_OF_REDUNDANCY}", '-q', '--', "#{File.basename(dir)}.par2", *files) do |i, o, e, t|
       while line = o.gets
       end
       err = e.readlines
