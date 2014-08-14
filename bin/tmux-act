@@ -50,8 +50,9 @@ batt() {
     echo -n "$("$b") "
   fi
 }
+
 load() {
-  echo -n "#[fg=blue]$(uptime | sed -e "s/^.*: //" -e "s/,//g")#[fg=default]"
+  echo -n "#[fg=brightblue]$(uptime | sed -e "s/^.*: //" -e "s/,//g")#[fg=default]"
 }
 
 irssi
