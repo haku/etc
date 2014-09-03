@@ -32,11 +32,6 @@ alias aptsh='aptitude show'
 alias apti='sudo aptitude install --without-recommends'
 alias kcat='jps -lm | grep catalina | cut -d " " -f 1 | xargs kill -9'
 alias lcat='jps -lm | grep catalina'
-alias svngrep="find . \( \( ! -name .svn -and ! -name target \) -o -prune \) -type f -print0 | xargs -0 grep --color"
-alias sg='svngrep'
-alias snv='svn'
-alias gitgrep="find . \( \( ! -name .git -and ! -name target  -and ! -name bin \) -o -prune \) -type f -print0 | xargs -0 grep --color"
-alias gg='gitgrep'
 alias pip-upgrade='pip freeze --local | cut -d = -f 1  | xargs pip install -U'
 alias poke='gnome-screensaver-command -d'
 alias dus='du -sh *'
@@ -44,14 +39,6 @@ alias f='fndi'
 alias mci='mvn clean install'
 alias mvn-get-src='mvn dependency:sources && mvn dependency:resolve -Dclassifier=javadoc'
 alias mvn-find-updates='mvn versions:display-dependency-updates versions:display-plugin-updates'
-alias gitst='git st'
-alias gst='git st && git lg'
-alias gdf='git df | vim -R -'
-alias gdfc='git df --cached | vim -R -'
-alias svnst='svn st'
-alias ss='svn st'
-alias svd='svn diff -x -b | vim -R -'
-alias sl='svn log -l 30 | nicelogs'
 alias t='tail'
 alias tf='tail -f'
 alias mtr='mtr -o LDSNABWV'
@@ -61,6 +48,38 @@ alias uwc='tr -s " " | tr " " "\n" | tr "[:upper:]" "[:lower:]" | sort | uniq -c
 alias gnome-disc-util='palimpsest'
 alias mgsvc='sudo sysv-rc-conf'
 alias wifi='wicd-curses'
+
+alias svngrep="find . \( \( ! -name .svn -and ! -name target \) -o -prune \) -type f -print0 | xargs -0 grep --color"
+alias sg='svngrep'
+alias snv='svn'
+alias gitgrep="find . \( \( ! -name .git -and ! -name target  -and ! -name bin \) -o -prune \) -type f -print0 | xargs -0 grep --color"
+alias gg='gitgrep'
+alias gitst='git st'
+alias gst='git st && git lg'
+alias gdf='git df | vim -R -'
+alias gdfc='git df --cached | vim -R -'
+alias svnst='svn st'
+alias ss='svn st'
+alias svd='svn diff -x -b | vim -R -'
+alias sl='svn log -l 30 | nicelogs'
+
+function s() {
+  if [ -e './.svn' ] || svn info > /dev/null 2>&1 ; then
+    if [ $# -lt 1 ] ; then
+      svn status
+    else
+      svn "$@" 
+    fi
+  elif [ -e './.git' ] || git rev-parse --git-dir > /dev/null 2>&1; then
+    if [ $# -lt 1 ] ; then
+      git status
+    else
+      git "$@"
+    fi
+  else
+    echo "Unknown SCM."
+  fi
+}
 
 function b() {
   echo "$@" | bc
