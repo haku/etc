@@ -52,16 +52,19 @@ alias wifi='wicd-curses'
 alias svngrep="find . \( \( ! -name .svn -and ! -name target \) -o -prune \) -type f -print0 | xargs -0 grep --color"
 alias sg='svngrep'
 alias snv='svn'
+alias svnst='svn st'
+alias ss='svn st'
+alias svd='svn diff -x -b | vim -R -'
+alias sl='svn log -l 30 | nicelogs'
+alias sup='svn up'
+alias svp='svn up'
+
 alias gitgrep="find . \( \( ! -name .git -and ! -name target  -and ! -name bin \) -o -prune \) -type f -print0 | xargs -0 grep --color"
 alias gg='gitgrep'
 alias gitst='git st'
 alias gst='git st && git lg'
 alias gdf='git df | vim -R -'
 alias gdfc='git df --cached | vim -R -'
-alias svnst='svn st'
-alias ss='svn st'
-alias svd='svn diff -x -b | vim -R -'
-alias sl='svn log -l 30 | nicelogs'
 
 function s() {
   if [ -e './.svn' ] || svn info > /dev/null 2>&1 ; then
