@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+require 'json'
+j = JSON.parse($stdin.read)
+j = eval(ARGV.join(' '))
+puts JSON.pretty_generate(j)
