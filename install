@@ -34,3 +34,8 @@ if [ "$(uname)" = "Darwin" ] ; then
 fi
 
 mkdir -p "$HOME/.vimswp"
+
+if ! [ -e "$HOME/.zsh_history" ] ; then
+  echo "Using bash history as initial zsh history."
+  cp -v "$HOME/.bash_history" "$HOME/.zsh_history"
+fi
