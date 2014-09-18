@@ -26,6 +26,7 @@ link ".zshenv"
 link ".zshrc"
 link ".vimrc"
 link ".screenrc"
+link ".profile"
 
 if [ "$(uname)" = "Darwin" ] ; then
   mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
