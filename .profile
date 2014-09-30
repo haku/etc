@@ -1,8 +1,31 @@
+path_has() {
+  if echo "$PATH" | tr ':' '\n' | grep -x -q "$1" ; then
+    return 0
+  else
+    return 1
+  fi
+}
+path_append() {
+  if ! path_has "$1" ; then
+    PATH="$PATH:$1"
+  fi
+}
+path_prepend() {
+  if path_has "$1" ; then
+    PATH="${PATH//":$1"/}"
+    PATH="${PATH//"$1:"/}"
+  fi
+  PATH="$1:$PATH"
+}
+path_tidy() {
+  PATH="$(echo "$PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++{if (NR > 1) printf ORS; printf $a[$1]}')"
+}
+
 if [ -d "$HOME/etc/bin" ] ; then
-  PATH="$HOME/etc/bin:$PATH"
+  path_prepend "$HOME/etc/bin"
 fi
 if [ -d "$HOME/bin" ] ; then
-  PATH="$HOME/bin:$PATH"
+  path_prepend "$HOME/bin"
 fi
 
 export EDITOR=vim
