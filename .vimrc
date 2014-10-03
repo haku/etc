@@ -1,7 +1,5 @@
 " reference: http://blog.sanctum.geek.nz/gracefully-degrading-vimrc/
 
-silent! execute pathogen#infect()
-
 set nocompatible
 set noerrorbells
 set report=0 " report everything
@@ -35,6 +33,9 @@ set tabstop=2
 set shiftwidth=2
 set expandtab
 
+" searching
+set smartcase
+
 " fix auto indent
 filetype on
 filetype plugin on
@@ -61,10 +62,11 @@ command! PrettyXML call DoPrettyXML()
 map <F6> :PrettyXML<CR>
 
 " file types
-if exists("g:loaded_pathogen")
-"if exists('g:loaded_octopress') " not sure why this does not work :(
-  autocmd BufNewFile,BufRead *.markdown set filetype=octopress
-endif
+"autocmd BufNewFile,BufRead *.markdown set filetype=octopress
+"autocmd BufNewFile,BufRead *.json set filetype=javascript
+
+" fix markdown
+let g:vim_markdown_folding_disabled=1
 
 " markdown
 " https://github.com/plasticboy/vim-markdown
