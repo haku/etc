@@ -28,4 +28,14 @@ if [ -d "$HOME/bin" ] ; then
   path_prepend "$HOME/bin"
 fi
 
+export LANG="en_GB.utf8"
 export EDITOR=vim
+
+# https://wiki.archlinux.org/index.php/GNOME_Keyring
+[ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK=$(netstat -xl | grep -o '/tmp/keyring-.*/ssh$')
+[ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK=$(netstat -xl | grep -o '/tmp/ssh-.*/agent.*$')
+[ -z "$SSH_AUTH_SOCK" ] || export SSH_AUTH_SOCK
+
+if [ "$ZSH_NAME" = "zsh" ] && [[ -s "$HOME/.rvm/scripts/rvm" ]] ; then
+  source "$HOME/.rvm/scripts/rvm"
+fi
