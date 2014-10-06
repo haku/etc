@@ -28,7 +28,6 @@ if [ -d "$HOME/bin" ] ; then
   path_prepend "$HOME/bin"
 fi
 
-export LANG="en_GB.utf8"
 export EDITOR=vim
 
 # https://wiki.archlinux.org/index.php/GNOME_Keyring
