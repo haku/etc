@@ -86,6 +86,7 @@ function! InstallPlugins()
 
   Plug 'godlygeek/tabular'
   Plug 'plasticboy/vim-markdown'
+  Plug 'tangledhelix/vim-octopress'
 
   call plug#end()
 endfunction
@@ -107,6 +108,9 @@ function! ConfigurePlugins()
 
   " for plasticboy/vim-markdown
   let g:vim_markdown_folding_disabled=1
+
+  " for tangledhelix/vim-octopress
+  autocmd BufNewFile,BufRead *.markdown set filetype=octopress
 
 endfunction
 
@@ -134,5 +138,4 @@ endif
 hi Normal ctermbg=none
 
 " file types
-autocmd BufNewFile,BufRead *.markdown set filetype=octopress
 autocmd BufNewFile,BufRead *.json set filetype=javascript
