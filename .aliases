@@ -15,23 +15,30 @@ alias grep='grep --color=auto'
 alias g='grep'                        
 alias fr='file-roller'                
 alias gmp='gnome-mplayer'
+
 alias v='vim'
 alias vit='vim -p'
 alias vis='vim -O'
 alias v-='vim -'
 alias -- -='vim -'
+
 alias vissh='vi ~/.ssh/config'
 alias psg='ps aux | grep'
 alias pstree='ps -AHwef'
 alias :q='exit'
 alias dc='cd'
+
+alias fxml='xmllint --format - | pygmentize -l xml'
+
 alias aptu='sudo aptitude update'
 alias aptsu='sudo aptitude safe-upgrade'
 alias apts='aptitude search'
 alias aptsh='aptitude show'
 alias apti='sudo aptitude install --without-recommends'
+
 alias kcat='jps -lm | grep catalina | cut -d " " -f 1 | xargs kill -9'
 alias lcat='jps -lm | grep catalina'
+
 alias pip-upgrade='pip freeze --local | cut -d = -f 1  | xargs pip install -U'
 alias poke='gnome-screensaver-command -d'
 alias dus='du -sh *'
