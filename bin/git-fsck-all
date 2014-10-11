@@ -11,7 +11,7 @@ trap "print_report" EXIT
 
 set +e # Can not find an alt for $?
 for gitdir in $(find . \( -type d -name '.git' \) -o \( -name 'HEAD' \) ) ; do
-  prjdir=$(dirname "$gitdir")
+  prjdir="$(dirname "$gitdir")"
   echo -e "\n == $prjdir ==\n"
   pushd "$prjdir" > /dev/null
   git fsck
