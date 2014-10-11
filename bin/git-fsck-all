@@ -1,0 +1,20 @@
+#!/bin/bash
+set -eu
+
+report="\n == REPORT == \n"
+print_report () {
+  echo -e "$report"
+}
+
+trap "exit" INT TERM
+trap "print_report" EXIT
+
+set +e # Can not find an alt for $?
+for gitdir in $(find . \( -type d -name '.git' \) -o \( -name 'HEAD' \) ) ; do
+  prjdir=$(dirname "$gitdir")
+  echo -e "\n == $prjdir ==\n"
+  pushd "$prjdir" > /dev/null
+  git fsck
+  report="$report $? $prjdir \n"
+  popd > /dev/null
+done
