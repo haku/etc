@@ -1,0 +1,39 @@
+#!/bin/bash
+set -eu
+
+ff="${FFMPEG:-}"
+if [ -z "$ff" ] ; then
+  echo "FFMPEG not set." >&2
+  exit 1
+fi
+if ! [ -x "$ff" ] ; then
+  echo "FFMPEG not execable." >&2
+  exit 1
+fi
+echo "ffmpeg=$ff"
+
+#vf="select=gt(scene\,0.5)"  # https://www.ffmpeg.org/ffmpeg-filters.html#select_002c-aselect
+#vf="thumbnail=200"          # https://www.ffmpeg.org/ffmpeg-filters.html#thumbnail
+
+vf="select=gt(scene\,0.2),thumbnail=10"
+
+for a in "$@" ; do
+  b="$(basename "$a")"
+  b="${b%.*}.jpg"
+  if ! [ -e "$b" ] ; then
+    echo "$a --> $b"
+    if ! "$ff" -loglevel error -ss 3 -i "$a" -vf "$vf" -frames:v 1 -vsync vfr "$b"
+    then
+      echo "Failed: $a" >&2
+    fi
+  fi
+done
+
+# -loglevel quiet, panic, fatal, error, warning, info, verbose and debug.
+
+# https://superuser.com/questions/538112/meaningful-thumbnails-for-a-video-using-ffmpeg
+# "$ff" -ss 3 -i ./test.mkv -vf "select=gt(scene\,0.5)" -frames:v 5 -vsync vfr 2_out%02d.jpg
+# "$ff" -ss 3 -i ./test.mkv -vf "select=gt(scene\,0.4)" -frames:v 5 -vsync vfr -vf "fps=fps=1/600" "out%02d.jpg"
+
+# https://www.ffmpeg.org/ffmpeg-utils.html
+# -vf "select=gt(scene\,0.5), select=gte(n\, 2)" -frames:v 1
