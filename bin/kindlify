@@ -1,13 +1,23 @@
 #!/bin/bash
 set -eu
 
-kindle='/media/Kindle/documents'
+# http://manual.calibre-ebook.com/generated/en/ebook-convert.html
+
+kindle="/media/$USER/Kindle/documents"
 
 for input in "$@" ; do
   echo -e "\n == $input =="
-  output="`basename "$input"`.kindle.mobi"
+
+  args=()
+  if [[ "$input" == *".txt" ]]; then
+    args+=('--title' "$input")
+  fi
+  echo -e "    => ${args[@]}"
+
+  output="$(basename "$input").kindle.mobi"
   echo -e "    => $output\n"
-  ebook-convert "$input" "$output" --output-profile kindle
+
+  ebook-convert "$input" "$output" --output-profile kindle "${args[@]}"
 
   if [ -e "$kindle" ] ; then
     dest="$kindle/$output"
