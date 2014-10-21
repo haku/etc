@@ -12,12 +12,12 @@ for input in "$@" ; do
   if [[ "$input" == *".txt" ]]; then
     args+=('--title' "$input")
   fi
-  echo -e "    => ${args[@]}"
+  echo -e "    => ${args[@]:-}"
 
   output="$(basename "$input").kindle.mobi"
   echo -e "    => $output\n"
 
-  ebook-convert "$input" "$output" --output-profile kindle "${args[@]}"
+  ebook-convert "$input" "$output" --output-profile kindle "${args[@]:+${args[@]}}"
 
   if [ -e "$kindle" ] ; then
     dest="$kindle/$output"
