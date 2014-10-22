@@ -72,7 +72,7 @@ map <F6> :PrettyXML<CR>
 if has("gui_running")
   set go-=T
   set guifont=M+\ 1m\ Medium\ 11
-  set guioptions=aem
+  set guioptions=em
   set number
   set lines=999
 endif
