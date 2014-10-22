@@ -1,4 +1,4 @@
 #!/bin/bash
 if ps ax | grep [S]creenSaverEngine > /dev/null; then
-  purge
+  /usr/bin/purge
 fi
