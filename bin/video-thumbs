@@ -1,6 +1,12 @@
 #!/bin/bash
 set -eu
 
+trap ctrl_c INT
+ctrl_c() {
+  echo "aborted."
+  exit 1
+}
+
 ff="${FFMPEG:-}"
 if [ -z "$ff" ] ; then
   echo "FFMPEG not set." >&2
@@ -18,8 +24,7 @@ echo "ffmpeg=$ff"
 vf="select=gt(scene\,0.2),thumbnail=10"
 
 for a in "$@" ; do
-  b="$(basename "$a")"
-  b="${b%.*}.jpg"
+  b="${a%.*}.jpg"
   if ! [ -e "$b" ] ; then
     echo "$a --> $b"
     if ! "$ff" -loglevel error -ss 3 -i "$a" -vf "$vf" -frames:v 1 -vsync vfr "$b"
