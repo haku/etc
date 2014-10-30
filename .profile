@@ -36,5 +36,5 @@ export EDITOR=vim
 [ -z "$SSH_AUTH_SOCK" ] || export SSH_AUTH_SOCK
 
 if [ "$ZSH_NAME" = "zsh" ] && [[ -s "$HOME/.rvm/scripts/rvm" ]] ; then
-  source "$HOME/.rvm/scripts/rvm"
+  . "$HOME/.rvm/scripts/rvm"
 fi
