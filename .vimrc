@@ -34,7 +34,7 @@ set expandtab
 
 " searching
 set smartcase
-set hlsearch
+"set hlsearch
 
 " fix auto indent
 filetype on
