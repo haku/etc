@@ -5,6 +5,8 @@ alias l1='ls -1F'
 alias 1='l1'
 alias la1='ls -A1'
 alias l='ls -CF'
+alias lnew='ls -lhrtc | tail'
+
 alias c='clear'
 alias tre='tree -F --filelimit 15'
 alias bc='bc -ql'
