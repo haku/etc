@@ -64,6 +64,9 @@ function! DoPrettyXML()
 command! PrettyXML call DoPrettyXML()
 map <F6> :PrettyXML<CR>
 
+" format json
+map <F7> :%!python -mjson.tool<cr>
+
 " emacs follow
 " http://stackoverflow.com/questions/6873076/auto-scrollable-pagination-with-vim-using-vertical-split
 :nmap <silent> <Leader>ef :vsplit<bar>wincmd l<bar>exe "norm! Ljz<c-v><cr>"<cr>:set scb<cr>:wincmd h<cr> :set scb<cr>
