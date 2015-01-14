@@ -21,7 +21,7 @@ alias v='vim'
 alias vit='vim -p'
 alias vis='vim -O'
 alias v-='vim -'
-alias -- -='vim -'
+alias -- -='vim -R -'
 
 alias vissh='vi ~/.ssh/config'
 alias psg='ps aux | grep'
@@ -56,6 +56,8 @@ alias uwc='tr -s " " | tr " " "\n" | tr "[:upper:]" "[:lower:]" | sort | uniq -c
 alias gnome-disc-util='palimpsest'
 alias mgsvc='sudo sysv-rc-conf'
 alias wifi='wicd-curses'
+
+alias share_http='python -m SimpleHTTPServer 44444'
 
 alias svngrep="find . \( \( ! -name .svn -and ! -name target \) -o -prune \) -type f -print0 | xargs -0 grep --color"
 alias sg='svngrep'
