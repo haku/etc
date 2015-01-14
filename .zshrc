@@ -85,10 +85,18 @@ zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
 
 # == Prompt config ==
 
-export PS1="$(print '%{\e[0;33m%}%n%{\e[0;34m%}@%{\e[0;33m%}%m%{\e[0m%}:%{\e[0;34m%}%~%{\e[0m%}')
+host_info=""
+if [ -f "/etc/cosmos-info" ] ; then
+  . /etc/cosmos-info
+  host_info="$COSMOS_COMPONENT $COSMOS_ENV"
+fi
+
+export PS1="$(print '%{\e[0;33m%}%n%{\e[0;34m%}@%{\e[0;33m%}%m%{\e[0m%}:%{\e[0;34m%}%~%{\e[0m%} %{\e[0;37m%}'$host_info'%{\e[0m%}')
 $ "
 export PS2="$(print '%{\e[0;34m%}>%{\e[0m%} ')"
 export RPS1=$'$(vcs_info_wrapper)'
+
+unset host_info
 
 # == Keyboard ==
 
