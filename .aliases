@@ -6,6 +6,7 @@ alias 1='l1'
 alias la1='ls -A1'
 alias l='ls -CF'
 alias lnew='ls -lhrtc | tail'
+alias lbig='ls -lhrsS | tail'
 
 alias c='clear'
 alias tre='tree -F --filelimit 15'
@@ -85,7 +86,7 @@ function s() {
     fi
   elif [ -e './.git' ] || git rev-parse --git-dir > /dev/null 2>&1; then
     if [ $# -lt 1 ] ; then
-      git status
+      git status .
     else
       git "$@"
     fi
