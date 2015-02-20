@@ -145,3 +145,4 @@ hi Normal ctermbg=none
 
 " file types
 autocmd BufNewFile,BufRead *.json set filetype=javascript
+autocmd BufNewFile,BufRead Gemfile set filetype=ruby
