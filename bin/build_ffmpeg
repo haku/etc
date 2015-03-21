@@ -1,0 +1,68 @@
+#!/bin/bash
+set -eu
+# https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
+
+# TODO do not sudo if already installed.
+sudo -k aptitude install \
+  autoconf automake build-essential libass-dev libfreetype6-dev libgpac-dev \
+  libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev \
+  libxcb-xfixes0-dev pkg-config texi2html zlib1g-dev unzip nasm
+
+srcd="$HOME/development/ffmpeg_src"
+bldd="$HOME/development/ffmpeg_bld"
+mkdir -pv "$srcd"
+mkdir -pv "$bldd"
+
+pushd "$srcd"
+
+  wget http://download.videolan.org/pub/x264/snapshots/last_x264.tar.bz2
+  tar xjvf last_x264.tar.bz2
+  pushd x264-snapshot*
+    ./configure --prefix="$bldd" --bindir="$bldd" --enable-static
+    make
+    make install
+    make distclean
+  popd
+
+  wget -O fdk-aac.zip https://github.com/mstorsjo/fdk-aac/zipball/master
+  unzip fdk-aac.zip
+  pushd mstorsjo-fdk-aac*
+    autoreconf -fiv
+    ./configure --prefix="$bldd" --disable-shared
+    make
+    make install
+    make distclean
+  popd
+
+  wget http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
+  tar xzvf lame-3.99.5.tar.gz
+  pushd lame-3.99.5
+    ./configure --prefix="$bldd" --enable-nasm --disable-shared
+    make
+    make install
+    make distclean
+  popd
+
+  wget http://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2
+  tar xjvf ffmpeg-snapshot.tar.bz2
+  pushd ffmpeg
+    PKG_CONFIG_PATH="$bldd/lib/pkgconfig" ./configure \
+      --prefix="$bldd" \
+      --extra-cflags="-I$bldd/include" \
+      --extra-ldflags="-L$bldd/lib" \
+      --bindir="$bldd" \
+      --enable-gpl \
+      --enable-libass \
+      --enable-libfdk-aac \
+      --enable-libfreetype \
+      --enable-libmp3lame \
+      --enable-libtheora \
+      --enable-libvorbis \
+      --enable-libx264 \
+      --enable-nonfree
+    make
+    make install
+    make distclean
+  popd
+
+popd
