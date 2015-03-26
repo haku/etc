@@ -8,6 +8,13 @@ alias l='ls -CF'
 alias lnew='ls -lhrtc | tail'
 alias lbig='ls -lhrsS | tail'
 
+function adv_ls() {
+  alias  1='LC_ALL=C ls -1F  --group-directories-first'
+  alias  l='LC_ALL=C ls -CF  --group-directories-first'
+  alias ll='LC_ALL=C ls -alF --group-directories-first'
+  alias lh='LC_ALL=C ls -lhF --group-directories-first'
+}
+
 alias c='clear'
 alias tre='tree -F --filelimit 15'
 alias bc='bc -ql'
