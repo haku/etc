@@ -129,3 +129,5 @@ function dectobin() {
 
 alias utime='date +%s'
 alias etime='date -r'
+
+alias mon='nc localhost 33898'
