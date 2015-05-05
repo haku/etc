@@ -47,6 +47,10 @@ set clipboard=unnamed
 " spelling ( [s ]s z= )
 map <F5> :setlocal spell! spelllang=en_gb<cr>
 
+" non-printing chars.
+set list
+set listchars=nbsp:¬,tab:>-,extends:»,precedes:«,trail:•
+
 " format xml
 function! DoPrettyXML()
      let l:origft = &ft
