@@ -40,7 +40,7 @@ alias dc='cd'
 alias fxml='xmllint --format - | pygmentize -l xml'
 
 alias aptu='sudo aptitude update'
-alias aptsu='sudo aptitude safe-upgrade'
+alias aptsu='sudo aptitude safe-upgrade -V'
 alias apts='aptitude search'
 alias aptsh='aptitude show'
 alias apti='sudo aptitude install --without-recommends'
