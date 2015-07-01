@@ -19,7 +19,6 @@ link () {
 }
 
 link ".aliases"
-link ".SciTEUser.properties"
 link ".tmux.conf"
 link ".zprofile"
 link ".zshenv"
