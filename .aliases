@@ -15,6 +15,7 @@ function adv_ls() {
   alias lh='LC_ALL=C ls -lhF --group-directories-first'
 }
 
+alias gh='cat ~/.zsh_history | grep'
 alias c='clear'
 alias tre='tree -F --filelimit 15'
 alias bc='bc -ql'
