@@ -67,6 +67,10 @@ alias mgsvc='sudo sysv-rc-conf'
 alias wifi='wicd-curses'
 
 alias share_http='python -m SimpleHTTPServer 44444'
+function serve {
+  port="${1:-44444}"
+    ruby -run -e httpd . -p $port
+}
 
 alias svngrep="find . \( \( ! -name .svn -and ! -name target \) -o -prune \) -type f -print0 | xargs -0 grep --color"
 alias sg='svngrep'
@@ -132,3 +136,6 @@ alias utime='date +%s'
 alias etime='date -r'
 
 alias mon='nc localhost 33898'
+
+alias im-compress-photo='convert -density 150 -quality 60'
+alias im-smaller-photo='convert -density 150 -quality 60 -resize 50%'
