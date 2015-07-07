@@ -49,8 +49,14 @@ alias apti='sudo aptitude install --without-recommends'
 alias kcat='jps -lm | grep catalina | cut -d " " -f 1 | xargs kill -9'
 alias lcat='jps -lm | grep catalina'
 
+alias gnome-disc-util='palimpsest'
+alias mgsvc='sudo sysv-rc-conf'
+alias mtr='mtr -o LDSNABWV'
 alias pip-upgrade='pip freeze --local | cut -d = -f 1  | xargs pip install -U'
 alias poke='gnome-screensaver-command -d'
+alias uuid='uuidgen | tr 'A-Z' 'a-z''
+alias wifi='wicd-curses'
+
 alias dus='du -sh *'
 alias f='fndi'
 alias mci='mvn clean install'
@@ -58,13 +64,9 @@ alias mvn-get-src='mvn dependency:sources && mvn dependency:resolve -Dclassifier
 alias mvn-find-updates='mvn versions:display-dependency-updates versions:display-plugin-updates'
 alias t='tail'
 alias tf='tail -f'
-alias mtr='mtr -o LDSNABWV'
 alias colerr='exec 2>>( while read X; do print "\e[91m${X}\e[0m" > /dev/tty; done & )'
 alias fcount='find . -xdev -type f | cut -d "/" -f 2 | sort | uniq -c | sort -n'
 alias uwc='tr -s " " | tr " " "\n" | tr "[:upper:]" "[:lower:]" | sort | uniq -c | sort -gr'
-alias gnome-disc-util='palimpsest'
-alias mgsvc='sudo sysv-rc-conf'
-alias wifi='wicd-curses'
 
 alias share_http='python -m SimpleHTTPServer 44444'
 function serve {
