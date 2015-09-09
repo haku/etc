@@ -1,3 +1,4 @@
+# ls
 alias ll='ls -alF'
 alias lh='ls -lhF'
 alias la='ls -AF'
@@ -15,58 +16,61 @@ function adv_ls() {
   alias lh='LC_ALL=C ls -lhF --group-directories-first'
 }
 
-alias gh='cat ~/.zsh_history | grep'
+# term
+alias :q='exit'
 alias c='clear'
-alias tre='tree -F --filelimit 15'
-alias bc='bc -ql'
-alias go='gnome-open'
-alias xc='xclip -selection clip-board'
-alias grep='grep --color=auto'                        
-alias g='grep'                        
-alias fr='file-roller'                
-alias gmp='gnome-mplayer'
-
-alias v='vim'
-alias vit='vim -p'
-alias vis='vim -O'
-alias v-='vim -'
-alias -- -='vim -R -'
-
-alias vissh='vi ~/.ssh/config'
+alias dc='cd'
+alias gh='cat ~/.zsh_history | grep'
 alias psg='ps aux | grep'
 alias pstree='ps -AHwef'
-alias :q='exit'
-alias dc='cd'
 
+# vim.
+alias -- -='vim -R -'
+alias v-='vim -'
+alias v='vim'
+alias vis='vim -O'
+alias vit='vim -p'
+
+# CLI tools.
+alias bc='bc -ql'
+alias colerr='exec 2>>( while read X; do print "\e[91m${X}\e[0m" > /dev/tty; done & )'
+alias dus='du -sh *'
+alias f='fndi'
+alias fcount='find . -xdev -type f | cut -d "/" -f 2 | sort | uniq -c | sort -n'
 alias fxml='xmllint --format - | pygmentize -l xml'
+alias g='grep'
+alias grep='grep --color=auto'
+alias mgsvc='sudo sysv-rc-conf'
+alias mtr='mtr -o LDSNABWV'
+alias t='tail'
+alias tf='tail -f'
+alias tre='tree -F --filelimit 15'
+alias uuid='uuidgen | tr 'A-Z' 'a-z''
+alias uwc='tr -s " " | tr " " "\n" | tr "[:upper:]" "[:lower:]" | sort | uniq -c | sort -gr'
+alias vissh='vi ~/.ssh/config'
+alias wifi='wicd-curses'
 
+# Apt.
 alias aptu='sudo aptitude update'
 alias aptsu='sudo aptitude safe-upgrade -V'
 alias apts='aptitude search'
 alias aptsh='aptitude show'
 alias apti='sudo aptitude install --without-recommends'
 
-alias kcat='jps -lm | grep catalina | cut -d " " -f 1 | xargs kill -9'
-alias lcat='jps -lm | grep catalina'
-
+# Linux GUI.
+alias fr='file-roller'
+alias gmp='gnome-mplayer'
 alias gnome-disc-util='palimpsest'
-alias mgsvc='sudo sysv-rc-conf'
-alias mtr='mtr -o LDSNABWV'
-alias pip-upgrade='pip freeze --local | cut -d = -f 1  | xargs pip install -U'
+alias go='gnome-open'
 alias poke='gnome-screensaver-command -d'
-alias uuid='uuidgen | tr 'A-Z' 'a-z''
-alias wifi='wicd-curses'
+alias xc='xclip -selection clip-board'
 
-alias dus='du -sh *'
-alias f='fndi'
+# dev tools.
 alias mci='mvn clean install'
 alias mvn-get-src='mvn dependency:sources && mvn dependency:resolve -Dclassifier=javadoc'
 alias mvn-find-updates='mvn versions:display-dependency-updates versions:display-plugin-updates'
-alias t='tail'
-alias tf='tail -f'
-alias colerr='exec 2>>( while read X; do print "\e[91m${X}\e[0m" > /dev/tty; done & )'
-alias fcount='find . -xdev -type f | cut -d "/" -f 2 | sort | uniq -c | sort -n'
-alias uwc='tr -s " " | tr " " "\n" | tr "[:upper:]" "[:lower:]" | sort | uniq -c | sort -gr'
+alias pip-upgrade='pip freeze --local | cut -d = -f 1  | xargs pip install -U'
+alias node='env NODE_NO_READLINE=1 rlwrap node'
 
 alias share_http='python -m SimpleHTTPServer 44444'
 function serve {
@@ -74,6 +78,7 @@ function serve {
     ruby -run -e httpd . -p $port
 }
 
+# SVN.
 alias svngrep="find . \( \( ! -name .svn -and ! -name target \) -o -prune \) -type f -print0 | xargs -0 grep --color"
 alias sg='svngrep'
 alias snv='svn'
@@ -85,6 +90,7 @@ alias sl='svn log -l 30 | nicelogs'
 alias sup='svn up'
 alias svp='svn up'
 
+# Git.
 alias gitgrep="find . \( \( ! -name .git -and ! -name target  -and ! -name bin \) -o -prune \) -type f -print0 | xargs -0 grep --color"
 alias gg='gitgrep'
 alias gitst='git st'
@@ -110,6 +116,7 @@ function s() {
   fi
 }
 
+# Maths.
 function b() {
   echo "$@" | bc
 }
@@ -134,10 +141,13 @@ function dectobin() {
   echo "obase=2; $1"|bc
 }
 
+# Time.
 alias utime='date +%s'
 alias etime='date -r'
 
+# Work.
 alias mon='nc localhost 33898'
 
+# Img tools.
 alias im-compress-photo='convert -density 150 -quality 60'
 alias im-smaller-photo='convert -density 150 -quality 60 -resize 50%'
