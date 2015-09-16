@@ -86,9 +86,16 @@ alias svnst='svn st'
 alias ss='svn st'
 alias svd='svn diff -x -b | vim -R -'
 alias svdf='svn diff --diff-cmd vimdiffsvn'
-alias sl='svn log -l 30 | nicelogs'
 alias sup='svn up'
 alias svp='svn up'
+
+function sl {
+  if [ $# -lt 1 ] ; then
+    svn log -l 30 | nicelogs
+  else
+    svn log "$@" | nicelogs
+  fi
+}
 
 # Git.
 alias gitgrep="find . \( \( ! -name .git -and ! -name target  -and ! -name bin \) -o -prune \) -type f -print0 | xargs -0 grep --color"
