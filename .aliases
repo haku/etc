@@ -161,3 +161,6 @@ alias mon='nc localhost 33898'
 # Img tools.
 alias im-compress-photo='convert -density 150 -quality 60'
 alias im-smaller-photo='convert -density 150 -quality 60 -resize 50%'
+
+# Strings.
+function join { local IFS="$1"; shift; echo "$*"; }
