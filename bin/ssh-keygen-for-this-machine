@@ -1,7 +1,13 @@
 #!/bin/bash
 set -eu
 
-file="$HOME/.ssh/id_rsa"
+user="$USER"
+hostname="$(hostname -s)"
+date="$(date +'%Y%m%d')"
+name="$user@$hostname.$date"
+echo "name: $name"
+
+file="$HOME/.ssh/$name"
 file_pub="$file.pub"
 
 if [ -e "$file" ] ; then
@@ -14,11 +20,7 @@ if [ -e "$file_pub" ] ; then
   exit 1
 fi
 
-user="$USER"
-hostname="$(hostname -s)"
-date="$(date +'%Y%m%d')"
-
 ssh-keygen -t rsa \
   -b 8192 \
-  -C "$user@$hostname#$date" \
+  -C "$name" \
   -f "$file"
