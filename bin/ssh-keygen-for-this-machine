@@ -25,13 +25,18 @@ else
   exit 1
 fi
 
+tmp_passwd="$(uuidgen) $(uuidgen)"
+if [ -z "$tmp_passwd" ] ; then echo "Failed to generate tmp passwd." ; exit 1 ; fi
+
 ssh-keygen -t rsa \
   -b 8192 \
+  -N "$tmp_passwd" \
   -C "$name" \
   -f "$file"
 
 openssl pkcs8 -topk8 -v2 des3 \
   -in "$file" \
+  -passin "pass:$tmp_passwd" \
   -out "$file_pkcs8"
 
 $del "$file"
