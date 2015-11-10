@@ -47,8 +47,10 @@ alias tf='tail -f'
 alias tre='tree -F --filelimit 15'
 alias uuid='uuidgen | tr 'A-Z' 'a-z''
 alias uwc='tr -s " " | tr " " "\n" | tr "[:upper:]" "[:lower:]" | sort | uniq -c | sort -gr'
-alias vissh='vi ~/.ssh/config'
 alias wifi='wicd-curses'
+
+#ssh
+alias vissh='vi ~/.ssh/config'
 
 # Apt.
 alias aptu='sudo aptitude update'
