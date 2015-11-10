@@ -1,0 +1,24 @@
+#!/bin/bash
+set -eu
+
+file="$HOME/.ssh/id_rsa"
+file_pub="$file.pub"
+
+if [ -e "$file" ] ; then
+  echo "Exists: $file"
+  exit 1
+fi
+
+if [ -e "$file_pub" ] ; then
+  echo "Exists: $file_pub"
+  exit 1
+fi
+
+user="$USER"
+hostname="$(hostname -s)"
+date="$(date +'%Y%m%d')"
+
+ssh-keygen -t rsa \
+  -b 8192 \
+  -C "$user@$hostname#$date" \
+  -f "$file"
