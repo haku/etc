@@ -19,7 +19,7 @@ del=""
 if command -v "srm" ; then
   del="srm"
 elif command -v "shred" ; then
-  del="shred"
+  del="shred -u"
 else
   echo "No secure delete command found."
   exit 1
