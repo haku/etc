@@ -35,7 +35,7 @@ fi
 
 mkdir -p "$HOME/.vimswp"
 
-if ! [ -e "$HOME/.zsh_history" ] ; then
+if ! [ -e "$HOME/.zsh_history" ] && [ -e "$HOME/.bash_history" ] ; then
   echo "Using bash history as initial zsh history."
   cp -v "$HOME/.bash_history" "$HOME/.zsh_history"
 fi
