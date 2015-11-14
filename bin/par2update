@@ -5,9 +5,17 @@ require 'filesize'
 
 LEVEL_OF_REDUNDANCY=10
 
-def gen_par(dir, files)
+def gen_par(dir, req_files)
+  files = req_files.select{|f| File.size?("#{dir}/#{f}")}
+
+  zero_files = req_files - files
+  if zero_files.size > 0
+    puts "  WARNING #{zero_files.size} zero bytes files:"
+    puts zero_files.map{|f| "    #{f}"}
+  end
+
   puts "  protecting #{files.size} files ... "
-  Dir.chdir(dir) do
+  res = Dir.chdir(dir) do
     Open3.popen3('par2', 'c', "-r#{LEVEL_OF_REDUNDANCY}", '-q', '--', "#{File.basename(dir)}.par2", *files) do |i, o, e, t|
       while line = o.gets
       end
@@ -17,6 +25,7 @@ def gen_par(dir, files)
     end
   end
   puts "  #{files.size} files protected (#{Filesize.new(par_size(dir)).pretty} of par2)."
+  return res
 end
 
 def ver_par(dir, all_files)
@@ -46,6 +55,14 @@ def ver_par(dir, all_files)
   puts "  #{prot_files.size} files verified (#{Filesize.new(par_size(dir)).pretty} of par2)."
 
   new_files = all_files - prot_files
+
+  zero_files = new_files.reject{|f| File.size?("#{dir}/#{f}")}
+  if zero_files.size > 0
+    puts "  WARNING #{zero_files.size} zero bytes files:"
+    puts zero_files.map{|f| "    #{f}"}
+    new_files -= zero_files
+  end
+
   if new_files.size > 0
     puts "  #{new_files.size} unprotected files:"
     new_files.each{|f| puts "    #{f}"}
