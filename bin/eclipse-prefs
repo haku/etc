@@ -13,12 +13,13 @@ org.eclipse.ui.editors.prefs
 org.eclipse.ui.prefs
 org.eclipse.wst.css.ui.prefs
 org.eclipse.wst.html.ui.prefs
-org.eclipse.wst.xml.ui.prefs 
+org.eclipse.wst.xml.ui.prefs
 org.eclipse.wst.jsdt.ui.prefs
 org.epic.perleditor.prefs
+org.scala-ide.sdt.core.prefs
 "
 settingsdir="./.metadata/.plugins/org.eclipse.core.runtime/.settings"
-outfile="eclipse-ui-prefs.tar.gz"
+outfile="eclipse-ui-prefs.$(date +%Y-%m-%d).tar.gz"
 
 if ! [ -d "./.metadata" ] ; then
   echo "Not an Eclipse workspace."
