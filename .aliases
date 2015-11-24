@@ -91,7 +91,7 @@ alias svdf='svn diff --diff-cmd vimdiffsvn'
 alias sup='svn up'
 alias svp='svn up'
 
-function sl {
+function svn-lg {
   if [ $# -lt 1 ] ; then
     svn log -l 30 | nicelogs
   else
@@ -113,6 +113,9 @@ function s() {
       svn status
     elif [ "$1" = "edit" ] ; then
       $EDITOR $(svn status | awk '$1 ~ /^M$/ {print $2}')
+    elif [ "$1" = "lg" ] ; then
+      shift
+      svn-lg "$@"
     else
       svn "$@"
     fi
@@ -127,6 +130,7 @@ function s() {
   fi
 }
 alias se='s edit'
+alias sl='s lg'
 
 # Maths.
 function b() {
