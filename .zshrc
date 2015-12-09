@@ -95,7 +95,7 @@ if [ -f "/etc/cosmos-info" ] ; then
   fi
 fi
 
-export PS1="$(print "%{\e[0;33m%}%n%{\e[0;34m%}@%{\e[0;33m%}%m%{\e[0m%}:%{\e[0;34m%}%~%{\e[0m%} %{$host_info_colour%}$host_info%{\e[0m%}")
+export PS1="$(print "%{\e[0;33m%}%n%{\e[0;34m%}@%{\e[0;33m%}%m%{\e[0m%}:%{\e[1;34m%}%~%{\e[0m%} %{$host_info_colour%}$host_info%{\e[0m%}")
 $ "
 export PS2="$(print '%{\e[0;34m%}>%{\e[0m%} ')"
 export RPS1=$'$(vcs_info_wrapper)'
