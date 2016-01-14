@@ -10,7 +10,7 @@
     <equal>org.eclipse.eclipse</equal>
     <equal>org.eclipse.platform.ide</equal>
   </appdef>
-  
+
   <item>
     <name>Real PC home and end</name>
     <appendix>Only in Eclipse, Firefox, TextEditor</appendix>
@@ -28,11 +28,23 @@
     <autogen>--KeyToKey-- KeyCode::HOME, KeyCode::A, ModifierFlag::CONTROL_L</autogen>
     <autogen>--KeyToKey-- KeyCode::END, KeyCode::E, ModifierFlag::CONTROL_L</autogen>
   </item>
- 
+
   <item>
     <name>Menu to option R</name>
     <identifier>private.menu_to_option_r</identifier>
     <autogen>--KeyToKey-- KeyCode::PC_APPLICATION, KeyCode::OPTION_R</autogen>
-  </item> 
+  </item>
+
+  <item>
+    <name>Cmd+D to Cmd+L</name>
+    <appendix>Only in Chrome</appendix>
+    <identifier>private.cmd_d_to_cmd_l</identifier>
+    <only>GOOGLE_CHROME</only>
+    <autogen>
+      __KeyToKey__
+      KeyCode::D, ModifierFlag::COMMAND_L,
+      KeyCode::L, ModifierFlag::COMMAND_L
+    </autogen>
+  </item>
 
 </root>

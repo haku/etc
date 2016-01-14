@@ -29,8 +29,8 @@ link ".screenrc"
 link ".profile"
 
 if [ "$(uname)" = "Darwin" ] ; then
-  mkdir -p "$HOME/Library/Application Support/KeyRemap4MacBook"
-  link "Library/Application Support/KeyRemap4MacBook/private.xml"
+  mkdir -p "$HOME/Library/Application Support/Karabiner"
+  link "Library/Application Support/Karabiner/private.xml"
 fi
 
 mkdir -p "$HOME/.vimswp"
