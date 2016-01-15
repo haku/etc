@@ -132,6 +132,7 @@ function s() {
 alias se='s edit'
 alias sl='s lg'
 alias sd='s diff | vim -R -'
+alias sc='s commit'
 
 # Maths.
 function b() {
