@@ -1,0 +1,16 @@
+#!/bin/bash
+set -eu
+
+while read file ; do
+  echo "$file" >&2
+  tmp="$(mktemp /tmpfs/loudness.XXXXXXXXXX.wav)"
+  ffmpeg -y \
+    -nostats -loglevel 0 \
+    -xerror -nostdin \
+    -i "$file" "$tmp"
+  l="$(r128gain --traditional "$tmp" 2>&1 \
+    | grep "$(basename "$tmp")" \
+    | sed "s/^ *$(basename "$tmp") (1\/1): *//")"
+  rm "$tmp"
+  echo "$l $(basename -- "$file")"
+done < <(find . -type f -name '*.mp3')
