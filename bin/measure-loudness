@@ -1,6 +1,8 @@
 #!/bin/bash
 set -eu
 
+# r128gain from http://r128gain.sourceforge.net
+
 while read file ; do
   echo "$file" >&2
   tmp="$(mktemp /tmpfs/loudness.XXXXXXXXXX.wav)"
