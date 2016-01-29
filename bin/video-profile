@@ -3,7 +3,11 @@ set -eu
 
 for in in "$@" ; do
   profile=$(mediainfo --Inform="Video;%Format_Profile%" "$in")
-  bitrate=$(mediainfo --Inform="Video;%BitRate/String%" "$in")
+  bitrate=$(mediainfo --Inform="General;%OverallBitRate/String%" "$in")
+  #bitrate=$(mediainfo --Inform="Video;%BitRate/String%" "$in")
+  #if [ -z "$bitrate" ] ; then
+  #  bitrate=$(mediainfo --Inform="Video;%BitRate_Nominal/String%" "$in")
+  #fi
   width=$(mediainfo --Inform="Video;%Width%" "$in")
   height=$(mediainfo --Inform="Video;%Height%" "$in")
   fps=$(mediainfo --Inform="Video;%FrameRate%" "$in")
