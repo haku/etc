@@ -10,7 +10,9 @@ while read file ; do
     -nostats -loglevel 0 \
     -xerror -nostdin \
     -i "$file" "$tmp"
-  l="$(r128gain --traditional "$tmp" 2>&1 \
+  l="$(r128gain \
+    --traditional --progress=off\
+    "$tmp" 2>&1 \
     | grep "$(basename "$tmp")" \
     | sed "s/^ *$(basename "$tmp") (1\/1): *//")"
   rm "$tmp"
