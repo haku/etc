@@ -1,20 +1,34 @@
 #!/bin/bash
-set -eu
+set -u
 
 # r128gain from http://r128gain.sourceforge.net
 
+tmp="$(mktemp /tmpfs/loudness.XXXXXXXXXX.wav)"
+
 while read file ; do
   echo "$file" >&2
-  tmp="$(mktemp /tmpfs/loudness.XXXXXXXXXX.wav)"
+
   ffmpeg -y \
     -nostats -loglevel 0 \
     -xerror -nostdin \
     -i "$file" "$tmp"
+  res="$?"
+  if ! [ "$res" = "0" ] ; then
+    echo "ffmpeg exit $res : $file"
+    continue
+  fi
+
   l="$(r128gain \
     --traditional --progress=off\
     "$tmp" 2>&1 \
     | grep "$(basename "$tmp")" \
     | sed "s/^ *$(basename "$tmp") (1\/1): *//")"
+  res="$?"
+  if ! [ "$res" = "0" ] ; then
+    echo "r128gain exit $res : $file"
+    continue
+  fi
+
   rm "$tmp"
   echo "$l $(basename -- "$file")"
 done < <(find . -type f -name '*.mp3')
