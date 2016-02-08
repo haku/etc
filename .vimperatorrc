@@ -1,0 +1,21 @@
+" reload this file with:
+" :source ~/.vimperatorrc
+
+" baibai addressbar.
+:set gui=nonavigation
+
+" pritty.
+:colorscheme solarized_dark
+
+" ; is :.
+nnoremap ; :
+
+" remap Backspace to Shift-H (go back one page) in normal mode.
+nnoremap <BS> H
+
+" Ctrl-a is select all in textboxes.
+inoremap <C-a> <C-Home><C-S-End>
+
+" scroll faster.
+:noremap j 5j
+:noremap k 5k
