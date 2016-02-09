@@ -27,6 +27,8 @@ link ".zlogout"
 link ".vimrc"
 link ".screenrc"
 link ".profile"
+
+mkdir -p "$HOME/.vimperator"
 link ".vimperatorrc"
 link ".vimperator/colors"
 
