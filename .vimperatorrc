@@ -2,10 +2,10 @@
 " :source ~/.vimperatorrc
 
 " baibai addressbar.
-:set gui=nonavigation
+set gui=nonavigation
 
 " pritty.
-:colorscheme solarized_dark
+colorscheme solarized_dark
 
 " ; is :.
 nnoremap ; :
@@ -17,5 +17,7 @@ nnoremap <BS> H
 inoremap <C-a> <C-Home><C-S-End>
 
 " scroll faster.
-:noremap j 5j
-:noremap k 5k
+noremap j 5j
+noremap k 5k
+
+noremap <C-d> :stop<Return>
