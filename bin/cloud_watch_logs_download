@@ -1,0 +1,33 @@
+#!/bin/bash
+set -eu
+
+# usage:
+# cloud_watch_logs "log-group" "log-stream"
+
+log_group="$1"
+log_stream="$2"
+
+token=""
+
+while true ; do
+  args=""
+  if ! [ -z "${token:-}" ] ; then
+    args="--next-token $token"
+  fi
+
+  echo "Fetching token=${token:-} ..."
+  log="$(aws logs get-log-events --output text --log-group-name "$log_group" --log-stream-name "$log_stream" $args)"
+
+  header="$(echo "$log" | head -n 1)"
+  new_token="$(echo "$header" | awk -F' ' '{print $1}')"
+
+  if [ "$token" = "$new_token" ] ; then
+    echo "Stopping on token=$new_token"
+    break
+  fi
+
+  name="$(echo "$log_group-$log_stream-$header" | sed -e 's/[^A-Za-z0-9._-]/_/g')"
+  echo "$log" > "./$name"
+
+  token="$new_token"
+done
