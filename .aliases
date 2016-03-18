@@ -85,7 +85,6 @@ alias svngrep="find . \( \( ! -name .svn -and ! -name target \) -o -prune \) -ty
 alias sg='svngrep'
 alias snv='svn'
 alias svnst='svn st'
-alias ss='svn st'
 alias svd='svn diff -x -b | vim -R -'
 alias svdf='svn diff --diff-cmd vimdiffsvn'
 alias sup='svn up'
