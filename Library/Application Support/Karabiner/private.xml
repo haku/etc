@@ -47,4 +47,16 @@
     </autogen>
   </item>
 
+  <item>
+    <name>F5 to Cmd+R</name>
+    <appendix>Only in Chrome</appendix>
+    <identifier>private.f5_to_cmd_r</identifier>
+    <only>GOOGLE_CHROME</only>
+    <autogen>
+      __KeyToKey__
+      KeyCode::F5,
+      KeyCode::R, ModifierFlag::COMMAND_L
+    </autogen>
+  </item>
+
 </root>
