@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+# http://stackoverflow.com/questions/21108109/how-do-i-find-out-all-the-dependencies-of-a-gem
+
+require 'json'
+
+class GemRequirements
+  def initialize(name, version = nil)
+    @gem = Gem::Dependency.new(name, version)
+  end
+
+  def dependency_tree
+    @dependency_tree ||= {}.merge(get_dependency(@gem))
+  end
+
+  private
+
+  def get_dependency(gem_dependency)
+    spec = gem_dependency.matching_specs.first
+    dep_key = "#{gem_dependency.name} #{spec.version}"
+    hash = {}
+    spec.runtime_dependencies.each do |spec_dependency|
+      spec_dependency_spec = spec_dependency.matching_specs.first
+      spec_dep_key = "#{spec_dependency.name} #{spec_dependency_spec.version}"
+      hash[spec_dep_key] = get_dependency(spec_dependency)
+    end
+    hash.size > 0 ? hash : nil
+  end
+end
+
+
+
+r = GemRequirements.new ARGV.shift, ARGV.shift
+t = r.dependency_tree
+
+puts JSON.pretty_generate t
