@@ -148,5 +148,7 @@ endif
 hi Normal ctermbg=none
 
 " file types
+" http://vimdoc.sourceforge.net/htmldoc/autocmd.html
 autocmd BufNewFile,BufRead *.json set filetype=javascript
 autocmd BufNewFile,BufRead Gemfile set filetype=ruby
+autocmd BufNewFile,BufRead */httpd*/*.conf set filetype=apachestyle
