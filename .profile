@@ -31,9 +31,10 @@ fi
 export EDITOR=vim
 
 # https://wiki.archlinux.org/index.php/GNOME_Keyring
-[ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK=$(netstat -xl | grep -o "/run/user/$UID/keyring-.*/ssh$")
-[ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK=$(netstat -xl | grep -o '/tmp/keyring-.*/ssh$')
-[ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK=$(netstat -xl | grep -o '/tmp/ssh-.*/agent.*$')
+sockets="$(netstat -xl 2>&1 || echo)"
+[ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK=$(echo "$sockets" | grep -o "/run/user/$UID/keyring-.*/ssh$")
+[ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK=$(echo "$sockets" | grep -o '/tmp/keyring-.*/ssh$')
+[ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK=$(echo "$sockets" | grep -o '/tmp/ssh-.*/agent.*$')
 [ -z "$SSH_AUTH_SOCK" ] || export SSH_AUTH_SOCK
 
 if [ "$ZSH_NAME" = "zsh" ] && [[ -s "$HOME/.rvm/scripts/rvm" ]] ; then
