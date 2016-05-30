@@ -1,2 +1,17 @@
-#!/bin/sh
-exec $EDITOR $(git status --short | awk '$1 ~ /^M$/ {print $2}')
+#!/bin/bash
+set -eu
+
+files=()
+while read file ; do
+  mime="$(file -bi "$file")"
+  if [[ "$mime" == 'text/'* ]] ; then
+    files+=("$file")
+  fi
+done < <(git status --short | awk '$1 ~ /^(M|A|\?\?)$/ {print $2}')
+
+if [ ${#files[@]} -lt 1 ] ; then
+  echo "No modified files."
+  exit
+fi
+
+exec $EDITOR "${files[@]}"
