@@ -1,0 +1,9 @@
+#!/bin/bash
+set -eu
+
+for IN in "$@" ; do
+  echo "f=$IN"
+  OUT="$(basename "${IN%%.aac}").m4a"
+  echo "m4a=$OUT"
+  MP4Box -add "$IN" "$OUT"
+done
