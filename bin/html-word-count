@@ -2,6 +2,16 @@
 require 'nokogiri'
 
 RJUST = 8
+WPM = 300
+
+def fmt_secs(secs)
+  [[60, :s], [60, :m], [24, :h], [10000, :d]].map do |count, name|
+    if secs > 0
+      secs, n = secs.divmod(count)
+      "#{n.to_i}#{name}"
+    end
+  end.compact.reverse[0..1].join(' ')
+end
 
 total = 0
 for f in ARGV
@@ -11,4 +21,6 @@ for f in ARGV
   puts "#{wc.to_s.rjust(RJUST)} #{f}"
   total += wc
 end
-puts "#{total.to_s.rjust(RJUST)} total"
+
+ttr = fmt_secs(total / WPM * 60)
+puts "#{total.to_s.rjust(RJUST)} total (#{ttr} at #{WPM} WPM)"
