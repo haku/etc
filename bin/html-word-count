@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+require 'nokogiri'
+
+RJUST = 8
+
+total = 0
+for f in ARGV
+  next if !File.file?(f)
+  p = Nokogiri::HTML(IO.read(f))
+  wc = p.css('body').text.split.size
+  puts "#{wc.to_s.rjust(RJUST)} #{f}"
+  total += wc
+end
+puts "#{total.to_s.rjust(RJUST)} total"
