@@ -1,0 +1,10 @@
+#!/bin/bash
+set -eu -o pipefail
+
+# https://askubuntu.com/questions/43581/how-to-list-packages-from-a-ppa-source-in-command-line
+# https://askubuntu.com/a/43583/561013
+
+apt-cache policy $(dpkg -l | awk 'NR >= 6 { print $2 }') |
+  awk '/^[^ ]/    { split($1, a, ":"); pkg = a[1] }
+    nextline == 1 { nextline = 0; printf("%-40s %-50s %s\n", pkg, $2, $3) }
+    /\*\*\*/      { nextline = 1 }'
