@@ -11,7 +11,4 @@ file="$(ls -1 "$HOME/.ssh/$user@$hostname."*".pub")"
 if ! [ -e "$file" ] ; then echo "Public key not found: $file" ; exit 1 ; fi
 echo "Public key: $file"
 
-TGT="$1"
-echo "Target: ${TGT}"
-
-cat "$file" | ssh "${TGT}" 'cd ; echo -n "configuring ssh keys... " && mkdir -p .ssh && chmod 700 .ssh && touch .ssh/authorized_keys && cat - >> .ssh/authorized_keys && chmod 600 .ssh/authorized_keys && echo "done."'
+cat "$file" | ssh "$@" 'cd ; echo -n "configuring ssh keys... " && mkdir -p .ssh && chmod 700 .ssh && touch .ssh/authorized_keys && cat - >> .ssh/authorized_keys && chmod 600 .ssh/authorized_keys && echo "done."'
