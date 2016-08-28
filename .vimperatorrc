@@ -21,3 +21,6 @@ noremap j 5j
 noremap k 5k
 
 noremap <C-d> :stop<Return>
+
+ignorekeys add mail\\.google\\.com
+ignorekeys add docs\\.google\\.com
