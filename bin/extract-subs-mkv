@@ -1,0 +1,15 @@
+#!/bin/bash
+set -eu -o pipefail
+shopt -s failglob
+
+for f in "$@" ; do
+  while read id format ; do
+    if [ -z "$id" ] ; then continue ; fi
+
+    mkvid="$(( $id - 1 ))"
+    out="$(basename "$f").$mkvid.$format"
+    echo "$out"
+    mkvextract tracks "$f" "$mkvid:$out"
+
+  done < <(mediainfo --Inform="Text;%ID% %Format%\n" "$f")
+done
