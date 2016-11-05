@@ -10,7 +10,12 @@ path_append() {
     PATH="$PATH:$1"
   fi
 }
-path_prepend() {
+path_prepend_if_absent() {
+  if ! path_has "$1" ; then
+    PATH="$1:$PATH"
+  fi
+}
+path_prepend_force() {
   if path_has "$1" ; then
     PATH="${PATH//":$1"/}"
     PATH="${PATH//"$1:"/}"
@@ -22,10 +27,10 @@ path_tidy() {
 }
 
 if [ -d "$HOME/etc/bin" ] ; then
-  path_prepend "$HOME/etc/bin"
+  path_prepend_if_absent "$HOME/etc/bin"
 fi
 if [ -d "$HOME/bin" ] ; then
-  path_prepend "$HOME/bin"
+  path_prepend_if_absent "$HOME/bin"
 fi
 
 export EDITOR=vim
@@ -38,7 +43,3 @@ fi
 [ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK=$(echo "$sockets" | grep -o '/tmp/keyring-.*/ssh$')
 [ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK=$(echo "$sockets" | grep -o '/tmp/ssh-.*/agent.*$')
 [ -z "$SSH_AUTH_SOCK" ] || export SSH_AUTH_SOCK
-
-if [ "$ZSH_NAME" = "zsh" ] && [[ -s "$HOME/.rvm/scripts/rvm" ]] ; then
-  . "$HOME/.rvm/scripts/rvm"
-fi
