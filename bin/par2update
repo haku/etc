@@ -5,6 +5,11 @@ require 'filesize'
 
 LEVEL_OF_REDUNDANCY=10
 
+IGNORE_FILES = [
+  "._.DS_Store",
+  ".DS_Store"
+]
+
 def gen_par(dir, req_files)
   files = req_files.select{|f| File.size?("#{dir}/#{f}")}
 
@@ -94,7 +99,11 @@ def check_and_update_par(base_dir)
 
     files = Dir.entries(d)
     par2_files = files.select{|e| e.end_with?('.par2')}
-    data_files = (files - par2_files).select{|e| File.file?("#{d}/#{e}")}
+    data_files = (files - par2_files).reject do |e|
+      IGNORE_FILES.include?(e)
+    end.select do |e|
+      File.file?("#{d}/#{e}")
+    end
 
     if data_files.size > 0
       puts d.gsub(base_dir, './')
