@@ -8,8 +8,14 @@ sudo -k aptitude install \
   libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev \
   libxcb-xfixes0-dev pkg-config texi2html zlib1g-dev unzip nasm
 
-srcd="$HOME/development/ffmpeg_src"
+srcd="$HOME/development/ffmpeg_src/$(date +'%Y%m%d-%H%M%S')"
 bldd="$HOME/development/ffmpeg_bld"
+
+if [ -e "$srcd" ] ; then
+  echo "Already exists: $srcd"
+  exit 1
+fi
+
 mkdir -pv "$srcd"
 mkdir -pv "$bldd"
 
