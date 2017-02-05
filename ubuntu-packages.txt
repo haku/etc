@@ -157,3 +157,5 @@ dvdbackup
 libfaac0
 paris-traceroute
 pandoc
+fonts-lmodern
+libxml2-utils
