@@ -8,8 +8,15 @@ if ! [ -e "$lf_rc" ] ; then
 fi
 source "$lf_rc"
 
+if [[ "$1" == var=* ]] ; then
+  lf_var="${1#var=}"
+  shift
+fi
+
 lf_cmd="$1"; shift
-lf_var="$(basename "$lf_cmd")"
+if [ -z "${lf_var:-}" ] ; then
+  lf_var="$(basename "$lf_cmd")"
+fi
 lf_result=""
 lf_node="$(hostname -s)"
 
