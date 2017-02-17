@@ -1,0 +1,31 @@
+#!/bin/bash
+set -eu
+
+lf_rc="$HOME/.lookfarrc"
+if ! [ -e "$lf_rc" ] ; then
+  echo "missing: $lf_rc"
+  exit 1
+fi
+source "$lf_rc"
+
+lf_cmd="$1"; shift
+lf_var="$(basename "$lf_cmd")"
+lf_result=""
+lf_node="$(hostname -s)"
+
+lf_send_result () {
+  echo -n "$(date +'%Y%m%d-%H%M%S') Sending '$lf_var=$lf_result' Lookfar... "
+  curl --silent \
+    -u "$LF_USER" \
+    -d "$lf_var=$lf_result" \
+    "https://$LF_HOST/update/$lf_node"
+  echo "done."
+}
+
+trap "exit" INT TERM
+trap "lf_send_result" EXIT
+
+set +e
+$lf_cmd "$@"
+lf_result="$?"
+exit $lf_result
