@@ -21,7 +21,7 @@ lf_result=""
 lf_node="$(hostname -s)"
 
 lf_send_result () {
-  echo -n "$(date +'%Y%m%d-%H%M%S') Sending '$lf_var=$lf_result' Lookfar... "
+  #echo -n "$(date +'%Y%m%d-%H%M%S') Sending '$lf_var=$lf_result' Lookfar... "
   curl --silent \
     -u "$LF_USER" \
     -d "$lf_var=$lf_result" \
