@@ -24,3 +24,4 @@ noremap <C-d> :stop<Return>
 
 ignorekeys add mail\\.google\\.com
 ignorekeys add docs\\.google\\.com
+ignorekeys add calendar\\.google\\.com
