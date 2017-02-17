@@ -51,6 +51,7 @@ alias wifi='wicd-curses'
 
 #ssh
 alias vissh='vi ~/.ssh/config'
+alias host-fingerprint='ssh-keygen -l -f /etc/ssh/ssh_host_rsa_key.pub'
 
 # Apt.
 alias aptu='sudo aptitude update'
