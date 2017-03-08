@@ -3,7 +3,18 @@ set -eu
 
 # http://manual.calibre-ebook.com/generated/en/ebook-convert.html
 
-kindle="/media/$USER/Kindle/documents"
+if [[ "$0" == */kindlify ]] ; then
+  mode="kindle"
+  device="/media/$USER/Kindle/documents"
+  ext="mobi"
+elif [[ "$0" == */nookify ]] ; then
+  mode="nook"
+  device="/media/$USER/NOOK/My Files/Books"
+  ext="epub"
+else
+  echo "Unknown mode: $0"
+  exit 1
+fi
 
 for input in "$@" ; do
   echo -e "\n == $input =="
@@ -19,13 +30,13 @@ for input in "$@" ; do
 
   echo -e "    => ${args[@]:-}"
 
-  output="$(basename "$input").kindle.mobi"
+  output="$(basename "$input").$mode.$ext"
   echo -e "    => $output\n"
 
-  ebook-convert "$input" "$output" --output-profile kindle "${args[@]:+${args[@]}}"
+  ebook-convert "$input" "$output" --output-profile $mode "${args[@]:+${args[@]}}"
 
-  if [ -e "$kindle" ] ; then
-    dest="$kindle/$output"
+  if [ -e "$device" ] ; then
+    dest="$device/$output"
     if ! [ -e "$dest" ] ; then
       echo -e "\n    => $dest\n"
       cp "$output" "$dest"
