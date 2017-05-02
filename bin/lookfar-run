@@ -1,9 +1,13 @@
 #!/bin/bash
 set -eu
 
+log() {
+  echo $(date +'%Y%m%d-%H%M%S') $@
+}
+
 lf_rc="$HOME/.lookfarrc"
 if ! [ -e "$lf_rc" ] ; then
-  echo "missing: $lf_rc"
+  log "missing: $lf_rc"
   exit 1
 fi
 source "$lf_rc"
@@ -21,12 +25,12 @@ lf_result=""
 lf_node="$(hostname -s)"
 
 lf_send_result () {
-  #echo -n "$(date +'%Y%m%d-%H%M%S') Sending '$lf_var=$lf_result' Lookfar... "
+  #log "$(date +'%Y%m%d-%H%M%S') Sending '$lf_var=$lf_result' Lookfar... "
   curl --silent \
     -u "$LF_USER" \
     -d "$lf_var=$lf_result" \
     "https://$LF_HOST/update/$lf_node"
-  echo "done."
+  log "done."
 }
 
 trap "exit" INT TERM
