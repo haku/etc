@@ -30,7 +30,7 @@ lf_send_result () {
     -u "$LF_USER" \
     -d "$lf_var=$lf_result" \
     "https://$LF_HOST/update/$lf_node"
-  log "done."
+  #log "done."
 }
 
 trap "exit" INT TERM
