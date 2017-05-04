@@ -4,6 +4,14 @@ require 'nokogiri'
 RJUST = 8
 WPM = 300
 
+FLAG_TOTAL_ONLY = !ARGV.delete('-t').nil?
+
+leftover_arg = ARGV.find{|a| a.start_with?('-')}
+if leftover_arg
+  puts "Invalid arg: #{leftover_arg}"
+  exit 1
+end
+
 def fmt_secs(secs)
   [[60, :s], [60, :m], [24, :h], [10000, :d]].map do |count, name|
     if secs > 0
@@ -18,9 +26,13 @@ for f in ARGV
   next if !File.file?(f)
   p = Nokogiri::HTML(IO.read(f))
   wc = p.css('body').text.split.size
-  puts "#{wc.to_s.rjust(RJUST)} #{f}"
+  puts "#{wc.to_s.rjust(RJUST)} #{f}" unless FLAG_TOTAL_ONLY
   total += wc
 end
 
 ttr = fmt_secs(total / WPM * 60)
-puts "#{total.to_s.rjust(RJUST)} total (#{ttr} at #{WPM} WPM)"
+if FLAG_TOTAL_ONLY
+  puts total.to_s
+else
+  puts "#{total.to_s.rjust(RJUST)} total (#{ttr} at #{WPM} WPM)"
+end
