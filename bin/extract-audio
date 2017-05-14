@@ -9,7 +9,7 @@ for IN in "$@" ; do
     EXT="mp3"
   elif [[ "$CODEC" == *aac* ]] ; then
     EXT="aac"
-    echo "INFO: convert to m4a with: MP4Box --add in.aac -new out.m4a"
+    echo "INFO: convert to m4a with: MP4Box -add in.aac -new out.m4a"
   else
     echo "Unknown codec: $CODEC"
     exit 1
