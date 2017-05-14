@@ -4,10 +4,10 @@ set -eu
 irssi() {
   F="$HOME/.irssi/activity_file"
   if [ -s "$F" ] ; then
-    echo -n '#[fg=blue]{#[fg=default] '
-    for I in `cat $F`; do
-      W=`echo $I | cut -d ',' -f 1`
-      S=`echo $I | cut -d ',' -f 2`
+    #echo -n '#[fg=blue]{#[fg=default] '
+    for I in $(cat $F); do
+      W="$(echo "$I" | cut -d ',' -f 1)$(echo "${I/\#/}" | cut -d ',' -f 3 | cut -c 1-2)"
+      S="$(echo "$I" | cut -d ',' -f 2)"
       if [ "$S" != "0" ] ; then
         if [ "$S" = "1" ] ; then
           continue
@@ -25,8 +25,8 @@ irssi() {
         fi
         echo -n "${A}${W}${B}#[fg=default] "
       fi
-    done 
-    echo -n '#[fg=blue]}#[fg=default] '
+    done
+    #echo -n '#[fg=blue]}#[fg=default] '
   fi
 }
 
@@ -39,7 +39,7 @@ network() {
   else
     ipaddr="$(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p' | tr '\n' ',')"
     ipaddr="${ipaddr%,}"
-    hostname="$(hostname)"
+    hostname="$(hostname -s)"
     echo -n "#[fg=green]$hostname/$ipaddr#[fg=default] "
   fi
 }
