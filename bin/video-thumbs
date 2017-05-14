@@ -22,6 +22,7 @@ echo "ffmpeg=$ff"
 #vf="thumbnail=200"          # https://www.ffmpeg.org/ffmpeg-filters.html#thumbnail
 
 vf="select=gt(scene\,0.2),thumbnail=10"
+#vf="thumbnail=100"
 
 for a in "$@" ; do
   b="${a%.*}.jpg"
