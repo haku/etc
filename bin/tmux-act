@@ -2,32 +2,37 @@
 set -eu
 
 irssi() {
-  F="$HOME/.irssi/activity_file"
-  if [ -s "$F" ] ; then
-    #echo -n '#[fg=blue]{#[fg=default] '
-    for I in $(cat $F); do
-      W="$(echo "$I" | cut -d ',' -f 1)$(echo "${I/\#/}" | cut -d ',' -f 3 | cut -c 1-2)"
-      S="$(echo "$I" | cut -d ',' -f 2)"
-      if [ "$S" != "0" ] ; then
-        if [ "$S" = "1" ] ; then
-          continue
-          #A='#[fg=colour8]'
-          #B=''
-        elif [ "$S" = "2" ] ; then
-          A='#[fg=yellow]'
-          B=''
-        elif [ "$S" = "3" ] ; then
-          A='#[fg=white]>'
-          B='<'
-        else
-          A=''
-          B="@${S}"
-        fi
-        echo -n "${A}${W}${B}#[fg=default] "
-      fi
-    done
-    #echo -n '#[fg=blue]}#[fg=default] '
+  f="$HOME/.irssi/activity_file"
+  if ! [ -s "$f" ] ; then
+    f="$HOME/.irssi/remote/activity_file"
+    if ! [ -s "$f" ] ; then
+      return 0
+    fi
   fi
+
+  #echo -n '#[fg=blue]{#[fg=default] '
+  for I in $(cat $f); do
+    W="$(echo "$I" | cut -d ',' -f 1)$(echo "${I/\#/}" | cut -d ',' -f 3 | cut -c 1-2)"
+    S="$(echo "$I" | cut -d ',' -f 2)"
+    if [ "$S" != "0" ] ; then
+      if [ "$S" = "1" ] ; then
+        continue
+        #A='#[fg=colour8]'
+        #B=''
+      elif [ "$S" = "2" ] ; then
+        A='#[fg=yellow]'
+        B=''
+      elif [ "$S" = "3" ] ; then
+        A='#[fg=white]>'
+        B='<'
+      else
+        A=''
+        B="@${S}"
+      fi
+      echo -n "${A}${W}${B}#[fg=default] "
+    fi
+  done
+  #echo -n '#[fg=blue]}#[fg=default] '
 }
 
 network() {
