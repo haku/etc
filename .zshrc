@@ -89,13 +89,13 @@ host_info=""
 host_info_colour="\e[0;37m"
 if [ -f "/etc/cosmos-info" ] ; then
   . /etc/cosmos-info
-  host_info="$COSMOS_COMPONENT $COSMOS_ENV"
+  host_info=" $COSMOS_COMPONENT $COSMOS_ENV"
   if [ "$COSMOS_ENV" != "int" ] && [ "$COSMOS_ENV" != "test" ] ; then
     host_info_colour="\e[0;41;37m"
   fi
 fi
 
-export PS1="$(print "%{\e[0;33m%}%n%{\e[0;34m%}@%{\e[0;33m%}%m%{\e[0m%}:%{\e[1;34m%}%~%{\e[0m%} %{$host_info_colour%}$host_info%{\e[0m%}")
+export PS1="$(print "%{\e[0;33m%}%n%{\e[0;34m%}@%{\e[0;33m%}%m%{\e[0m%}:%{\e[1;34m%}%~%{\e[0m%}%{$host_info_colour%}$host_info%{\e[0m%}")
 $ "
 export PS2="$(print '%{\e[0;34m%}>%{\e[0m%} ')"
 export RPS1=$'$(vcs_info_wrapper)'
