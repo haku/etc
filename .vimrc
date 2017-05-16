@@ -135,7 +135,7 @@ else
 endif
 
 " appearance
-:syntax on
+syntax on
 set background=dark
 colorscheme slate
 
