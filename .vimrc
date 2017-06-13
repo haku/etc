@@ -32,7 +32,8 @@ set tabstop=2
 set shiftwidth=2
 set expandtab
 
-" searching
+" searching http://vim.wikia.com/wiki/Searching
+set ignorecase
 set smartcase
 "set hlsearch
 
