@@ -161,7 +161,13 @@ function dectobin() {
 
 # Time.
 alias utime='date +%s'
-alias etime='date -r'
+function etime() {
+  if [ "$(uname -s)" = "Linux" ] ; then
+    date -d "@${1}"
+  else
+    date -r "${1}"
+  fi
+}
 
 # Work.
 alias mon='nc localhost 33898'
