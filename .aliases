@@ -20,7 +20,7 @@ function adv_ls() {
 alias :q='exit'
 alias c='clear'
 alias dc='cd'
-alias gh='cat ~/.zsh_history | grep'
+alias gh='cat ~/.zsh_history | grep --text'
 alias psg='ps aux | grep'
 alias pstree='ps -AHwef'
 
