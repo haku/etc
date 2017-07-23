@@ -1,0 +1,22 @@
+#!/bin/bash
+set -eu
+
+# TODO more file extensions.
+
+files_checked_count=0
+files_broken_count=0
+print_report () {
+  echo -e "\n\nChecked $files_checked_count files."
+  echo -e "Found $files_broken_count broken files."
+}
+trap "exit" INT TERM
+trap "print_report" EXIT
+
+while read file ; do
+  if ! msg="$(ffmpeg -v error -xerror -i "$file" -f null - </dev/null 2>&1)" ; then
+    echo "BROKEN: $file"
+    echo "$msg"
+    (( files_broken_count += 1 ))
+  fi
+  (( files_checked_count += 1 ))
+done < <(find . -type f -name '*.mp4')
