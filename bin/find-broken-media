@@ -1,8 +1,6 @@
 #!/bin/bash
 set -eu
 
-# TODO more file extensions.
-
 files_checked_count=0
 files_broken_count=0
 print_report () {
@@ -19,4 +17,27 @@ while read file ; do
     (( files_broken_count += 1 ))
   fi
   (( files_checked_count += 1 ))
-done < <(find . -type f -name '*.mp4')
+  echo -n "Checked $files_checked_count files..."
+done < <(find . -type f '(' \
+-name '*.3gp' -o \
+-name '*.aac' -o \
+-name '*.ac3' -o \
+-name '*.avi' -o \
+-name '*.flac' -o \
+-name '*.flv' -o \
+-name '*.m4a' -o \
+-name '*.m4v' -o \
+-name '*.mkv' -o \
+-name '*.mov' -o \
+-name '*.mp3' -o \
+-name '*.mp4' -o \
+-name '*.mpeg' -o \
+-name '*.mpg' -o \
+-name '*.oga' -o \
+-name '*.ogg' -o \
+-name '*.ogm' -o \
+-name '*.ogv' -o \
+-name '*.wav' -o \
+-name '*.webm' -o \
+-name '*.wma' -o \
+-name '*.wmv' ')')
