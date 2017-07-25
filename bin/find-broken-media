@@ -12,8 +12,7 @@ trap "print_report" EXIT
 
 while read file ; do
   if ! msg="$(ffmpeg -v error -xerror -i "$file" -f null - </dev/null 2>&1)" ; then
-    echo "BROKEN: $file"
-    echo "$msg"
+    echo -e "\nBROKEN: $file\n$msg\n"
     (( files_broken_count += 1 ))
   fi
   (( files_checked_count += 1 ))
