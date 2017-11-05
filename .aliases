@@ -48,6 +48,7 @@ alias tre='tree -F --filelimit 15'
 alias uuid='uuidgen | tr 'A-Z' 'a-z''
 alias uwc='tr -s " " | tr " " "\n" | tr "[:upper:]" "[:lower:]" | sort | uniq -c | sort -gr'
 alias wifi='wicd-curses'
+alias ta='tmux a'
 
 #ssh
 alias vissh='vi ~/.ssh/config'
