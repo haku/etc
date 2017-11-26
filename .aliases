@@ -28,6 +28,7 @@ alias pstree='ps -AHwef'
 alias -- -='vim -R -'
 alias v-='vim -'
 alias v='vim'
+alias vd='vimdiff'
 alias vis='vim -O'
 alias vit='vim -p'
 
@@ -65,7 +66,7 @@ alias apti='sudo aptitude install --without-recommends'
 alias fr='file-roller'
 alias gmp='gnome-mplayer'
 alias gnome-disc-util='palimpsest'
-alias go='gnome-open'
+alias op='gnome-open'
 alias poke='gnome-screensaver-command -d'
 alias xc='xclip -selection clip-board'
 
@@ -132,7 +133,7 @@ function s() {
 }
 alias se='s edit'
 alias sl='s lg'
-alias sd='s diff | vim -R -'
+alias sd='s diff'
 alias sc='s commit'
 
 # Maths.
