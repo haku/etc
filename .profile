@@ -33,7 +33,7 @@ if [ -d "$HOME/bin" ] ; then
   path_prepend_if_absent "$HOME/bin"
 fi
 
-export EDITOR=vim
+export EDITOR="vim -p"
 
 # https://wiki.archlinux.org/index.php/GNOME_Keyring
 if ! [ -e "$SSH_AUTH_SOCK" ] ; then
