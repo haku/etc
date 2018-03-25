@@ -7,17 +7,6 @@ ctrl_c() {
   exit 1
 }
 
-ff="${FFMPEG:-}"
-if [ -z "$ff" ] ; then
-  echo "FFMPEG not set." >&2
-  exit 1
-fi
-if ! [ -x "$ff" ] ; then
-  echo "FFMPEG not execable." >&2
-  exit 1
-fi
-echo "ffmpeg=$ff"
-
 #vf="select=gt(scene\,0.5)"  # https://www.ffmpeg.org/ffmpeg-filters.html#select_002c-aselect
 #vf="thumbnail=200"          # https://www.ffmpeg.org/ffmpeg-filters.html#thumbnail
 
@@ -28,7 +17,7 @@ for a in "$@" ; do
   b="${a%.*}.jpg"
   if ! [ -e "$b" ] ; then
     echo "$a --> $b"
-    if ! "$ff" -loglevel error -ss 3 -i "$a" -vf "$vf" -frames:v 1 -vsync vfr "$b"
+    if ! ffmpeg -loglevel error -ss 3 -i "$a" -vf "$vf" -frames:v 1 -vsync vfr "$b"
     then
       echo "Failed: $a" >&2
     fi
