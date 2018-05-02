@@ -6,6 +6,7 @@ set report=0 " report everything
 set wildmenu " menu autocomplete
 set directory=~/.vimswp " .swp files go here
 set term=xterm
+set encoding=utf-8
 
 " tabs
 " navigate: gt and gT
