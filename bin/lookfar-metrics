@@ -17,7 +17,7 @@ lf_data=""
 
 lf_send_data () {
   #log "$(date +'%Y%m%d-%H%M%S') Sending '$lf_var=$lf_data' Lookfar... "
-  echo curl --silent \
+  curl --silent \
     -u "$LF_USER" \
     -d "$lf_data" \
     "https://$LF_HOST/update/$lf_node"
