@@ -33,6 +33,10 @@ uptime() {
   lf_data="$lf_data&uptime=$(cut -d ' ' -f 1 /proc/uptime)"
 }
 
+ram() {
+  lf_data="${lf_data}&mem_available=$(awk '{a[$1]=$2}END{print a["MemAvailable:"]}' /proc/meminfo)kB"
+}
+
 disc_space() {
   local roots=(
     /
@@ -96,7 +100,7 @@ ups() {
   lf_data="${lf_data}&ups_bat=${ups_bat}%25"
 }
 
-rpi() {
+rpi_temp() {
   local w="/usr/bin/vcgencmd"
   if ! [ -x "$w" ] ; then
     return
@@ -107,8 +111,9 @@ rpi() {
 }
 
 uptime
+ram
 disc_space
 hdd_temp
 raid
 ups
-rpi
+rpi_temp
