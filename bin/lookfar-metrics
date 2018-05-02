@@ -1,0 +1,114 @@
+#!/bin/bash
+set -eu
+
+log() {
+  echo $(date +'%Y%m%d-%H%M%S') $@
+}
+
+lf_rc="$HOME/.lookfarrc"
+if ! [ -e "$lf_rc" ] ; then
+  log "missing: $lf_rc"
+  exit 1
+fi
+source "$lf_rc"
+
+lf_node="$(hostname -s)"
+lf_data=""
+
+lf_send_data () {
+  #log "$(date +'%Y%m%d-%H%M%S') Sending '$lf_var=$lf_data' Lookfar... "
+  echo curl --silent \
+    -u "$LF_USER" \
+    -d "$lf_data" \
+    "https://$LF_HOST/update/$lf_node"
+  #log "done."
+}
+
+trap "exit" INT TERM
+trap "lf_send_data" EXIT
+
+set +e
+
+uptime() {
+  lf_data="$lf_data&uptime=$(cut -d ' ' -f 1 /proc/uptime)"
+}
+
+disc_space() {
+  local roots=(
+    /
+    /boot
+    /var
+    /home
+    /media/yama
+    /media/yama/extra
+  )
+  for root in ${roots[@]}; do
+    if ! [ -e "$root" ] ; then
+      continue
+    fi
+
+    if [ "$root" != "/" ] && [ "$(stat --format "%m" "$root")" == "/" ] ; then
+      continue
+    fi
+
+    local name="$(basename "$root")"
+    if [ "$name" == "/" ] ; then
+      name="root"
+    fi
+    local free_mb="$(df --output=avail -m "$root" | awk 'NR==2{print $1}')"
+    lf_data="${lf_data}&df_${name}=${free_mb}M"
+  done
+}
+
+hdd_temp() {
+  local data
+  if ! data="$(nc 127.0.0.1 7634)" ; then
+    return
+  fi
+
+  local temp_hdd=""
+  while read line ; do
+    if [[ "$line" =~ ^\|.+\/(.+?)\|.+\|([0-9]+)\| ]] ; then
+      name="${BASH_REMATCH[1]}"
+      temp="${BASH_REMATCH[2]}"
+      temp_hdd="${temp_hdd}${temp}%20"
+    fi
+  done < <(echo "$data" | sed 's/||/\n|/g' && echo)
+  lf_data="${lf_data}&temp_hdd=${temp_hdd}"
+}
+
+raid() {
+  if ! [ -e "/dev/md0" ] ; then
+    return
+  fi
+
+  local md0_stat="$(awk 'NR==3{print $11 " " $12}' /proc/mdstat)"
+  lf_data="${lf_data}&md0=${md0_stat}"
+}
+
+ups() {
+  local w="/sbin/apcaccess"
+  if ! [ -x "$w" ] ; then
+    return
+  fi
+
+  local ups_bat="$($w status | awk '/^BCHARGE/ {match($0, /[0-9.]+/, arr); print arr[0]}')"
+  lf_data="${lf_data}&ups_bat=${ups_bat}%25"
+}
+
+rpi() {
+  local w="/usr/bin/vcgencmd"
+  if ! [ -x "$w" ] ; then
+    return
+  fi
+
+  local temp_core="$($w measure_temp | sed -rn -e 's/^.*=(.*)$/\1/p')"
+  lf_data="${lf_data}&temp_core=${temp_core}"
+}
+
+uptime
+disc_space
+hdd_temp
+raid
+ups
+rpi
