@@ -9,7 +9,10 @@
 # sensors_feature_type:
 # https://github.com/groeck/lm-sensors/blob/dfa4518962c81cf1a21471cef958aa9e67a63b68/lib/sensors.h#L137
 
-import sensors
+try:
+  import sensors
+except ImportError:
+  exit(1)
 
 sensors.init()
 try:
