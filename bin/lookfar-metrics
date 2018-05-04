@@ -99,7 +99,7 @@ raid() {
     return
   fi
 
-  local md0_stat="$(awk 'NR==3{print $11 " " $12}' /proc/mdstat)"
+  local md0_stat="$(awk 'match($0, /(\[[0-9]\/[0-9]\])[^\[](\[[U_]+\])/, m) {print m[1] " " m[2]}' /proc/mdstat)"
   lf_data="${lf_data}&md0=${md0_stat}"
 }
 
