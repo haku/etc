@@ -81,6 +81,19 @@ hdd_temp() {
   lf_data="${lf_data}&temp_hdd=${temp_hdd}"
 }
 
+sys_temp() {
+  local data
+  if ! data="$("$HOME/etc/bin/sensor-metrics")" ; then
+    return
+  fi
+
+  while read line ; do
+    if [[ "$line" =~ ^[a-z0-9_]+=[0-9.]+$ ]] ; then
+      lf_data="${lf_data}&${line}"
+    fi
+  done < <(echo "$data" && echo)
+}
+
 raid() {
   if ! [ -e "/dev/md0" ] ; then
     return
@@ -114,6 +127,7 @@ uptime
 ram
 disc_space
 hdd_temp
+sys_temp
 raid
 ups
 rpi_temp

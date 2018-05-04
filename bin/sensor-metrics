@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+
+# Requirements:
+# pip install pysensors
+
+# Docs:
+# https://hwmon.wiki.kernel.org
+# https://bitbucket.org/blackjack/pysensors
+# sensors_feature_type:
+# https://github.com/groeck/lm-sensors/blob/dfa4518962c81cf1a21471cef958aa9e67a63b68/lib/sensors.h#L137
+
+import sensors
+
+sensors.init()
+try:
+  for chip in sensors.iter_detected_chips():
+    for feature in chip:
+      if feature.type != 2:
+        continue
+      print '%s_%s=%s' % (chip.prefix, feature.name, feature.get_value())
+finally:
+  sensors.cleanup()
