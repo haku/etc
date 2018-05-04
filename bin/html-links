@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+require 'nokogiri'
+
+for f in ARGV
+  next if !File.file?(f)
+  h = Nokogiri::HTML(IO.read(f))
+  href = h.css('a').each do |a|
+    puts a.attr('href')
+  end
+end
