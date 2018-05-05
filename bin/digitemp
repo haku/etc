@@ -1,0 +1,21 @@
+#!/bin/bash
+set -eu
+
+dt="/usr/bin/digitemp_DS2490"
+if ! [ -x "$dt" ] ; then
+  exit 1
+fi
+
+read_sensor() {
+  local number="$1"
+
+  local t=''
+  for i in $(seq 0 9) ; do
+    t="$($dt -q -a -o 's%s=%.2C' | sed -rne "s/^s${number}=(.*)$/\1/p")"
+    if [ "$t" != "85.00" ] ; then break ; fi
+    sleep 1
+  done
+  echo "$t"
+}
+
+echo "s0=$(read_sensor 0)"
