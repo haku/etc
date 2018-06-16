@@ -1,0 +1,9 @@
+#!/bin/bash
+set -eu
+
+dir="$HOME/log/smart/$(date +'%Y')"
+mkdir -p "$dir"
+prefix="$(date +'%Y%m%d-%H%M')"
+for x in a b c d ; do
+  smartctl -a "/dev/sd${x}" > "${dir}/${prefix}.sd${x}.txt"
+done
