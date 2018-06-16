@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+
+def ReadMeminfo
+  s = IO.read('/proc/meminfo')
+  s.lines.each_with_object({}) do |l, h|
+    name = l[/^[^:]+/]
+    val = l[/[0-9]+/].to_i
+    h[name] = val
+  end
+end
+
+start = ReadMeminfo()
+
+loop do
+  puts "\e[H\e[2J"
+  puts Time.now
+
+  now = ReadMeminfo()
+  start.each do |name, start_v|
+    now_v = now[name]
+    d = now_v - start_v
+    puts "#{name.rjust(20, ' ')} #{now_v.to_s.ljust(10, ' ')} " + (d != 0 ? "(#{sprintf("%+d", d)})" : '')
+  end
+
+  sleep 2
+end
