@@ -37,6 +37,10 @@ ram() {
   lf_data="${lf_data}&mem_available=$(awk '{a[$1]=$2}END{print a["MemAvailable:"]}' /proc/meminfo)kB"
 }
 
+procs() {
+  lf_data="$lf_data&proc_count=$(pgrep -c .)"
+}
+
 disc_space() {
   local roots=(
     /
@@ -125,6 +129,7 @@ rpi_temp() {
 
 uptime
 ram
+procs
 disc_space
 hdd_temp
 sys_temp
