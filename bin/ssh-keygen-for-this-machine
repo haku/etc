@@ -25,6 +25,11 @@ else
   exit 1
 fi
 
+if ! command -v "uuidgen" ; then
+  echo "missing uuidgen, try: apti uuid-runtime"
+  exit 1
+fi
+
 tmp_passwd="$(uuidgen) $(uuidgen)"
 if [ -z "$tmp_passwd" ] ; then echo "Failed to generate tmp passwd." ; exit 1 ; fi
 
