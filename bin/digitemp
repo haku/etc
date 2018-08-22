@@ -1,6 +1,9 @@
 #!/bin/bash
 set -eu
 
+# sudo modprobe -r ds2490
+# or add "blacklist ds2490" to /etc/modprobe.d/blacklist.conf
+
 dt="/usr/bin/digitemp_DS2490"
 if ! [ -x "$dt" ] ; then
   exit 1
