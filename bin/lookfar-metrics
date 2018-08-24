@@ -127,6 +127,23 @@ rpi_temp() {
   lf_data="${lf_data}&temp_core=${temp_core}"
 }
 
+digitemp_temp() {
+  if ! [ -e "$HOME/.digitemprc" ] ; then
+    return
+  fi
+
+  local data
+  if ! data="$("$HOME/etc/bin/digitemp")" ; then
+    return
+  fi
+
+  while read line ; do
+    if [[ "$line" =~ ^s[0-9]+=[0-9.]+$ ]] ; then
+      lf_data="${lf_data}&temp_${line}"
+    fi
+  done < <(echo "$data" && echo)
+}
+
 uptime
 ram
 procs
@@ -136,3 +153,4 @@ sys_temp
 raid
 ups
 rpi_temp
+digitemp_temp

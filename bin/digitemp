@@ -4,6 +4,9 @@ set -eu
 # sudo modprobe -r ds2490
 # or add "blacklist ds2490" to /etc/modprobe.d/blacklist.conf
 
+# /etc/udev/rules.d/99-haku.rules
+# SUBSYSTEM=="usb", ATTR{idVendor}=="04fa", ATTR{idProduct}=="2490", MODE="0666"
+
 dt="/usr/bin/digitemp_DS2490"
 if ! [ -x "$dt" ] ; then
   exit 1
