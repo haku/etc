@@ -41,12 +41,12 @@ network() {
     ssid=$(echo "$info" | grep Essid | cut -d ' ' -f 2-)
     qual=$(echo "$info" | grep Quality | cut -d ' ' -f 2-)
     echo -n "${ssid}/${qual} "
-  else
-    ipaddr="$(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p' | tr '\n' ',')"
-    ipaddr="${ipaddr%,}"
-    hostname="$(hostname -s)"
-    echo -n "#[fg=brightgreen]$hostname/$ipaddr#[fg=default] "
   fi
+
+  ipaddr="$(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p' | tr '\n' ',')"
+  ipaddr="${ipaddr%,}"
+  hostname="$(hostname -s)"
+  echo -n "#[fg=brightgreen]$hostname/$ipaddr#[fg=default] "
 }
 
 batt() {
