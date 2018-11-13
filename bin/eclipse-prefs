@@ -4,6 +4,7 @@ set -eu
 files="
 org.eclipse.ant.ui.prefs
 org.eclipse.cdt.ui.prefs
+org.eclipse.compare.prefs
 org.eclipse.debug.ui.prefs
 org.eclipse.jdt.ui.prefs
 org.eclipse.mylyn.wikitext.ui.prefs
@@ -11,6 +12,7 @@ org.eclipse.pde.ui.prefs
 org.eclipse.php.ui.prefs
 org.eclipse.ui.editors.prefs
 org.eclipse.ui.prefs
+org.eclipse.ui.workbench.prefs
 org.eclipse.wst.css.ui.prefs
 org.eclipse.wst.html.ui.prefs
 org.eclipse.wst.xml.ui.prefs
