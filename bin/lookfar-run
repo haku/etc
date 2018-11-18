@@ -12,17 +12,27 @@ if ! [ -e "$lf_rc" ] ; then
 fi
 source "$lf_rc"
 
-if [[ "$1" == var=* ]] ; then
-  lf_var="${1#var=}"
-  shift
+args=( "$@" )
+
+if [[ "${args[0]}" == var=* ]] ; then
+  lf_var="${args[0]#var=}"
+  args=( "${args[@]:1}" )
 fi
 
-lf_cmd="$1"; shift
+lf_cmd="${args[0]}"
+args=( "${args[@]:1}" )
+
 if [ -z "${lf_var:-}" ] ; then
   lf_var="$(basename "$lf_cmd")"
 fi
 lf_result=""
 lf_node="$(hostname -s)"
+
+lock_dir="/tmp/$USER/lookfar-run"
+mkdir -p "$lock_dir"
+lock_file="$lock_dir/$lf_var"
+
+[ "${FLOCKER:-}" != "$lf_var" ] && exec env FLOCKER="$lf_var" flock -en -E 0 "$lock_file" "$0" "$@" || :
 
 lf_send_result () {
   #log "$(date +'%Y%m%d-%H%M%S') Sending '$lf_var=$lf_result' Lookfar... "
@@ -37,6 +47,6 @@ trap "exit" INT TERM
 trap "lf_send_result" EXIT
 
 set +e
-$lf_cmd "$@"
+$lf_cmd "${args[@]}"
 lf_result="$?"
 exit $lf_result
