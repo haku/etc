@@ -47,6 +47,6 @@ trap "exit" INT TERM
 trap "lf_send_result" EXIT
 
 set +e
-$lf_cmd "${args[@]}"
+$lf_cmd ${args[@]+"${args[@]}"}
 lf_result="$?"
 exit $lf_result
