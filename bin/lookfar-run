@@ -28,7 +28,7 @@ fi
 lf_result=""
 lf_node="$(hostname -s)"
 
-lock_dir="/tmp/$USER/lookfar-run"
+lock_dir="/tmp/$(whoami)/lookfar-run"
 mkdir -p "$lock_dir"
 lock_file="$lock_dir/$lf_var"
 
