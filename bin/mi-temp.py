@@ -1,4 +1,8 @@
 #!/usr/bin/env python2
+
+# aptitude install python-pip libglib2.0-dev
+# pip install bluepy
+
 import binascii
 import base64
 # https://ianharvey.github.io/bluepy-doc/peripheral.html
