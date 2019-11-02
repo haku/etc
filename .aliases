@@ -29,8 +29,8 @@ alias -- -='vim -R -'
 alias v-='vim -'
 alias v='vim'
 alias vd='vimdiff'
-alias vis='vim -O'
-alias vit='vim -p'
+alias vs='vim -O'
+alias vt='vim -p'
 
 # CLI tools.
 alias bc='bc -ql'
