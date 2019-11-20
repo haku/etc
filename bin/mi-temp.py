@@ -1,43 +1,29 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 # aptitude install python-pip libglib2.0-dev
-# pip install bluepy
+# pip3 install btlewrap
 
-import binascii
-import base64
-# https://ianharvey.github.io/bluepy-doc/peripheral.html
-from bluepy.btle import Peripheral, DefaultDelegate
-import time
 import sys
+from btlewrap.base import BluetoothInterface
+from btlewrap.gatttool import GatttoolBackend
 
-BATTERY_HANDLE = 0x0018
-TEMP_HUM_WRITE_HANDLE = 0x0010
-TEMP_HUM_WRITE_VALUE = bytearray([0x01, 0x10])
-TEMP_HUM_READ_HANDLE = 0x000E
+HANDLE_READ_BATTERY_LEVEL = 0x0018
+HANDLE_READ_WRITE_SENSOR_DATA = 0x0010
 
-class TempHumDelegate(DefaultDelegate):
-  def __init__(self):
-    DefaultDelegate.__init__(self)
-
-  def handleNotification(self, cHandle, data):
-    if (cHandle == TEMP_HUM_READ_HANDLE):
-      data = data.rstrip(' \t\r\n\0')
-      temperature = data.split(" ")[0][2:]
-      humidity = data.split(" ")[1][2:]
-      print 't=%s h=%s' % (temperature, humidity)
-
-def get_battery_level():
-  val = p.readCharacteristic(BATTERY_HANDLE)
-  return int(binascii.b2a_hex(val), 16)
+class TempHumDelegate():
+  def handleNotification(self, handle, data):
+    print('Notification: handle=%s data=%s' % (handle, data))
 
 mac = sys.argv[1]
-print 'MAC: %s' % mac
-p = Peripheral(mac)
-p.withDelegate(TempHumDelegate())
+print('MAC: %s' % mac)
 
-print 'Battery: %s' % get_battery_level()
-p.writeCharacteristic(TEMP_HUM_WRITE_HANDLE, TEMP_HUM_WRITE_VALUE)
-while True:
-  p.waitForNotifications(5.0)
+bt_interface = BluetoothInterface(GatttoolBackend, adapter='hci0')
+with bt_interface.connect(mac) as connection:
+    res_battery = connection.read_handle(HANDLE_READ_BATTERY_LEVEL)
+    battery = int(ord(res_battery))
+    print('Battery: %s' % battery)
 
-p.disconnect()
+    connection.wait_for_notification(
+            HANDLE_READ_WRITE_SENSOR_DATA,
+            TempHumDelegate(),
+            10)
