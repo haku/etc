@@ -95,7 +95,12 @@ if [ -f "/etc/cosmos-info" ] ; then
   fi
 fi
 
-export PS1="$(print "%{\e[0;33m%}%n%{\e[0;34m%}@%{\e[0;33m%}%m%{\e[0m%}:%{\e[1;34m%}%~%{\e[0m%}%{$host_info_colour%}$host_info%{\e[0m%}")
+ps_timestamp() {
+  # Colours https://en.wikipedia.org/wiki/ANSI_escape_code#3/4_bit
+  echo -n "\e[0;90m$(date '+%Y%m%d-%H%M%S')\e[0m"
+}
+
+export PS1="$(print "%{\e[0;33m%}%n%{\e[0;34m%}@%{\e[0;33m%}%m%{\e[0m%}:%{\e[1;34m%}%~%{\e[0m%}%{$host_info_colour%}$host_info%{\e[0m%} $(ps_timestamp)")
 $ "
 export PS2="$(print '%{\e[0;34m%}>%{\e[0m%} ')"
 export RPS1=$'$(vcs_info_wrapper)'
