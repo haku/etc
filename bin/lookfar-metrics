@@ -70,7 +70,7 @@ disc_space() {
 
 hdd_temp() {
   local data
-  if ! data="$(nc 127.0.0.1 7634)" ; then
+  if ! data="$(nc -d 127.0.0.1 7634)" ; then
     return
   fi
 
