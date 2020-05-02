@@ -2,18 +2,45 @@
 set -eu
 source ~/.namecheap
 
-host="$(hostname)"
-my_ip="$(curl --silent http://whatismyip.akamai.com)"
-old_ip_file="$HOME/tmp/namecheap"
-
 log() {
   echo $(date +'%Y%m%d-%H%M%S') $@
 }
 
+my_ip=""
+srvc=""
+
+if [ "$my_ip" = "" ] ; then
+  myaddr="$HOME/bin/my-addr"
+  if [ -x "$myaddr" ] && myaddr_result="$("$myaddr" 1)" ; then
+    my_ip="$myaddr_result"
+    srvc="my-addr"
+  else
+    log "Failed to use my-addr."
+  fi
+fi
+
+if [ "$my_ip" = "" ] ; then
+  if ak_result="$(curl --silent http://whatismyip.akamai.com)" ; then
+    my_ip="$ak_result"
+    srvc="akamai"
+  else
+    log "Failed to curl akamai."
+    exit 1
+  fi
+fi
+
+if [ -z "$my_ip" ] ; then
+  log "No result."
+  exit 2
+fi
+
+host="$(hostname)"
+old_ip_file="$HOME/tmp/namecheap"
+
 if [ -e "$old_ip_file" ] ; then
   old_ip="$(head -n 1 "$old_ip_file")"
   if [ "$my_ip" = "$old_ip" ] ; then
-    log "unchanged ${host}.${domain} ${my_ip}"
+    log "unchanged ${host}.${domain} ${my_ip} (${srvc})"
     exit 0
   fi
 fi
