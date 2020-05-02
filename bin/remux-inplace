@@ -1,0 +1,13 @@
+#!/bin/bash
+set -eu
+
+for f in "$@" ; do
+  echo "$f"
+  bu="$f.backup"
+  if [ -e "$bu" ] ; then
+    echo "Exists: $bu"
+    exit 1
+  fi
+  mv "$f" "$bu"
+  ffmpeg -i "$bu" -c:a copy -c:v copy "$f"
+done
