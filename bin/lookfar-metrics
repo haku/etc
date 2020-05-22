@@ -37,6 +37,10 @@ ram() {
   lf_data="${lf_data}&mem_available=$(awk '{a[$1]=$2}END{print a["MemAvailable:"]}' /proc/meminfo)kB"
 }
 
+loadavg() {
+  lf_data="$lf_data&loadavg=$(cut -d ' ' -f 3 /proc/loadavg)"
+}
+
 procs() {
   lf_data="$lf_data&proc_count=$(pgrep -c .)"
 }
@@ -146,6 +150,7 @@ digitemp_temp() {
 
 uptime
 ram
+loadavg
 procs
 disc_space
 hdd_temp
