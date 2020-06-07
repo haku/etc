@@ -1,0 +1,7 @@
+#!/bin/bash
+set -eu
+
+while read -r remote; do
+  echo "Remote: $remote"
+  git push "$remote"
+done < <(git remote)
