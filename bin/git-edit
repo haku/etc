@@ -7,7 +7,7 @@ while read file ; do
   if [[ "$mime" == 'text/'* ]] ; then
     files+=("$file")
   fi
-done < <(git status --short | awk '$1 ~ /^(M|A|\?\?)$/ {print $2}')
+done < <(git status --short . | awk '$1 ~ /^(M|A|\?\?)$/ {print $2}')
 
 if [ ${#files[@]} -lt 1 ] ; then
   echo "No modified files."
