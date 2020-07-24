@@ -1,17 +1,30 @@
 #!/bin/bash
 set -eu
 
-for in in "$@" ; do
-  profile=$(mediainfo --Inform="Video;%Format_Profile%" "$in")
-  bitrate=$(mediainfo --Inform="General;%OverallBitRate/String%" "$in")
-  #bitrate=$(mediainfo --Inform="Video;%BitRate/String%" "$in")
-  #if [ -z "$bitrate" ] ; then
-  #  bitrate=$(mediainfo --Inform="Video;%BitRate_Nominal/String%" "$in")
-  #fi
-  width=$(mediainfo --Inform="Video;%Width%" "$in")
-  height=$(mediainfo --Inform="Video;%Height%" "$in")
-  fps=$(mediainfo --Inform="Video;%FrameRate%" "$in")
-  duration=$(mediainfo --Inform="General;%Duration/String%" "$in")
-  if [ -z "$bitrate" ] ; then bitrate="    ?     " ; fi
-  echo -e "$profile $bitrate ${width}x${height} ${fps} ${duration} $in"
+gfields=\
+'General;%Format%\n'\
+'%OverallBitRate/String%\n'\
+'%Duration/String3%\n'
+
+vfields=\
+'Video;%Format_Profile%\n'\
+'%BitDepth%\n'\
+'%Width%\n'\
+'%Height%\n'\
+'%FrameRate%\n'
+
+for f in "$@" ; do
+  readarray -t g < <(mediainfo --Inform="$gfields" "$f")
+  [ "${g[0]}" = 'JPEG' ] && continue
+  [ "${g[0]}" = 'PNG' ] && continue
+  [[ "${g[0]}" == *'Audio' ]] && continue
+  readarray -t v < <(mediainfo --Inform="$vfields" "$f")
+  printf '%-20s' "${v[0]}"
+  printf '%3s  ' "${v[1]}b"
+  printf '%10s  ' "${g[1]}"
+  printf '%10s  ' "${v[2]}x${v[3]}"
+  printf '%6s  ' "${v[4]}"
+  printf '%12s  ' "${g[2]#00:}"
+  printf '%s' "$f"
+  printf '\n'
 done
