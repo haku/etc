@@ -8,8 +8,8 @@ sudo -k aptitude install \
   libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev \
   libxcb-xfixes0-dev pkg-config texi2html zlib1g-dev unzip nasm
 
-srcd="$HOME/development/ffmpeg_src/$(date +'%Y%m%d-%H%M%S')"
-bldd="$HOME/development/ffmpeg_bld"
+srcd="$HOME/src/ffmpeg_src/$(date +'%Y%m%d-%H%M%S')"
+bldd="$HOME/src/ffmpeg_bld"
 
 if [ -e "$srcd" ] ; then
   echo "Already exists: $srcd"
@@ -21,17 +21,17 @@ mkdir -pv "$bldd"
 
 pushd "$srcd"
 
-  wget http://download.videolan.org/pub/x264/snapshots/last_x264.tar.bz2
-  tar xjvf last_x264.tar.bz2
-  pushd x264-snapshot*
+  wget -O 'x264.tar.gz' 'https://code.videolan.org/videolan/x264/-/archive/stable/x264-stable.tar.gz'
+  tar xf 'x264.tar.gz'
+  pushd x264-*
     ./configure --prefix="$bldd" --bindir="$bldd" --enable-static
     make
     make install
     make distclean
   popd
 
-  wget -O fdk-aac.zip https://github.com/mstorsjo/fdk-aac/zipball/master
-  unzip fdk-aac.zip
+  wget -O 'fdk-aac.zip' 'https://github.com/mstorsjo/fdk-aac/zipball/master'
+  unzip 'fdk-aac.zip'
   pushd mstorsjo-fdk-aac*
     autoreconf -fiv
     ./configure --prefix="$bldd" --disable-shared
@@ -40,17 +40,17 @@ pushd "$srcd"
     make distclean
   popd
 
-  wget http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz
-  tar xzvf lame-3.99.5.tar.gz
-  pushd lame-3.99.5
+  wget -O 'lame.tar.gz' 'https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz'
+  tar xf 'lame.tar.gz'
+  pushd lame-*
     ./configure --prefix="$bldd" --enable-nasm --disable-shared
     make
     make install
     make distclean
   popd
 
-  wget http://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2
-  tar xjvf ffmpeg-snapshot.tar.bz2
+  wget 'https://ffmpeg.org/releases/ffmpeg-snapshot.tar.bz2'
+  tar xjvf 'ffmpeg-snapshot.tar.bz2'
   pushd ffmpeg
     PKG_CONFIG_PATH="$bldd/lib/pkgconfig" ./configure \
       --prefix="$bldd" \
