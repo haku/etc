@@ -1,0 +1,38 @@
+#!/usr/bin/env python3
+# vim: expandtab shiftwidth=2 softtabstop=2
+
+import json
+import os
+import subprocess
+import sys
+import time
+
+def run(args):
+  print('Running:\n$ %s' % ' '.join(args))
+  r = subprocess.run(
+      args=args,
+      capture_output=True,
+      check=True,
+      timeout=30)
+  return r.stdout
+
+def wait(seconds):
+  print('Waiting %s seconds...' % seconds)
+  time.sleep(seconds)
+
+interfaces = json.loads(run(
+  ['ip', '-j', '-p', 'addr', 'show', 'to', '169.254.0.0/16']))
+
+if len(interfaces) < 1:
+  print('No interfaces to fix.')
+  sys.exit(0)
+
+if_to_fix = [i['ifname'] for i in interfaces]
+print('To fix: %s' % if_to_fix)
+
+for i in if_to_fix:
+  run(['ifconfig', i, 'down'])
+  wait(1)
+  run(['ifconfig', i, 'up'])
+  wait(5)
+  run(['dhclient', '-r', '-v', i])
