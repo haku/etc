@@ -1,0 +1,10 @@
+#!/bin/bash
+set -eu
+
+branch="$(git symbolic-ref --short HEAD)"
+echo "Branch: $branch"
+
+while read -r remote; do
+  echo "Remote: $remote" "$branch"
+  git pull "$remote" "$branch"
+done < <(git remote)
