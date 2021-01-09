@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# aptitude install python-pip libglib2.0-dev
+# aptitude install python3-pip libglib2.0-dev
 # pip3 install btlewrap
 
 import sys
