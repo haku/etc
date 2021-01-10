@@ -1,3 +1,4 @@
+# apt install libglib2.0-dev
 # pip3 install bluepy
 # sudo setcap 'cap_net_raw,cap_net_admin+eip' /home/pi/.local/lib/python3.5/site-packages/bluepy/bluepy-helper
 # sudo setcap 'cap_net_raw,cap_net_admin+eip' ./ble-scan.py
