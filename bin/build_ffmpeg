@@ -2,11 +2,12 @@
 set -eu
 # https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
 
-# TODO do not sudo if already installed.
-sudo -k aptitude install \
+echo "Check these:"
+echo aptitude install \
   autoconf automake build-essential libass-dev libfreetype6-dev libgpac-dev \
   libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev \
-  libxcb-xfixes0-dev pkg-config texi2html zlib1g-dev unzip nasm
+  libxcb-xfixes0-dev pkg-config texi2html zlib1g-dev unzip nasm libv4l-dev libsdl2-dev
+read -p "Press enter to continue."
 
 srcd="$HOME/src/ffmpeg_src/$(date +'%Y%m%d-%H%M%S')"
 bldd="$HOME/src/ffmpeg_bld"
@@ -57,15 +58,18 @@ pushd "$srcd"
       --extra-cflags="-I$bldd/include" \
       --extra-ldflags="-L$bldd/lib" \
       --bindir="$bldd" \
+      --enable-static \
+      --disable-shared \
       --enable-gpl \
+      --enable-nonfree \
       --enable-libass \
       --enable-libfdk-aac \
       --enable-libfreetype \
       --enable-libmp3lame \
       --enable-libtheora \
+      --enable-libv4l2 \
       --enable-libvorbis \
-      --enable-libx264 \
-      --enable-nonfree
+      --enable-libx264
     make
     make install
     make distclean
