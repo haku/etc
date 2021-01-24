@@ -61,6 +61,14 @@ batt() {
   fi
 }
 
+rpi_core_temp() {
+  v="/usr/bin/vcgencmd"
+  if [ -x "$v" ] ; then
+    local temp_core="$("$v" measure_temp | sed -rn -e 's/^.*=(.*)$/\1/p')"
+    echo -n "$temp_core "
+  fi
+}
+
 load() {
   echo -n "#[fg=brightblue]$(uptime | sed -e "s/^.*: //" -e "s/,//g")#[fg=default]"
 }
@@ -68,4 +76,5 @@ load() {
 irssi
 network
 batt
+rpi_core_temp
 load
