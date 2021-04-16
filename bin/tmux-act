@@ -48,7 +48,7 @@ network() {
     echo -n "${ssid}/${qual} "
   fi
 
-  ipaddr="$(ifconfig | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p' | tr '\n' ',')"
+  ipaddr="$(ip addr | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p' | tr '\n' ',')"
   ipaddr="${ipaddr%,}"
   hostname="$(hostname -s)"
   echo -n "#[fg=brightgreen]$hostname/$ipaddr#[fg=default] "
