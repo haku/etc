@@ -7,7 +7,7 @@ alias 1='l1'
 alias la1='ls -A1'
 alias l='ls -CF'
 alias lnew='ls -lhrtc | tail'
-alias lnewr='find . -printf "%TY-%Tm-%Td %TH:%TM %p\n" | sort -n | tail'
+alias lnewr='find . -printf "%TY-%Tm-%Td %TH:%TM %p\n" | sort | tail'
 alias lbig='ls -lhrsS | tail'
 
 function adv_ls() {
