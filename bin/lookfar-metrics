@@ -141,11 +141,21 @@ digitemp_temp() {
     return
   fi
 
+  # output like:
+  # s0=15.56
+  local prom=""
   while read line ; do
     if [[ "$line" =~ ^s[0-9]+=[0-9.]+$ ]] ; then
       lf_data="${lf_data}&temp_${line}"
+      prom="${prom}# TYPE sensor_temperature_celsius gauge\n"
+      prom="${prom}sensor_temperature_celsius{index=\"${line%%=*}\"} ${line#*=}\n"
     fi
   done < <(echo "$data" && echo)
+
+  if grep -q "tmpfs /tmp " /proc/mounts ; then
+    echo -e "$prom" > "/tmp/prom_digitemp_tmp"
+    mv "/tmp/prom_digitemp_tmp" "/tmp/prom_digitemp"
+  fi
 }
 
 uptime
