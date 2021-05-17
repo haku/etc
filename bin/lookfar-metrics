@@ -148,7 +148,7 @@ digitemp_temp() {
     if [[ "$line" =~ ^s[0-9]+=[0-9.]+$ ]] ; then
       lf_data="${lf_data}&temp_${line}"
       prom="${prom}# TYPE sensor_temperature_celsius gauge\n"
-      prom="${prom}sensor_temperature_celsius{index=\"${line%%=*}\"} ${line#*=}\n"
+      prom="${prom}sensor_temperature_celsius{sensor_index=\"${line%%=*}\"} ${line#*=}\n"
     fi
   done < <(echo "$data" && echo)
 
