@@ -82,7 +82,7 @@ hdd_temp() {
   while read line ; do
     if [[ "$line" =~ ^\|.+\/(.+?)\|.+\|([0-9]+)\| ]] ; then
       name="${BASH_REMATCH[1]}"
-      temp="${BASH_REMATCH[2]}"
+      local temp="${BASH_REMATCH[2]}"
       temp_hdd="${temp_hdd}${temp}%20"
     fi
   done < <(echo "$data" | sed 's/||/\n|/g' && echo)
@@ -147,8 +147,13 @@ digitemp_temp() {
   while read line ; do
     if [[ "$line" =~ ^s[0-9]+=[0-9.]+$ ]] ; then
       lf_data="${lf_data}&temp_${line}"
-      prom="${prom}# TYPE sensor_temperature_celsius gauge\n"
-      prom="${prom}sensor_temperature_celsius{sensor_index=\"${line%%=*}\"} ${line#*=}\n"
+
+      local index="${line%%=*}"
+      local temp="${line#*=}"
+      if (( "$temp" < 50 )); then
+        prom="${prom}# TYPE sensor_temperature_celsius gauge\n"
+        prom="${prom}sensor_temperature_celsius{sensor_index=\"${index}\"} ${temp}\n"
+      fi
     fi
   done < <(echo "$data" && echo)
 
