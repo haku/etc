@@ -150,7 +150,7 @@ digitemp_temp() {
 
       local index="${line%%=*}"
       local temp="${line#*=}"
-      if (( "$temp" < 50 )); then
+      if (( $(echo "$temp 50" | awk '{print ($1 < $2)}') )) ; then
         prom="${prom}# TYPE sensor_temperature_celsius gauge\n"
         prom="${prom}sensor_temperature_celsius{sensor_index=\"${index}\"} ${temp}\n"
       fi
