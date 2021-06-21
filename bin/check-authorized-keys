@@ -7,7 +7,9 @@ if ! [ -e "$file" ] ; then exit 0 ; fi
 maxage="$(( 365 * 24 * 60 * 60 ))"
 now="$(date '+%s')"
 while read type key comment ; do
-  date="${comment##*.}"
+  date="$comment"
+  date="${date%.u2f}"
+  date="${date##*.}"
   if time="$(date --date "$date" '+%s' 2> /dev/null)" ; then
     age="$(( now - time ))"
     if [ "$age" -gt "$maxage" ] ; then
