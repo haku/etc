@@ -1,0 +1,48 @@
+#!/usr/bin/env python3
+# vim: expandtab shiftwidth=2 softtabstop=2
+
+import os
+import subprocess
+import sys
+from datetime import datetime
+
+MIN_UPTIME_SECONDS = 3600
+
+def up_seconds():
+  with open('/proc/uptime') as f:
+    return int(float(f.readline().split(' ')[0]))
+
+def run(args):
+  print('Running:\n$ %s' % ' '.join(args))
+  r = subprocess.run(
+      args=args,
+      capture_output=True,
+      check=False,
+      timeout=30)
+  return r
+
+if up_seconds() < MIN_UPTIME_SECONDS:
+  print('uptime too low.')
+  sys.exit(0)
+
+ping = run(['ping', '-c', '1', '-w', '10', '192.168.1.1'])
+if ping.returncode == 0:
+  print('ping success.')
+  sys.exit(0)
+
+debug_info = ''
+
+ipaddr = run(['ip', 'addr'])
+debug_info += 'ip addr:\n'
+debug_info += ipaddr.stdout.decode()
+
+debug_file = '%s/watchdog.%s.txt' %(
+    os.path.dirname(os.path.realpath(__file__)),
+    datetime.now().strftime('%Y%m%d-%H%M%S'),
+    )
+
+with open(debug_file, 'w') as f:
+  f.write(debug_info)
+print('Wrote debug info: %s' % debug_file)
+
+run(['/sbin/reboot'])
