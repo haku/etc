@@ -7,10 +7,34 @@ import sys
 from datetime import datetime
 
 MIN_UPTIME_SECONDS = 3600
+MIN_DOWNTIME_SECONDS = 15 * 60
+DOWNTIME_FILE = '/tmp/downtime'
 
 def up_seconds():
   with open('/proc/uptime') as f:
     return int(float(f.readline().split(' ')[0]))
+
+def mark_up():
+  with open(DOWNTIME_FILE, 'w') as f:
+    f.write('0')
+
+def mark_down():
+  if down_seconds() > 0:
+    return
+  with open(DOWNTIME_FILE, 'w') as f:
+    f.write(str(int(datetime.now().timestamp())))
+
+def down_seconds():
+  try:
+    with open(DOWNTIME_FILE) as f:
+      l = f.readline()
+  except FileNotFoundError:
+    l = '0'
+
+  t = int(l)
+  if t == 0:
+    return 0
+  return datetime.now().timestamp() - t
 
 def run(args):
   print('Running:\n$ %s' % ' '.join(args))
@@ -28,6 +52,12 @@ if up_seconds() < MIN_UPTIME_SECONDS:
 ping = run(['ping', '-c', '1', '-w', '10', '192.168.1.1'])
 if ping.returncode == 0:
   print('ping success.')
+  mark_up()
+  sys.exit(0)
+
+mark_down()
+if down_seconds() < MIN_DOWNTIME_SECONDS:
+  print('downtime too low: %ss' % int(down_seconds()))
   sys.exit(0)
 
 debug_info = ''
