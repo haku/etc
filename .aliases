@@ -67,7 +67,7 @@ alias apti='sudo aptitude install --without-recommends'
 alias fr='file-roller'
 alias gmp='gnome-mplayer'
 alias gnome-disc-util='palimpsest'
-alias op='gnome-open'
+alias op='xdg-open'
 alias poke='gnome-screensaver-command -d'
 alias xc='xclip -selection clip-board'
 
