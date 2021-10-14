@@ -13,11 +13,19 @@ fi
 source "$lf_rc"
 
 args=( "$@" )
+tries=1
 
-if [[ "${args[0]}" == var=* ]] ; then
-  lf_var="${args[0]#var=}"
-  args=( "${args[@]:1}" )
-fi
+while true; do
+  if [[ "${args[0]}" == var=* ]] ; then
+    lf_var="${args[0]#var=}"
+    args=( "${args[@]:1}" )
+  elif [[ "${args[0]}" == tries=* ]] ; then
+    tries="${args[0]#tries=}"
+    args=( "${args[@]:1}" )
+  else
+    break
+  fi
+done
 
 lf_cmd="${args[0]}"
 args=( "${args[@]:1}" )
@@ -31,11 +39,25 @@ lf_node="$(hostname -s)"
 lock_dir="/tmp/$(whoami)/lookfar-run"
 mkdir -p "$lock_dir"
 lock_file="$lock_dir/$lf_var"
+tries_file="$lock_dir/$lf_var.tries"
 
 [ "${FLOCKER:-}" != "$lf_var" ] && exec env FLOCKER="$lf_var" flock -en -E 0 "$lock_file" "$0" "$@" || :
 
 lf_send_result () {
-  #log "$(date +'%Y%m%d-%H%M%S') Sending '$lf_var=$lf_result' Lookfar... "
+  if [ "$tries" -gt 1 ] ; then
+    if [ "$lf_result" != "0" ] ; then
+      attempts="$(head -n 1 "$tries_file" || echo 0 )"
+      attempts=$(( $attempts + 1 ))
+      echo "$attempts" > "$tries_file"
+      if [ "$attempts" -lt "$tries" ] ; then
+        return
+      fi
+    else
+      echo "0" > "$tries_file"
+    fi
+  fi
+
+  #log "Sending '$lf_var=$lf_result' to Lookfar... "
   curl --silent \
     -u "$LF_USER" \
     -d "$lf_var=$lf_result" \
