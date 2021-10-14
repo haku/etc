@@ -8,6 +8,7 @@ gfields=\
 
 vfields=\
 'Video;%Format_Profile%\n'\
+'%CodecID%\n'\
 '%BitDepth%\n'\
 '%Width%\n'\
 '%Height%\n'\
@@ -19,11 +20,12 @@ for f in "$@" ; do
   [ "${g[0]}" = 'PNG' ] && continue
   [[ "${g[0]}" == *'Audio' ]] && continue
   readarray -t v < <(mediainfo --Inform="$vfields" "$f")
-  printf '%-20s' "${v[0]}"
-  printf '%3s  ' "${v[1]}b"
+  printf '%-15s' "${v[0]}"
+  printf '%-17s' "${v[1]}"
+  printf '%3s  ' "${v[2]}b"
   printf '%10s  ' "${g[1]}"
-  printf '%10s  ' "${v[2]}x${v[3]}"
-  printf '%6s  ' "${v[4]}"
+  printf '%10s  ' "${v[3]}x${v[4]}"
+  printf '%6s  ' "${v[5]}"
   printf '%12s  ' "${g[2]#00:}"
   printf '%s' "$f"
   printf '\n'
