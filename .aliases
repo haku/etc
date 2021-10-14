@@ -136,6 +136,8 @@ alias se='s edit'
 alias sl='s lg'
 alias sd='s diff .'
 alias sc='s commit'
+alias push='git-push-all-remotes'
+alias pull='git-pull-all-remotes'
 
 # Maths.
 function b() {
