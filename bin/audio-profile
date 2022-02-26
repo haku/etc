@@ -18,7 +18,7 @@ for f in "$@" ; do
   printf '%10s  ' "${a[1]}"
   printf '%-5s'   "${a[2]}ch"
   printf '%-10s'  "${a[3]}"
-  printf '%-10s'  "${a[4]}"
+  printf '%-14s'  "${a[4]}"
   printf '%-14s'  "${a[5]}"
   printf '%s'     "$f"
   printf '\n'
