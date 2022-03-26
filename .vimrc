@@ -140,6 +140,7 @@ endif
 syntax on
 set background=dark
 colorscheme slate
+silent! colorscheme faerie
 
 " colour fixes.
 set t_Co=256

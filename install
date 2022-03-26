@@ -38,6 +38,8 @@ if [ "$(uname)" = "Darwin" ] ; then
 fi
 
 mkdir -p "$HOME/.vimswp"
+mkdir -p "$HOME/.vim/colors/"
+link ".vim/colors/faerie.vim"
 
 if ! [ -e "$HOME/.zsh_history" ] && [ -e "$HOME/.bash_history" ] ; then
   echo "Using bash history as initial zsh history."
