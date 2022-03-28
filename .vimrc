@@ -21,7 +21,7 @@ nnoremap <C-t> :tabnew<CR>
 :map q: :q
 
 " paste last yank (not replaced by pasting)
-:noremap P "0p
+:noremap <C-p> "0p
 
 " Nicer split-window navigation
 nmap <silent> <C-h> :wincmd h<CR>
