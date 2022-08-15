@@ -73,7 +73,7 @@ alias xc='xclip -selection clip-board'
 
 # dev tools.
 alias mci='mvn clean install'
-alias mvn-tree='mvn dependency:tree'
+alias mvn-tree='mvn -Dverbose dependency:tree'
 alias mvn-get-src='mvn dependency:sources && mvn dependency:resolve -Dclassifier=javadoc'
 alias mvn-find-updates='mvn versions:display-dependency-updates versions:display-plugin-updates'
 alias pip-upgrade='pip freeze --local | cut -d = -f 1  | xargs pip install -U'
