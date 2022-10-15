@@ -1,0 +1,9 @@
+#!/usr/bin/zsh
+set -eu
+# https://helpful.wiki/zsh/
+
+for f in "${(@f)"$(<&0)"}"; {
+  d="./${f[1]}/${f[2]}/"
+  mkdir -p "$d"
+  mv -t "$d" "$f"
+}
