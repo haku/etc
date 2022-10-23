@@ -17,11 +17,13 @@ else
 fi
 
 f_samedir=''
+f_noscript=''
 
 while [ $# -gt 0 ]
 do
   case "$1" in
     --samedir) f_samedir='1';;
+    --noscript) f_noscript='1';;
     --) shift; break;;
     -*) echo - "Illegal flags" "$@" ; exit 1;;
     *) break;;
@@ -29,10 +31,21 @@ do
   shift
 done
 
+if [ "$f_noscript" == '1' ] ; then
+  tmp="$(mktemp -dt "$(basename "$0").XXXXXXXXXXXX")"
+fi
+
 for input in "$@" ; do
   echo -e "\n == $input =="
 
-  args=(ebook-convert "$input")
+  mod_input="$input"
+  if [ "$f_noscript" == '1' ] ; then
+    mod_input="$tmp/$(basename "$input")"
+    echo " -> noscript: $input --> $mod_input"
+    xidel "$input" -e 'x:replace-nodes(/, //script, ())' --output-format=html > "$mod_input"
+  fi
+
+  args=(ebook-convert "$mod_input")
 
   output="$(basename "$input").$mode.$ext"
   args+=("$output" --output-profile $mode)
@@ -41,10 +54,10 @@ for input in "$@" ; do
   args+=('--title' "$title")
 
   if [[ "$input" == *".html" ]] ; then
-    args+=('--filter-css' 'color,font-family')
+    args+=('--filter-css' 'color,font-family,margin,padding')
   fi
 
-  echo -e " => ${args[@]:-}"
+  echo -e " -> ${args[@]:-}"
   "${args[@]:+${args[@]}}"
 
   if [ -e "$device" ] ; then
@@ -59,8 +72,10 @@ for input in "$@" ; do
 
     dest_file="$dest_dir/$output"
     if ! [ -e "$dest_file" ] ; then
-      echo -e "\n    => $dest_file\n"
+      echo -e "\n -> device: $dest_file"
       cp "$output" "$dest_file"
     fi
   fi
 done
+
+echo "SUCCESS"
