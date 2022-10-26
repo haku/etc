@@ -1,0 +1,71 @@
+#!/bin/bash
+set -eu
+
+args=( "$@" )
+tries=1
+
+while true; do
+  if [[ "${args[0]}" == name=* ]] ; then
+    name="${args[0]#name=}"
+    args=( "${args[@]:1}" )
+  elif [[ "${args[0]}" == tries=* ]] ; then
+    tries="${args[0]#tries=}"
+    args=( "${args[@]:1}" )
+  else
+    break
+  fi
+done
+
+cmd="${args[0]}"
+args=( "${args[@]:1}" )
+
+if [ -z "${name:-}" ] ; then
+  name="$(basename "$cmd")"
+fi
+result=""
+start_time_seconds="$(date +%s)"
+duration_seconds="-1"
+
+state_dir="/tmp/$(whoami)/prom-run"
+mkdir -p "$state_dir"
+lock_file="$state_dir/$name"
+tries_file="$state_dir/$name.tries"
+prom_file="$state_dir/$name.prom"
+
+[ "${FLOCKER:-}" != "$name" ] && exec env FLOCKER="$name" flock -en -E 0 "$lock_file" "$0" "$@" || :
+
+write_metrics () {
+  if [ "$tries" -gt 1 ] ; then
+    if [ "$result" != "0" ] ; then
+      attempts="$(head -n 1 "$tries_file" || echo 0 )"
+      attempts=$(( $attempts + 1 ))
+      echo "$attempts" > "$tries_file"
+      if [ "$attempts" -lt "$tries" ] ; then
+        return
+      fi
+    else
+      echo "0" > "$tries_file"
+    fi
+  fi
+
+  labels="{name=\"$name\"}"
+  tmpf="$prom_file.tmp"
+  cat << EOF > "$tmpf"
+# TYPE cron_exit_code gauge
+cron_exit_code${labels} $result
+# TYPE cron_start_time_seconds gauge
+cron_start_time_seconds${labels} $start_time_seconds
+# TYPE cron_duration_seconds gauge
+cron_duration_seconds${labels} $duration_seconds
+EOF
+  mv "$tmpf" "$prom_file"
+}
+
+trap "exit" INT TERM
+trap "write_metrics" EXIT
+
+set +e
+$cmd ${args[@]+"${args[@]}"}
+result="$?"
+duration_seconds="$(( $(date +%s) - $start_time_seconds ))"
+exit $result
