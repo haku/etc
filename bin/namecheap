@@ -10,16 +10,6 @@ my_ip=""
 srvc=""
 
 if [ "$my_ip" = "" ] ; then
-  myaddr="$HOME/bin/my-addr"
-  if [ -x "$myaddr" ] && myaddr_result="$("$myaddr" 1)" ; then
-    my_ip="$myaddr_result"
-    srvc="my-addr"
-  else
-    log "Failed to use my-addr."
-  fi
-fi
-
-if [ "$my_ip" = "" ] ; then
   if ak_result="$(curl --silent http://whatismyip.akamai.com)" ; then
     my_ip="$ak_result"
     srvc="akamai"
