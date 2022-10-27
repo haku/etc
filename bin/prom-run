@@ -1,11 +1,17 @@
 #!/bin/bash
 set -eu
 
+init=0
 args=( "$@" )
 tries=1
 
 while true; do
-  if [[ "${args[0]}" == name=* ]] ; then
+  if [ ${#args[@]} -lt 1 ] ; then
+    break
+  elif [[ "${args[0]}" == init ]] ; then
+    init=1
+    args=( "${args[@]:1}" )
+  elif [[ "${args[0]}" == name=* ]] ; then
     name="${args[0]#name=}"
     args=( "${args[@]:1}" )
   elif [[ "${args[0]}" == tries=* ]] ; then
@@ -15,6 +21,13 @@ while true; do
     break
   fi
 done
+
+state_dir="/tmp/$(whoami)/prom-run"
+mkdir -p "$state_dir"
+
+if [ "$init" = 1 ] ; then
+  exit
+fi
 
 cmd="${args[0]}"
 args=( "${args[@]:1}" )
@@ -26,8 +39,6 @@ result=""
 start_time_seconds="$(date +%s)"
 duration_seconds="-1"
 
-state_dir="/tmp/$(whoami)/prom-run"
-mkdir -p "$state_dir"
 lock_file="$state_dir/$name"
 tries_file="$state_dir/$name.tries"
 prom_file="$state_dir/$name.prom"
