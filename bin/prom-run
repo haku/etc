@@ -71,10 +71,13 @@ write_metrics () {
   labels="{name=\"$name\",user=\"$USER\"}"
   tmpf="$prom_file.tmp"
   cat << EOF > "$tmpf"
+# HELP cron_exit_code exit code
 # TYPE cron_exit_code gauge
 cron_exit_code${labels} $result
+# HELP cron_start_time_seconds start time
 # TYPE cron_start_time_seconds gauge
 cron_start_time_seconds${labels} $start_time_seconds
+# HELP cron_duration_seconds duration
 # TYPE cron_duration_seconds gauge
 cron_duration_seconds${labels} $duration_seconds
 EOF
