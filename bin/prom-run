@@ -48,7 +48,7 @@ write_metrics () {
     fi
   fi
 
-  labels="{name=\"$name\"}"
+  labels="{name=\"$name\",user=\"$USER\"}"
   tmpf="$prom_file.tmp"
   cat << EOF > "$tmpf"
 # TYPE cron_exit_code gauge
