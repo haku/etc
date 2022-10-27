@@ -22,28 +22,37 @@ while true; do
   fi
 done
 
+if [ "$init" = 1 ] && [ -z "$name:-" ] ; then
+  echo "init requres name param."
+  exit 1
+fi
+
 state_dir="/tmp/$(whoami)/prom-run"
 mkdir -p "$state_dir"
 
-if [ "$init" = 1 ] ; then
-  exit
+if [ "$init" = 0 ] ; then
+  cmd="${args[0]}"
+  args=( "${args[@]:1}" )
 fi
-
-cmd="${args[0]}"
-args=( "${args[@]:1}" )
 
 if [ -z "${name:-}" ] ; then
   name="$(basename "$cmd")"
 fi
-result=""
-start_time_seconds="$(date +%s)"
-duration_seconds="-1"
 
 lock_file="$state_dir/$name"
 tries_file="$state_dir/$name.tries"
 prom_file="$state_dir/$name.prom"
 
+if [ "$init" = 1 ] ; then
+  touch "$prom_file"
+  exit
+fi
+
 [ "${FLOCKER:-}" != "$name" ] && exec env FLOCKER="$name" flock -en -E 0 "$lock_file" "$0" "$@" || :
+
+result=""
+start_time_seconds="$(date +%s)"
+duration_seconds="-1"
 
 write_metrics () {
   if [ "$tries" -gt 1 ] ; then
