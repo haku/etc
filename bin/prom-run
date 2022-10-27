@@ -68,7 +68,7 @@ write_metrics () {
     fi
   fi
 
-  labels="{name=\"$name\",user=\"$USER\"}"
+  labels="{name=\"$name\",user=\"$(whoami)\"}"
   tmpf="$prom_file.tmp"
   cat << EOF > "$tmpf"
 # HELP cron_exit_code exit code
