@@ -81,6 +81,15 @@ cron_start_time_seconds${labels} $start_time_seconds
 # TYPE cron_duration_seconds gauge
 cron_duration_seconds${labels} $duration_seconds
 EOF
+
+  if [ "$result" = "0" ] ; then
+    cat << EOF >> "$tmpf"
+# HELP cron_success_time_seconds success time
+# TYPE cron_success_time_seconds gauge
+cron_success_time_seconds${labels} $(date +%s)
+EOF
+  fi
+
   mv "$tmpf" "$prom_file"
 }
 
