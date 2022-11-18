@@ -54,7 +54,7 @@ for input in "$@" ; do
   args+=('--title' "$title")
 
   if [[ "$input" == *".html" ]] ; then
-    args+=('--filter-css' 'color,font-family,margin,padding')
+    args+=('--filter-css' 'color,font-family,margin,padding,background,background-color,darkreader-neutral-background')
   fi
 
   echo -e " -> ${args[@]:-}"
