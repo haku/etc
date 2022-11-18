@@ -1,0 +1,8 @@
+#!/bin/bash
+set -eu
+
+for input in "$@" ; do
+  output="${input%.html}.noscript.html"
+  echo "$input --> $output"
+  xidel "$input" -e 'x:replace-nodes(/, //script,())' --output-format=html > "$output"
+done
