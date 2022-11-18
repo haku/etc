@@ -47,7 +47,7 @@ for input in "$@" ; do
 
   args=(ebook-convert "$mod_input")
 
-  output="$(basename "$input").$mode.$ext"
+  output="$(basename "${input%.html}").$mode.$ext"
   args+=("$output" --output-profile $mode)
 
   title="${input%.*}"
