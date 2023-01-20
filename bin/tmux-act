@@ -35,7 +35,7 @@ irssi() {
     fi
   done
   if [ "$count" -lt 1 ] ; then
-  echo -n "#[fg=yellow]• #[fg=default]"
+    echo -n "#[fg=yellow]• #[fg=default]"
   fi
   #echo -n '#[fg=brightblue]}#[fg=default] '
 }
