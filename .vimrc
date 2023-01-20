@@ -47,7 +47,7 @@ filetype plugin on
 filetype indent on
 
 " use system clipboard as main register
-set clipboard=unnamed
+"set clipboard=unnamed
 
 " spelling ( [s ]s z= )
 map <F5> :setlocal spell! spelllang=en_gb<cr>
@@ -74,7 +74,7 @@ command! PrettyXML call DoPrettyXML()
 map <F6> :PrettyXML<CR>
 
 " format json
-map <F7> :%!python -mjson.tool<cr>
+map <F7> :%!python3 -mjson.tool<cr>
 
 " format html
 map <F8> :%!tidy -iq -w 0<cr>
@@ -147,10 +147,10 @@ silent! colorscheme faerie
 
 " colour fixes.
 set t_Co=256
-if &term == "screen"
-  set t_kN=^[[6;*~
-  set t_kP=^[[5;*~
-endif
+"if &term == "screen"
+"  set t_kN=^[[6;*~
+"  set t_kP=^[[5;*~
+"endif
 hi Normal ctermbg=none
 
 " file types
