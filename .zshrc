@@ -25,8 +25,7 @@ setopt NOBANGHIST
 zmodload zsh/complist
 autoload -Uz compinit
 compinit
-
-setopt COMPLETEALIASES
+unsetopt completealiases
 
 zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=36=31"
 zstyle ':completion:*:descriptions' format '%U%d%u'
@@ -109,6 +108,7 @@ unset host_info
 unset host_info_colour
 
 # == Keyboard ==
+# run `bindkey` to list all.
 
 bindkey '^a' beginning-of-line # Home
 bindkey '^e' end-of-line # End
@@ -116,6 +116,13 @@ bindkey '^R' history-incremental-search-backward
 bindkey "\e[Z" reverse-menu-complete # Shift+Tab
 bindkey "^[[3~" delete-char
 bindkey "^[3;5~" delete-char
+
+# alt + left/right
+bindkey "^[[1;3C" forward-word
+bindkey "^[[1;3D" backward-word
+
+# ctrl+u deletes left
+bindkey \^U backward-kill-line
 
 # various fixes for HOME / END keys.
 bindkey "\e[1~" beginning-of-line
