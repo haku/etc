@@ -84,28 +84,15 @@ zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
 
 # == Prompt config ==
 
-host_info=""
-host_info_colour="\e[0;37m"
-if [ -f "/etc/cosmos-info" ] ; then
-  . /etc/cosmos-info
-  host_info=" $COSMOS_COMPONENT $COSMOS_ENV"
-  if [ "$COSMOS_ENV" != "int" ] && [ "$COSMOS_ENV" != "test" ] ; then
-    host_info_colour="\e[0;41;37m"
-  fi
-fi
-
 ps_timestamp() {
   # Colours https://en.wikipedia.org/wiki/ANSI_escape_code#3/4_bit
   echo -n "\e[0;90m$(date '+%Y%m%d-%H%M%S')\e[0m"
 }
 
-export PS1="$(print "%{\e[0;33m%}%n%{\e[0;34m%}@%{\e[0;33m%}%m%{\e[0m%}:%{\e[1;34m%}%~%{\e[0m%}%{$host_info_colour%}$host_info%{\e[0m%} \$(ps_timestamp)")
+export PS1="$(print "%{\e[0;33m%}%n%{\e[0;34m%}@%{\e[0;33m%}%m%{\e[0m%}:%{\e[1;34m%}%~%{\e[0m%} \$(ps_timestamp)")
 $ "
 export PS2="$(print '%{\e[0;34m%}>%{\e[0m%} ')"
 export RPS1=$'$(vcs_info_wrapper)'
-
-unset host_info
-unset host_info_colour
 
 # == Keyboard ==
 # run `bindkey` to list all.
