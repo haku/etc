@@ -1,0 +1,11 @@
+#!/bin/bash
+set -eu
+
+for inf in "$@" ; do
+  outf="$(basename "$inf")"
+  outf="${outf%.png}"
+  outf="${outf}.jpeg"
+
+  echo "$inf --> $outf"
+  convert -density 150 -quality 70 "$inf" "$outf"
+done
