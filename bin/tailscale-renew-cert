@@ -1,0 +1,11 @@
+#!/bin/bash
+set -eu
+
+hostname="$(tailscale status --json | jq -r '.Self.DNSName')"
+hostname="${hostname%.}"
+pushd /etc/ssl/private
+  tailscale cert "$hostname"
+  mv -v ./"$hostname".crt ../certs/
+popd
+
+systemctl reload nginx
