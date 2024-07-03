@@ -5,8 +5,8 @@ bindkey -e
 # == History ==
 
 export HISTFILE=~/.zsh_history
-export HISTSIZE=50000
-export SAVEHIST=50000
+export HISTSIZE=100000
+export SAVEHIST=100000
 
 setopt APPENDHISTORY
 setopt HIST_IGNORE_DUPS
