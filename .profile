@@ -33,16 +33,9 @@ if [ -d "$HOME/bin" ] ; then
   path_prepend_if_absent "$HOME/bin"
 fi
 
-local mommy="$HOME/3src/shell-mommy/shell-mommy.sh"
-if [ -e "$mommy" ] ; then
-  . "$mommy"
-  precmd() {
-    local code="$?"
-    local cmd="$(fc -Iln -1 2>/dev/null || echo '')"
-    if [ -n "$cmd" ] && [[ "$cmd" != (cd*|l|1|l' '*|ls*|cat*|pwd*|gh|echo*) ]] ; then
-      eval "mommy \\$\\(exit \$code\\);"
-    fi
-  }
+local scg="$HOME/cte/scg/scg"
+if [ -e "$scg" ] ; then
+  . "$scg"
 fi
 
 export EDITOR="vim -p"
