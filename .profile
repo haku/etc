@@ -33,7 +33,7 @@ if [ -d "$HOME/bin" ] ; then
   path_prepend_if_absent "$HOME/bin"
 fi
 
-local scg="$HOME/cte/scg/scg"
+scg="$HOME/cte/scg/scg"
 if [ -e "$scg" ] ; then
   . "$scg"
 fi
