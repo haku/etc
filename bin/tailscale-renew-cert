@@ -5,6 +5,8 @@ hostname="$(tailscale status --json | jq -r '.Self.DNSName')"
 hostname="${hostname%.}"
 pushd /etc/ssl/private
   tailscale cert "$hostname"
+  chgrp -v ssl-cert ./"$hostname".key
+  chmod -v g+r ./"$hostname".key
   mv -v ./"$hostname".crt ../certs/
 popd
 
