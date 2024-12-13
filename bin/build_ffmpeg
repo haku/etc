@@ -6,57 +6,77 @@ echo "Check these:"
 echo aptitude install \
   autoconf automake build-essential libass-dev libfreetype6-dev libgpac-dev \
   libsdl1.2-dev libtheora-dev libtool libva-dev libvdpau-dev libvorbis-dev libxcb1-dev libxcb-shm0-dev \
-  libxcb-xfixes0-dev pkg-config texi2html zlib1g-dev unzip nasm libv4l-dev libsdl2-dev libvidstab-dev
+  libxcb-xfixes0-dev pkg-config texi2html zlib1g-dev unzip nasm libv4l-dev libsdl2-dev libvidstab-dev \
+  libopus-dev
 read -p "Press enter to continue."
 
-srcd="$HOME/src/ffmpeg_src/$(date +'%Y%m%d-%H%M%S')"
-bldd="$HOME/src/ffmpeg_bld"
-
-if [ -e "$srcd" ] ; then
-  echo "Already exists: $srcd"
-  exit 1
-fi
+srcd="$HOME/3src/ffmpeg_src/$(date +'%Y%m%d')"
+bldd="$HOME/3src/ffmpeg_bld"
 
 mkdir -pv "$srcd"
 mkdir -pv "$bldd"
 
 pushd "$srcd"
 
-  wget -O 'x264.tar.gz' 'https://code.videolan.org/videolan/x264/-/archive/stable/x264-stable.tar.gz'
-  tar xf 'x264.tar.gz'
-  pushd x264-*
-    ./configure --prefix="$bldd" --bindir="$bldd" --enable-static
-    make
-    make install
-    make distclean
-  popd
+  build_x264=y
+  if ! [ -e 'x264.tar.gz' ] ; then
+    wget -O 'x264.tar.gz' 'https://code.videolan.org/videolan/x264/-/archive/stable/x264-stable.tar.gz'
+    tar xf 'x264.tar.gz'
+  else
+    read -p 'Rebuild x264? [yn]: ' build_x264
+  fi
+  if [ "$build_x264" = "y" ] ; then
+    pushd x264-*
+      ./configure --prefix="$bldd" --bindir="$bldd" --enable-static
+      make
+      make install
+      make distclean
+    popd
+  fi
 
-  wget -O 'fdk-aac.zip' 'https://github.com/mstorsjo/fdk-aac/zipball/master'
-  unzip 'fdk-aac.zip'
-  pushd mstorsjo-fdk-aac*
-    autoreconf -fiv
-    ./configure --prefix="$bldd" --disable-shared
-    make
-    make install
-    make distclean
-  popd
+  build_fdk=y
+  if ! [ -e 'fdk-aac.zip' ] ; then
+    wget -O 'fdk-aac.zip' 'https://github.com/mstorsjo/fdk-aac/zipball/master'
+    unzip 'fdk-aac.zip'
+  else
+    read -p 'Rebuild fdk? [yn]: ' build_fdk
+  fi
+  if [ "$build_fdk" = "y" ] ; then
+    pushd mstorsjo-fdk-aac*
+      autoreconf -fiv
+      ./configure --prefix="$bldd" --disable-shared
+      make
+      make install
+      make distclean
+    popd
+  fi
 
-  wget -O 'lame.tar.gz' 'https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz'
-  tar xf 'lame.tar.gz'
-  pushd lame-*
-    ./configure --prefix="$bldd" --enable-nasm --disable-shared
-    make
-    make install
-    make distclean
-  popd
+  build_lame=y
+  if ! [ -e 'lame.tar.gz' ] ; then
+    wget -O 'lame.tar.gz' 'https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz'
+    tar xf 'lame.tar.gz'
+  else
+    read -p 'Rebuild lame? [yn]: ' build_lame
+  fi
+  if [ "$build_lame" = "y" ] ; then
+    pushd lame-*
+      ./configure --prefix="$bldd" --enable-nasm --disable-shared
+      make
+      make install
+      make distclean
+    popd
+  fi
 
+  # dver is name inside tar file.
   #fver="ffmpeg-snapshot"
   #dver="ffmpeg"
-  fver="ffmpeg-4.4"
+  fver="ffmpeg-7.1"  # see https://ffmpeg.org/releases/ for versions
   dver="$fver"
 
-  wget "https://ffmpeg.org/releases/$fver.tar.bz2"
-  tar xjvf "$fver.tar.bz2"
+  if ! [ -e "$fver.tar.bz2" ] ; then
+    wget "https://ffmpeg.org/releases/$fver.tar.bz2"
+    tar xjvf "$fver.tar.bz2"
+  fi
   pushd "$dver"
     PKG_CONFIG_PATH="$bldd/lib/pkgconfig" ./configure \
       --prefix="$bldd" \
@@ -71,6 +91,7 @@ pushd "$srcd"
       --enable-libfdk-aac \
       --enable-libfreetype \
       --enable-libmp3lame \
+      --enable-libopus \
       --enable-libtheora \
       --enable-libv4l2 \
       --enable-libvidstab \
