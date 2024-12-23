@@ -36,4 +36,4 @@ hi StatusLine	term=reverse,bold cterm=reverse   gui=NONE		guifg=White guibg=dark
 hi StatusLineNC term=reverse   cterm=reverse	  gui=NONE		guifg=white guibg=#333333
 hi Title		term=bold	   ctermfg=LightMagenta gui=bold	guifg=Pink
 hi WarningMsg	term=standout  ctermfg=LightRed   guifg=Red
-hi Visual		term=reverse   cterm=reverse	  gui=NONE		guifg=white guibg=darkgreen
+hi Visual		term=reverse   cterm=reverse ctermfg=NONE ctermbg=242 guifg=white guibg=darkgreen
