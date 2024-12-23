@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -eu
 
 if [ ! -d "$HOME" ] ; then echo "Not found: $HOME" ; exit 1 ; fi

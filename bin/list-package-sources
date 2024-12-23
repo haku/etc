@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -eu -o pipefail
 
 # https://askubuntu.com/questions/43581/how-to-list-packages-from-a-ppa-source-in-command-line

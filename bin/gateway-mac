@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #https://code.google.com/p/plazes/wiki/FindingMACAddress
 
 case "$(uname)" in

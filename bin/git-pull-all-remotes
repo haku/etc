@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -eu
 
 branch="$(git symbolic-ref --short HEAD)"

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -eu
 while read line ; do
   echo "$(find "$line" | sort -u | wc -l) $line"

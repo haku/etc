@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 F=$1
 if [[ "$F" == *.tar.gz ]] || [[ "$F" == *.tar ]] ; then
   if [ "$(tar tf "$F" | egrep -v "/.+" | wc -l | tr -d " ")" -gt 1 ] ; then

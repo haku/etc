@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -eu
 
 LAME_OPTS="-h -v -V 2 -b 128"

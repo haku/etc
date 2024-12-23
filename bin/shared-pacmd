@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 if [ "$USER" == "pulse" ] ; then
   export PULSE_RUNTIME_PATH=/var/run/pulse
   pacmd "$@"

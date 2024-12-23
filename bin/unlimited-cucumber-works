@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 LOG=/tmp/cucumber-works.log
 
 COUNTER=0

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -eu
 # https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
 

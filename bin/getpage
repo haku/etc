@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -eu
 # https://superuser.com/questions/55040/save-a-single-web-page-with-background-images-with-wget
 exec wget -E -H -k -K -p "$@"

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -eu
 
 # http://manual.calibre-ebook.com/generated/en/ebook-convert.html

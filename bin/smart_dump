@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -eu
 
 dir="$HOME/log/smart/$(date +'%Y')"

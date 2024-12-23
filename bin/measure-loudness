@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -u
 
 # r128gain from http://r128gain.sourceforge.net
