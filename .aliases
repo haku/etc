@@ -25,6 +25,10 @@ alias gh='cat ~/.zsh_history | grep --text'
 alias psg='ps aux | grep'
 alias pstree='ps -AHwef'
 
+function mkcd() {
+    mkdir -p -- "$1" && cd -- "$1"
+}
+
 # vim.
 alias -- -='vim -R -'
 alias v-='vim -'
