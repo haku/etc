@@ -19,6 +19,13 @@ setopt HIST_SAVE_NO_DUPS
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_FIND_NO_DUPS
 setopt NOBANGHIST
+setopt EXTENDED_HISTORY
+
+autoload -U history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey "OA" history-beginning-search-backward-end
+bindkey "OB" history-beginning-search-forward-end
 
 # == Auto-complete ==
 
@@ -26,6 +33,7 @@ zmodload zsh/complist
 autoload -Uz compinit
 compinit
 unsetopt completealiases
+unsetopt AUTO_LIST
 
 zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=36=31"
 zstyle ':completion:*:descriptions' format '%U%d%u'
