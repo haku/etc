@@ -33,7 +33,6 @@ zmodload zsh/complist
 autoload -Uz compinit
 compinit
 unsetopt completealiases
-unsetopt AUTO_LIST
 
 zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=36=31"
 zstyle ':completion:*:descriptions' format '%U%d%u'
