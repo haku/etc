@@ -20,6 +20,7 @@ setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_FIND_NO_DUPS
 setopt NOBANGHIST
 setopt EXTENDED_HISTORY
+unsetopt SHARE_HISTORY
 
 autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end
