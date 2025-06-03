@@ -2,6 +2,7 @@
 set -eu
 
 file="$HOME/.ssh/authorized_keys"
+[ -e "$file" ] || file="/etc/ssh/authorized_keys.d/$USER"
 if ! [ -e "$file" ] ; then exit 0 ; fi
 
 maxage="$(( 365 * 24 * 60 * 60 ))"
@@ -13,11 +14,9 @@ while read type key comment ; do
   if time="$(date --date "$date" '+%s' 2> /dev/null)" ; then
     age="$(( now - time ))"
     if [ "$age" -gt "$maxage" ] ; then
-      echo "WARNING"
-      echo "  Key expired: $comment"
+      echo "WARNING key expired: $comment"
     fi
   else
-    echo "WARNING"
-    echo "  Key age unknown: $comment"
+    echo "WARNING key age unknown: $comment"
   fi
 done < "$file"
