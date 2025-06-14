@@ -92,13 +92,17 @@ zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
 
 # == Prompt config ==
 
+ps_nix() {
+  [ -z "$IN_NIX_SHELL" ] && return
+  echo " \e[1;95mnix-shell\e[0m"
+}
 ps_timestamp() {
   # Colours https://en.wikipedia.org/wiki/ANSI_escape_code#3/4_bit
   echo -n "\e[0;90m$(date '+%Y%m%d-%H%M%S')\e[0m"
 }
 
 # https://stackoverflow.com/questions/4842424
-export PS1="$(print "%{\e[0;93m%}%n%{\e[0;94m%}@%{\e[0;93m%}%m%{\e[0;94m%}:%{\e[1;96m%}%~%{\e[0m%} \$(ps_timestamp)")
+export PS1="$(print "%{\e[0;93m%}%n%{\e[0;94m%}@%{\e[0;93m%}%m%{\e[0;94m%}:%{\e[1;96m%}%~%{\e[0m%}\$(ps_nix) \$(ps_timestamp)")
 $ "
 export PS2="$(print '%{\e[0;34m%}>%{\e[0m%} ')"
 export RPS1=$'$(vcs_info_wrapper)'
