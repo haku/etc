@@ -29,6 +29,7 @@ function mkcd() {
     mkdir -p -- "$1" && cd -- "$1"
 }
 alias cn='cd /etc/nixos'
+alias nix-shell='nix-shell --run $SHELL'
 
 # vim.
 alias -- -='vim -R -'
