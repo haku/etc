@@ -28,6 +28,7 @@ alias pstree='ps -AHwef'
 function mkcd() {
     mkdir -p -- "$1" && cd -- "$1"
 }
+alias cn='cd /etc/nixos'
 
 # vim.
 alias -- -='vim -R -'
@@ -36,6 +37,7 @@ alias v='vim'
 alias vd='vimdiff'
 alias vs='vim -O'
 alias vt='vim -p'
+alias sv='sudoedit'
 
 # CLI tools.
 alias bc='bc -ql'
@@ -137,6 +139,7 @@ function s() {
     echo "Unknown SCM."
   fi
 }
+alias sa='s add'
 alias se='s edit'
 alias sl='s lg'
 alias sd='s diff .'
