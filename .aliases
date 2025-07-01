@@ -19,7 +19,7 @@ function adv_ls() {
 
 # term
 alias :q='exit'
-alias c='clear'
+alias c='cd'
 alias dc='cd'
 alias gh='cat ~/.zsh_history | grep --text'
 alias psg='ps aux | grep'
@@ -28,8 +28,13 @@ alias pstree='ps -AHwef'
 function mkcd() {
     mkdir -p -- "$1" && cd -- "$1"
 }
+
+# os
 alias cn='cd /etc/nixos'
+alias lg='journalctl'
 alias nix-shell='nix-shell --run $SHELL'
+alias scl='sudo systemctl'
+alias st='systemctl status'
 
 # vim.
 alias -- -='vim -R -'
@@ -182,9 +187,6 @@ function etime() {
     date -r "${1}"
   fi
 }
-
-# Work.
-alias mon='nc localhost 33898'
 
 # Img tools.
 alias im-compress-photo='convert -density 150 -quality 60'
