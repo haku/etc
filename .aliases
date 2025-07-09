@@ -31,7 +31,7 @@ function mkcd() {
 
 # os
 alias cn='cd /etc/nixos'
-alias lg='journalctl'
+alias lg='journalctl -fu'
 alias nix-shell='nix-shell --run $SHELL'
 alias scl='sudo systemctl'
 alias st='systemctl status'
