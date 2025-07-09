@@ -4,22 +4,22 @@ bindkey -e
 
 # == History ==
 
-export HISTFILE=~/.zsh_history
-export HISTSIZE=100000
-export SAVEHIST=100000
+HISTFILE=~/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
 
-setopt APPENDHISTORY
-setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_ALL_DUPS
-setopt HIST_REDUCE_BLANKS
-setopt HIST_IGNORE_SPACE
-setopt HIST_NO_STORE
-setopt HIST_VERIFY
-setopt HIST_SAVE_NO_DUPS
+setopt APPEND_HISTORY
+setopt EXTENDED_HISTORY
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_FIND_NO_DUPS
-setopt NOBANGHIST
-setopt EXTENDED_HISTORY
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_NO_STORE
+setopt HIST_REDUCE_BLANKS
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_VERIFY
+unsetopt BANG_HIST
 unsetopt SHARE_HISTORY
 
 autoload -U history-search-end
