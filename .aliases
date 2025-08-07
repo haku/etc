@@ -30,7 +30,14 @@ function mkcd() {
 }
 
 # os
-alias cn='cd /etc/nixos'
+cn() {
+  local d="$HOME/src/$HOST"
+  if [ -e "$d" ] ; then
+    cd "$d"
+  else
+    cd /etc/nixos
+  fi
+}
 alias lg='journalctl -fu'
 alias nix-shell='nix-shell --run $SHELL'
 alias scl='sudo systemctl'
