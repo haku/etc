@@ -55,9 +55,9 @@ network() {
 }
 
 batt() {
-  b="$HOME/bin/battery"
-  if [ -x "$b" ] ; then
-    echo -n "$("$b") "
+  b="/sys/class/power_supply/BAT1/capacity"
+  if [ -e "$b" ] ; then
+    echo -n "$(cat "$b")% "
   fi
 }
 
