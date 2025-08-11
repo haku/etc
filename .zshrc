@@ -42,6 +42,21 @@ zstyle ':completion:*' menu select=2 # show menu when at least 2 options.
 zstyle ':completion::complete:cd::' tag-order '! users' - # do not auto complete user names
 zstyle ':completion:*' tag-order '! users' # listing all users takes ages.
 
+# here for ref for now
+#zstyle ':completion:*:(ssh|scp|rsync):*' hosts off
+#zstyle ':completion:*:(ssh|scp|rsync):*' config on
+#zstyle ':completion:*:*:(ssh|scp|rsync):*:*' known-hosts-files off
+
+# https://serverfault.com/questions/170346/how-to-edit-command-completion-for-ssh-on-zsh/170481#17048
+h=()
+if [[ -r ~/.ssh/config ]]; then
+  h=($h ${${${(@M)${(f)"$(cat ~/.ssh/config)"}:#Host *}#Host }:#*[*?]*})
+fi
+if [[ $#h -gt 0 ]]; then
+  zstyle ':completion:*:(ssh|scp|rsync):*' hosts $h
+fi
+
+
 # speed up git autocomplete
 __git_files() {
   _wanted files expl 'local files' _files
