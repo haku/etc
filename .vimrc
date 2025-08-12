@@ -57,21 +57,10 @@ set list
 set listchars=nbsp:¬,tab:>-,extends:»,precedes:«,trail:•
 
 " format xml
-function! DoPrettyXML()
-     let l:origft = &ft
-     set ft=
-     1s/<?xml .*?>//e
-     0put ='<PrettyXML>'
-     $put ='</PrettyXML>'
-     silent %!xmllint --format -
-     2d
-     $d
-     silent %<
-     1
-     exe "set ft=" . l:origft
-     endfunction
-command! PrettyXML call DoPrettyXML()
-map <F6> :PrettyXML<CR>
+" com! FormatXML :%!python3 -c "import xml.etree.ElementTree as ET, sys; t=ET.parse(sys.stdin); ET.indent(t, space='  ', level=0); ET.dump(t)"
+" com! FormatXML :%!python3 -c "import sys, xml.dom.minidom as m; [print(line) for line in m.parse(sys.stdin).toprettyxml().splitlines() if line.strip()]"
+com! FormatXML :%!xmllint --format -
+map <F6> :FormatXML<CR>
 
 " format json
 map <F7> :%!python3 -mjson.tool<cr>
