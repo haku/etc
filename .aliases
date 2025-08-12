@@ -77,6 +77,7 @@ alias host-fingerprint='ssh-keygen -l -f /etc/ssh/ssh_host_rsa_key.pub'
 sad() {
   ssh-add -c "$HOME/.ssh/$USER@$HOST."<->
 }
+alias sadl='ssh-add -L'
 
 # Apt.
 alias aptu='sudo aptitude update'
