@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 echo black red green yellow blue magenta cyan white
-for i in $(seq -f "%03g" 0 255) ; do
+for i in $(seq -f "%03g" 0 ${1:-255}) ; do
   printf "\e[0m "
   printf "\x1b[38;5;${i}m${i}"
   printf "\e[0m "
