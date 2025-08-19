@@ -157,6 +157,7 @@ function s() {
   fi
 }
 alias sa='s add'
+alias sap='s add --patch'
 alias se='s edit'
 alias sl='s lg'
 alias sd='s diff .'
