@@ -127,7 +127,7 @@ function svn-lg {
 }
 
 # Git.
-alias gitgrep="find . \( \( ! -name .git -and ! -name target  -and ! -name bin \) -o -prune \) -type f -print0 | xargs -0 grep --color"
+alias gitgrep="find . \( \( ! -name .git -and ! -name target -and ! -name bin \) -o -prune \) -type f -print0 | xargs -0 grep --color"
 alias gg='gitgrep'
 alias gitst='git st'
 alias gst='git status --short && echo && git lg'
