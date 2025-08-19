@@ -108,24 +108,6 @@ function serve {
   ruby -run -e httpd . -p $port
 }
 
-# SVN.
-alias svngrep="find . \( \( ! -name .svn -and ! -name target \) -o -prune \) -type f -print0 | xargs -0 grep --color"
-alias sg='svngrep'
-alias snv='svn'
-alias svnst='svn st'
-alias svd='svn diff -x -b | vim -R -'
-alias svdf='svn diff --diff-cmd vimdiffsvn'
-alias sup='svn up'
-alias svp='svn up'
-
-function svn-lg {
-  if [ $# -lt 1 ] ; then
-    svn log -l 30 | nicelogs
-  else
-    svn log "$@" | nicelogs
-  fi
-}
-
 # Git.
 alias gitgrep="find . \( \( ! -name .git -and ! -name target -and ! -name bin \) -o -prune \) -type f -print0 | xargs -0 grep --color"
 alias gg='gitgrep'
@@ -135,27 +117,13 @@ alias gdf='git df | vim -R -'
 alias gdfc='git df --cached | vim -R -'
 
 function s() {
-  if [ -e './.svn' ] || svn info > /dev/null 2>&1 ; then
-    if [ $# -lt 1 ] ; then
-      svn status
-    elif [ "$1" = "edit" ] ; then
-      $EDITOR $(svn status | awk '$1 ~ /^M$/ {print $2}')
-    elif [ "$1" = "lg" ] ; then
-      shift
-      svn-lg "$@"
-    else
-      svn "$@"
-    fi
-  elif [ -e './.git' ] || git rev-parse --git-dir > /dev/null 2>&1; then
-    if [ $# -lt 1 ] ; then
-      git status .
-    else
-      git "$@"
-    fi
+  if [ $# -lt 1 ] ; then
+    git status . --short
   else
-    echo "Unknown SCM."
+    git "$@"
   fi
 }
+compdef s=git
 alias sa='s add'
 alias sap='s add --patch'
 alias se='s edit'
