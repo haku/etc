@@ -102,7 +102,7 @@ alias mvn-find-updates='mvn versions:display-dependency-updates versions:display
 alias pip-upgrade='pip freeze --local | cut -d = -f 1  | xargs pip install -U'
 #alias node='env NODE_NO_READLINE=1 rlwrap node'
 
-alias share_http='python -m SimpleHTTPServer 44444'
+alias share_http='python -m http.server 44444'
 function serve {
   port="${1:-44444}"
   ruby -run -e httpd . -p $port
