@@ -117,7 +117,7 @@ ps_timestamp() {
 }
 
 # https://stackoverflow.com/questions/4842424
-export PS1="$(print "%{\e[0;93m%}%n%{\e[0;94m%}@%{\e[0;93m%}%m%{\e[0;94m%}:%{\e[1;96m%}%~%{\e[0m%}\$(ps_nix) \$(ps_timestamp)")
+export PS1="$(print "%{\e[0;93m%}%n%{\e[0;94m%}@%{\e[0;93m%}%m%{\e[0;94m%}:%{\e[1;96m%}%~%{\e[0m%}\$(ps_nix)  \$(ps_timestamp)")
 $ "
 export PS2="$(print '%{\e[0;34m%}>%{\e[0m%} ')"
 export RPS1=$'$(vcs_info_wrapper)'
