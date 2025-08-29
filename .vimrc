@@ -35,6 +35,7 @@ set cindent
 set tabstop=2
 set shiftwidth=2
 set expandtab
+let g:python_recommended_style = 0
 
 " searching http://vim.wikia.com/wiki/Searching
 set ignorecase
