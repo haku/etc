@@ -55,6 +55,7 @@ fi
 if [[ $#h -gt 0 ]]; then
   zstyle ':completion:*:(ssh|scp|rsync):*' hosts $h
 fi
+unset h
 
 
 # speed up git autocomplete
