@@ -76,19 +76,9 @@ expand-or-complete-with-dots() {
 zle -N expand-or-complete-with-dots
 bindkey "^I" expand-or-complete-with-dots
 
-# == Corrections ==
-
-#setopt CORRECTALL
-
 # == Colors ==
 
 export CLICOLORS=1
-export LSCOLORS=Gxfxcxdxbxegedabagacad
-
-solarized_green="\e[0;32m"
-solarized_red="\e[0;31m"
-solarized_blue="\e[0;34m"
-solarized_yellow="\e[0;33m"
 
 # == Extra prompt info ==
 
