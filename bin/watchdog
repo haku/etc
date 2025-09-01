@@ -5,10 +5,12 @@ import os
 import subprocess
 import sys
 from datetime import datetime
+from pathlib import Path
 
 MIN_UPTIME_SECONDS = 3600
 MIN_DOWNTIME_SECONDS = 15 * 60
 DOWNTIME_FILE = '/tmp/downtime'
+DEBUG_DIR = Path.home()
 
 def up_seconds():
   with open('/proc/uptime') as f:
@@ -45,6 +47,9 @@ def run(args):
       timeout=30)
   return r
 
+if not os.path.isdir(DEBUG_DIR):
+  print('debug dir does not exist: %s' % DEBUG_DIR)
+
 if up_seconds() < MIN_UPTIME_SECONDS:
   print('uptime too low.')
   sys.exit(0)
@@ -60,19 +65,18 @@ if down_seconds() < MIN_DOWNTIME_SECONDS:
   print('downtime too low: %ss' % int(down_seconds()))
   sys.exit(0)
 
-debug_info = ''
+try:
+  debug_info = ''
+  debug_info += 'ip addr:\n'
+  debug_info += run(['ip', 'addr']).stdout.decode()
 
-ipaddr = run(['ip', 'addr'])
-debug_info += 'ip addr:\n'
-debug_info += ipaddr.stdout.decode()
-
-debug_file = '%s/watchdog.%s.txt' %(
-    os.path.dirname(os.path.realpath(__file__)),
-    datetime.now().strftime('%Y%m%d-%H%M%S'),
-    )
-
-with open(debug_file, 'w') as f:
-  f.write(debug_info)
-print('Wrote debug info: %s' % debug_file)
+  debug_file = '%s/watchdog.%s.txt' %(
+      DEBUG_DIR,
+      datetime.now().strftime('%Y%m%d-%H%M%S'))
+  with open(debug_file, 'w') as f:
+    f.write(debug_info)
+  print('wrote debug info: %s' % debug_file)
+except Exception as e:
+  print('failed to gather/write debug info: %s' % e)
 
 run(['/sbin/reboot'])
