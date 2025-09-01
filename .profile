@@ -26,12 +26,10 @@ path_tidy() {
   PATH="$(echo "$PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++{if (NR > 1) printf ORS; printf $a[$1]}')"
 }
 
-if [ -d "$HOME/etc/bin" ] ; then
-  path_prepend_if_absent "$HOME/etc/bin"
-fi
-if [ -d "$HOME/bin" ] ; then
-  path_prepend_if_absent "$HOME/bin"
-fi
+[ -d "$HOME/etc/bin" ] && path_prepend_if_absent "$HOME/etc/bin"
+[ -d "$HOME/bin"     ] && path_prepend_if_absent "$HOME/bin"
+
+[ -e "$HOME/etc/dircolors" ] && eval "$(dircolors "$HOME/etc/dircolors")"
 
 scg="$HOME/cte/scg/scg"
 if [ -e "$scg" ] ; then
