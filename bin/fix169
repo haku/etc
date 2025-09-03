@@ -20,19 +20,39 @@ def wait(seconds):
   print('Waiting %s seconds...' % seconds)
   time.sleep(seconds)
 
-interfaces = json.loads(run(
-  ['ip', '-j', '-p', 'addr', 'show', 'to', '169.254.0.0/16']))
-
-if len(interfaces) < 1:
-  print('No interfaces to fix.')
-  sys.exit(0)
-
-if_to_fix = [i['ifname'] for i in interfaces]
-print('To fix: %s' % if_to_fix)
-
-for i in if_to_fix:
-  run(['ifconfig', i, 'down'])
+def restartInterface(interface):
+  run(['ifconfig', interface, 'down'])
   wait(1)
-  run(['ifconfig', i, 'up'])
+  run(['ifconfig', interface, 'up'])
   wait(5)
-  run(['dhclient', '-r', '-v', i])
+  run(['dhclient', '-r', '-v', interface])
+
+
+def try_fix_169():
+  interfaces = json.loads(run(
+    ['ip', '-j', '-p', 'addr', 'show', 'to', '169.254.0.0/16']))
+
+  if len(interfaces) < 1:
+    print('169: No interfaces to fix.')
+    return False
+
+  if_to_fix = [i['ifname'] for i in interfaces]
+  print('To fix: %s' % if_to_fix)
+
+  for i in if_to_fix:
+    restartInterface(i)
+  return True
+
+def try_fix_ipv4():
+  interfaces = json.loads(run(
+    ['ip', '-j', '-p', 'addr', 'show', 'to', '192.168.1.1/24']))
+
+  if len(interfaces) > 0:
+    print('ipv4: Nothing to fix.')
+    return False
+
+  restartInterface('eth0')
+
+for f in [ try_fix_169, try_fix_ipv4 ]:
+  if f():
+    break
