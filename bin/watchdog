@@ -70,12 +70,11 @@ try:
   debug_info += 'ip addr:\n'
   debug_info += run(['ip', 'addr']).stdout.decode()
 
-  debug_file = '%s/watchdog.%s.txt' %(
-      DEBUG_DIR,
-      datetime.now().strftime('%Y%m%d-%H%M%S'))
-  with open(debug_file, 'w') as f:
-    f.write(debug_info)
-  print('wrote debug info: %s' % debug_file)
+  debug_file = '%s/watchdog.%s.txt' % (DEBUG_DIR, datetime.now().strftime('%Y%m%d'))
+  if not os.path.exists(debug_file):
+    with open(debug_file, 'w') as f:
+      f.write(debug_info)
+    print('wrote debug info: %s' % debug_file)
 except Exception as e:
   print('failed to gather/write debug info: %s' % e)
 
