@@ -75,4 +75,4 @@ CAPABILITY 00 # regular file with capability (very expensive to lookup)
 STICKY_OTHER_WRITABLE 01;95;44 # dir that is sticky and other-writable (+t,o+w)
 OTHER_WRITABLE 01;93;44 # dir that is other-writable (o+w) and not sticky
 STICKY 01;37;44 # dir with the sticky bit set (+t) and not other-writable
-EXEC 01;94 # This is for regular files with execute permission:
+EXEC 94 # This is for regular files with execute permission:
