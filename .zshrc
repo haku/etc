@@ -35,7 +35,7 @@ autoload -Uz compinit
 compinit
 unsetopt completealiases
 
-zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=36=31"
+zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=94=91"
 zstyle ':completion:*:descriptions' format '%U%d%u'
 zstyle ':completion:*:warnings' format 'No matches for: %B%d%b'
 zstyle ':completion:*' menu select=2 # show menu when at least 2 options.
