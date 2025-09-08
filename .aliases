@@ -129,7 +129,9 @@ alias sa='s add'
 alias sap='s add --patch'
 alias se='s edit'
 alias sl='s lg'
-alias sd='s diff .'
+sd() {
+  [ $# -lt 1 ] && s diff . || s diff "$@"
+}
 alias sc='s commit -m'
 alias push='git-push-all-remotes'
 alias pull='git-pull-all-remotes'
