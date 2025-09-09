@@ -57,7 +57,7 @@ network() {
 batt() {
   b="/sys/class/power_supply/BAT1/capacity"
   if [ -e "$b" ] ; then
-    echo -n "$(cat "$b")% "
+    echo -n "$(cat "$b")%  "
   fi
 }
 
@@ -65,7 +65,7 @@ rpi_core_temp() {
   v="/usr/bin/vcgencmd"
   if [ -x "$v" ] ; then
     local temp_core="$("$v" measure_temp | sed -rn -e 's/^.*=(.*)$/\1/p')"
-    echo -n "$temp_core "
+    echo -n "$temp_core  "
   fi
 }
 
@@ -74,7 +74,7 @@ load() {
 }
 
 irssi
-network
 batt
 rpi_core_temp
+network
 load
