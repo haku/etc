@@ -104,7 +104,7 @@ ps_nix() {
 }
 ps_timestamp() {
   # Colours https://en.wikipedia.org/wiki/ANSI_escape_code#3/4_bit
-  echo -n "\e[0;97m$(date '+%Y%m%d-%H%M%S')\e[0m"
+  echo -n "\e[0;34m$(date '+%Y%m%d-%H%M%S')\e[0m"
 }
 
 # https://stackoverflow.com/questions/4842424
