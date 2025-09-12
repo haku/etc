@@ -39,6 +39,7 @@ cn() {
     cd /etc/nixos
   fi
 }
+alias cng='cd "$HOME"/src/"$HOST"/user/gui'
 alias lg='journalctl -fu'
 alias nix-shell='nix-shell --run $SHELL'
 alias scl='sudo systemctl'
