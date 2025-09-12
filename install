@@ -28,9 +28,9 @@ link ".vimrc"
 link ".screenrc"
 link ".profile"
 
-mkdir -p "$HOME/.vimperator"
-link ".vimperatorrc"
-link ".vimperator/colors"
+mkdir -p "$HOME/.pentadactyl"
+link ".pentadactylrc"
+link ".pentadactyl/colors"
 
 if [ "$(uname)" = "Darwin" ] ; then
   mkdir -p "$HOME/Library/Application Support/Karabiner"

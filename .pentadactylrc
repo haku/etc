@@ -1,0 +1,22 @@
+" reload this file with:
+" :source ~/.pentadactylrc
+
+colorscheme solarized_dark
+
+nmap -builtin ; :
+
+" remap Backspace to Shift-H (go back one page) in normal mode.
+nmap -builtin <BS> H
+
+" Ctrl-a is select all in textboxes.
+imap -builtin <C-a> <C-Home><C-S-End>
+
+" scroll faster.
+map -builtin j 5j
+map -builtin k 5k
+
+nmap -builtin <C-d> :stop<Return>
+
+"ignorekeys add mail\\.google\\.com
+"ignorekeys add docs\\.google\\.com
+"ignorekeys add calendar\\.google\\.com
