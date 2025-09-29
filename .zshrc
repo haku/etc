@@ -199,6 +199,10 @@ REPORTTIME=1 # notify on slow commands
 
 # == is ssh or sudo? ==
 
+if [ -n "$IN_NIX_SHELL" ]; then
+  SESSION_TYPE=nixshell
+fi
+
 if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
   SESSION_TYPE=ssh
 else
