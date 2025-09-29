@@ -73,7 +73,6 @@ load() {
   echo -n "#[fg=brightblue]$(uptime | sed -e "s/^.*: //" -e "s/,//g")#[fg=default]"
 }
 
-irssi
 batt
 rpi_core_temp
 network
