@@ -48,3 +48,7 @@ fi
 [ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK=$(echo "$sockets" | grep -o "/run/user/$UID/keyring.*/ssh$")
 [ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK=$(echo "$sockets" | grep -o '/tmp/keyring-.*/ssh$')
 [ -z "$SSH_AUTH_SOCK" ] || export SSH_AUTH_SOCK
+
+_lp="$HOME/.profile-local"
+[ -e "$_lp" ] && . "$_lp"
+unset _lp
