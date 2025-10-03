@@ -81,6 +81,14 @@ sad() {
 }
 alias sadl='ssh-add -L'
 
+sshmount() {
+  local host="${1%%:*}"
+  local name="$(basename "${1##*:}")"
+  local dir="$HOME/mnt/$host-$name"
+  mkdir -p "$dir"
+  sshfs "$1" "$dir"
+}
+
 # Apt.
 alias aptu='sudo aptitude update'
 alias aptsu='sudo aptitude safe-upgrade -V'
