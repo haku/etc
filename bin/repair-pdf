@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+set -eu -o pipefail
+
+for f in "$@" ; do
+  out="${f:t:r}.repaired.${f:e}"
+  echo "$out"
+  gs -o "$out" \
+    -sDEVICE=pdfwrite \
+    -dPDFSETTINGS=/prepress \
+    "$f"
+done
+
+# https://superuser.com/questions/278562/how-can-i-fix-repair-a-corrupted-pdf-file
+# https://superuser.com/questions/435410/where-are-ghostscript-options-switches-documented
+# https://ghostscript.com/docs/9.54.0/VectorDevices.htm
