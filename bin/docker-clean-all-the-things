@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -eu
+
+args=( "--filter=until=72h" )
+
+docker buildx    prune "${args[@]}"
+docker image     prune "${args[@]}"
+docker container prune "${args[@]}"
+docker system    prune "${args[@]}"
