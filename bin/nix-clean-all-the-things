@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -eu
+
+nh clean all --keep-since 5d --keep 5
+
+# https://github.com/NixOS/nix/issues/8508
+nix-collect-garbage --delete-older-than 10d
