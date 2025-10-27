@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+set -eu -o pipefail
+
+for f in "$@" ; do
+  out="${f:t:r}.smaller.${f:e}"
+  echo "$f --> $out"
+  convert -density 150 -quality 70 -resize 50% "$f" "$out"
+done
