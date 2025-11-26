@@ -45,6 +45,19 @@ alias nix-shell='nix-shell --run $SHELL'
 alias scl='sudo systemctl'
 alias st='systemctl status'
 
+hash-nix-git() {
+  local v="$1"
+  if [ -z "$v" ] ; then
+    echo "missing version"
+    return
+  fi
+
+  local d="$(mktemp -d)"
+  git archive "$v" | tar -C "$d" -x
+  nix hash path "$d"
+  rm -vr "$d"
+}
+
 # vim.
 alias -- -='vim -R -'
 alias v-='vim -'
