@@ -154,6 +154,9 @@ alias sl='s lg'
 sd() {
   [ $# -lt 1 ] && s diff . || s diff "$@"
 }
+sdc() {
+  [ $# -lt 1 ] && s diff . --cached || s diff --cached "$@"
+}
 alias sc='s commit -m'
 alias push='git-push-all-remotes'
 alias pull='git-pull-all-remotes'
