@@ -42,7 +42,7 @@ export EDITOR="vim -p"
 if ! [ -e "$SSH_AUTH_SOCK" ] ; then
   SSH_AUTH_SOCK=""
 fi
-[ -z "$SSH_AUTH_SOCK" ] && sockets="$(netstat -xl 2>&1 || echo)"
+[ -z "$SSH_AUTH_SOCK" ] && sockets="$(ss -xl 2>&1 || echo)"
 [ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK=$(echo "$sockets" | grep -o "/run/user/$UID/ssh-agent" | head -n 1)
 [ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK=$(echo "$sockets" | grep -o '/tmp/ssh-.*/agent.*$' | head -n 1)
 [ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK=$(echo "$sockets" | grep -o "/run/user/$UID/keyring.*/ssh$")
