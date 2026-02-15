@@ -21,4 +21,12 @@ if [ -e "$SSH_AUTH_SOCK" ] && [ -z "$(ssh-add -L | grep ssh- )" ] ; then
   ssh-add -c "$HOME/.ssh/$USER@$HOST."<->
 fi
 
-exec /run/current-system/sw/bin/ssh "$@"
+tryexec() {
+  if [ -x "$1" ] ; then exec "$@" ; fi
+}
+
+tryexec /run/current-system/sw/bin/ssh "$@"
+tryexec /usr/bin/ssh "$@"
+
+echo "do not know where to find ssh binary."
+exit 1
