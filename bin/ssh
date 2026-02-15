@@ -12,7 +12,7 @@ if ! [ -e "$SSH_AUTH_SOCK" ] ; then
   [ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK=$(echo "$sockets" | grep -o "$HOME/.ssh/agent/[^ ]*" | head -n 1)
 
   # old ssh-agent
-  [ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK=$(echo "$sockets" | grep -o '/tmp/ssh-.*/agent.*$' | head -n 1)
+  [ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK=$(echo "$sockets" | grep -o '/tmp/ssh-[^/]*/agent[^ ]*' | head -n 1)
 
   [ -z "$SSH_AUTH_SOCK" ] || export SSH_AUTH_SOCK
 fi
