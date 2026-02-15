@@ -1,0 +1,24 @@
+#!/usr/bin/env zsh
+set -e
+
+if ! [ -e "$SSH_AUTH_SOCK" ] ; then
+  SSH_AUTH_SOCK=""
+  sockets="$(ss -xl 2>&1 || echo)"
+
+  # nixos / modern ssh-agent
+  [ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK=$(echo "$sockets" | grep -o "/run/user/$UID/ssh-agent" | head -n 1)
+
+  # ssh agent forwarding
+  [ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK=$(echo "$sockets" | grep -o "$HOME/.ssh/agent/[^ ]*" | head -n 1)
+
+  # old ssh-agent
+  [ -z "$SSH_AUTH_SOCK" ] && SSH_AUTH_SOCK=$(echo "$sockets" | grep -o '/tmp/ssh-.*/agent.*$' | head -n 1)
+
+  [ -z "$SSH_AUTH_SOCK" ] || export SSH_AUTH_SOCK
+fi
+
+if [ -e "$SSH_AUTH_SOCK" ] && [ -z "$(ssh-add -L | grep ssh- )" ] ; then
+  ssh-add -c "$HOME/.ssh/$USER@$HOST."<->
+fi
+
+exec /run/current-system/sw/bin/ssh "$@"
