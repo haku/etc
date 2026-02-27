@@ -67,15 +67,18 @@ alias vs='vim -O'
 alias vt='vim -p'
 alias sv='sudoedit'
 
-# CLI tools.
+# grep
+alias g='grep'
+alias grep='grep --color=auto'
+alias gg='grep -iR --exclude-dir .git --exclude-dir target --exclude-dir result'
+
+# misc CLI tools.
 alias bc='bc -ql'
 alias colerr='exec 2>>( while read X; do print "\e[91m${X}\e[0m" > /dev/tty; done & )'
 alias dus='du -sh'
 alias f='fndi'
 alias fcount='find . -xdev -type f | cut -d "/" -f 2 | sort | uniq -c | sort -n'
 alias fxml='xmllint --format - | pygmentize -l xml'
-alias g='grep'
-alias grep='grep --color=auto'
 alias mgsvc='sudo sysv-rc-conf'
 alias mtr='mtr -o LDSNABWV'
 alias t='tail'
@@ -83,7 +86,6 @@ alias tf='tail -f'
 alias tre='tree -F --filelimit 15'
 alias uuid='uuidgen | tr 'A-Z' 'a-z''
 alias uwc='tr -s " " | tr " " "\n" | tr "[:upper:]" "[:lower:]" | sort | uniq -c | sort -gr'
-alias wifi='wicd-curses'
 alias ta='tmux a -d || tmux'
 
 #ssh
@@ -110,8 +112,8 @@ alias aptsh='aptitude show'
 alias apti='sudo aptitude install --without-recommends'
 
 # Linux GUI.
-alias fr='file-roller'
-alias gmp='gnome-mplayer'
+#alias fr='file-roller'
+#alias gmp='gnome-mplayer'
 alias gnome-disc-util='palimpsest'
 alias op='xdg-open'
 alias poke='gnome-screensaver-command -d'
@@ -132,8 +134,8 @@ function serve {
 }
 
 # Git.
-alias gitgrep="find . \( \( ! -name .git -and ! -name target -and ! -name bin \) -o -prune \) -type f -print0 | xargs -0 grep --color"
-alias gg='gitgrep'
+#alias gitgrep="find . \( \( ! -name .git -and ! -name target -and ! -name bin \) -o -prune \) -type f -print0 | xargs -0 grep --color"
+#alias gg='gitgrep'
 alias gitst='git st'
 alias gst='git status --short && echo && git lg'
 alias gdf='git df | vim -R -'
