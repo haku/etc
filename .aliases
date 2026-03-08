@@ -41,6 +41,7 @@ cn() {
 }
 alias cng='cd "$HOME"/src/"$HOST"/user/gui'
 alias lg='journalctl -n 25 -fu'
+alias lgu='journalctl --user -fu'
 alias nix-shell='nix-shell --run $SHELL'
 alias scl='sudo systemctl'
 alias st='systemctl status'
@@ -70,7 +71,7 @@ alias sv='sudoedit'
 # grep
 alias g='grep'
 alias grep='grep --color=auto'
-alias gg='grep -iR --exclude-dir .git --exclude-dir target --exclude-dir result'
+alias gg='grep -R --exclude-dir .git --exclude-dir target --exclude-dir result'
 
 # misc CLI tools.
 alias bc='bc -ql'
@@ -120,7 +121,7 @@ alias poke='gnome-screensaver-command -d'
 alias xc='xclip -selection clip-board'
 
 # dev tools.
-alias mci='mvn clean install'
+alias mvp='mvn clean package'
 alias mvn-tree='mvn -Dverbose dependency:tree'
 alias mvn-get-src='mvn dependency:sources && mvn dependency:resolve -Dclassifier=javadoc'
 alias mvn-find-updates='mvn versions:display-dependency-updates versions:display-plugin-updates'
