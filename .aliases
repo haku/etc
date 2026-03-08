@@ -40,7 +40,7 @@ cn() {
   fi
 }
 alias cng='cd "$HOME"/src/"$HOST"/user/gui'
-alias lg='journalctl -fu'
+alias lg='journalctl -n 25 -fu'
 alias nix-shell='nix-shell --run $SHELL'
 alias scl='sudo systemctl'
 alias st='systemctl status'
