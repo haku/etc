@@ -31,6 +31,15 @@ path_tidy() {
 
 [ -e "$HOME/etc/dircolors" ] && eval "$(dircolors "$HOME/etc/dircolors")"
 
+
+# in theory this might be neded, but enabling it seems to cause more issues that it fixes.
+# https://wiki.nixos.org/wiki/Home_Manager
+#_hmsv="$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+#[ -e "$_hmsv" ] && . "$_hmsv"
+##systemd-cat --identifier fae-debug env
+#unset _hmsv
+
+
 scg="$HOME/cte/scg/scg"
 if [ -e "$scg" ] ; then
   . "$scg"
