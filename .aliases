@@ -122,6 +122,7 @@ alias xc='xclip -selection clip-board'
 
 # dev tools.
 alias mvp='mvn clean package'
+alias mvp-st='mvn clean package -DskipTests=true'
 alias mvn-tree='mvn -Dverbose dependency:tree'
 alias mvn-get-src='mvn dependency:sources && mvn dependency:resolve -Dclassifier=javadoc'
 alias mvn-find-updates='mvn versions:display-dependency-updates versions:display-plugin-updates'
