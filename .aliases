@@ -71,7 +71,7 @@ alias sv='sudoedit'
 # grep
 alias g='grep'
 alias grep='grep --color=auto'
-alias gg='grep -R --exclude-dir .git --exclude-dir target --exclude-dir result'
+alias gg='grep -R --exclude-dir .esphome --exclude-dir .git --exclude-dir target --exclude-dir result'
 
 # misc CLI tools.
 alias bc='bc -ql'
