@@ -165,6 +165,9 @@ alias sc='s commit -m'
 alias push='git-push-all-remotes'
 alias pull='git-pull-all-remotes'
 
+# https://stackoverflow.com/questions/1904860/
+alias git-clean-all-the-things='git -c gc.reflogExpire=0 -c gc.reflogExpireUnreachable=0 -c gc.rerereresolved=0 -c gc.rerereunresolved=0 -c gc.pruneExpire=now gc'
+
 # Maths.
 function b() {
   echo "$@" | bc
