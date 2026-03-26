@@ -92,9 +92,9 @@ vcs_info_wrapper() {
   fi
 }
 
-zstyle ':vcs_info:*' formats '%F{5}[%F{2}%b%F{5}]%f'
-zstyle ':vcs_info:*' actionformats '%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f'
-zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
+zstyle ':vcs_info:*' formats '%F{13}[%F{10}%b%F{13}]%f'
+zstyle ':vcs_info:*' actionformats '%F{13}[%F{10}%b%F{11}|%F{9}%a%F{13}]%f'
+zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{9}:%F{11}%r'
 
 # == Prompt config ==
 
@@ -110,7 +110,7 @@ ps_timestamp() {
 # https://stackoverflow.com/questions/4842424
 export PS1="$(print "%{\e[0;93m%}%n%{\e[0;94m%}@%{\e[0;93m%}%m%{\e[0;94m%}:%{\e[1;96m%}%~%{\e[0m%}\$(ps_nix)  \$(ps_timestamp)")
 $ "
-export PS2="$(print '%{\e[0;34m%}>%{\e[0m%} ')"
+export PS2="$(print '%{\e[0;94m%}>%{\e[0m%} ')"
 export RPS1=$'$(vcs_info_wrapper)'
 
 # == Keyboard ==
