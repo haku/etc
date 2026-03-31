@@ -12,7 +12,7 @@ while read file ; do
       ;;
   esac
 done < <(git status --short . | awk '{
-  $1 ~ /^(MM?|A|\?\?)$/
+  $1 ~ /^(MM?|A|\?\?|UU?)$/
   if ($2 ~ /^"/) {
     match($0, /"([^"]+)"/, m)
     print m[1]
