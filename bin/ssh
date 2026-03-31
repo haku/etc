@@ -17,8 +17,9 @@ if ! [ -e "$SSH_AUTH_SOCK" ] ; then
   [ -z "$SSH_AUTH_SOCK" ] || export SSH_AUTH_SOCK
 fi
 
-if [ -e "$SSH_AUTH_SOCK" ] && [ -z "$(ssh-add -L | grep ssh- )" ] ; then
-  ssh-add -c "$HOME/.ssh/$USER@$HOST."<->
+key="$HOME/.ssh/$USER@$HOST."<->
+if [ -e "$key" ] && [ -e "$SSH_AUTH_SOCK" ] && [ -z "$(ssh-add -L | grep ssh- )" ] ; then
+  ssh-add -c "$key"
 fi
 
 tryexec() {
