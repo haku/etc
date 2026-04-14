@@ -32,7 +32,7 @@ function mkcd() {
 
 # os
 cn() {
-  local d="$HOME/src/$HOST"
+  local d="$HOME/src/nixlings"
   if [ -e "$d" ] ; then
     cd "$d"
   else
