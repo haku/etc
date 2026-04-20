@@ -39,7 +39,8 @@ cn() {
     cd /etc/nixos
   fi
 }
-alias cng='cd "$HOME"/src/"$HOST"/user/gui'
+alias cng='cd "$HOME"/src/nixlings/mosslings/"$HOST"'
+alias cns='cd "$HOME"/src/nixlings/rootlings/"$HOST"'
 alias lg='journalctl -n 25 -fu'
 alias lgu='journalctl -n 25 --user -fu'
 alias nix-shell='nix-shell --run $SHELL'
