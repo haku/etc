@@ -83,6 +83,8 @@ export CLICOLORS=1
 # == Extra prompt info ==
 
 setopt PROMPT_SUBST
+
+# https://github.com/zsh-users/zsh/blob/master/Misc/vcs_info-examples
 autoload -Uz vcs_info
 
 vcs_info_wrapper() {
@@ -92,9 +94,32 @@ vcs_info_wrapper() {
   fi
 }
 
-zstyle ':vcs_info:*' formats '%F{13}[%F{10}%b%F{13}]%f'
+zstyle ':vcs_info:*' stagedstr '+'
+zstyle ':vcs_info:*' unstagedstr '!'
+zstyle ':vcs_info:*' formats '%F{12}%c%F{11}%u %f%m %F{13}[%F{10}%b%F{13}]%f'
 zstyle ':vcs_info:*' actionformats '%F{13}[%F{10}%b%F{11}|%F{9}%a%F{13}]%f'
 zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{9}:%F{11}%r'
+
+# git: Show remote branch name for remote-tracking branches
+zstyle ':vcs_info:git*+set-message:*' hooks git-remotebranch
+
+zstyle -e ':vcs_info:git:*' check-for-changes 'estyle-cfc && reply=( true ) || reply=( false )'
+function estyle-cfc() {
+  local d
+  local -a cfc_dirs
+  cfc_dirs=(
+      ${HOME}/cte(/)
+      ${HOME}/etc(/)
+      ${HOME}/src/*(/)
+  )
+
+  for d in ${cfc_dirs}; do
+    d=${d%/##}
+    [[ $PWD == $d(|/*) ]] && return 0
+  done
+  echo 1 >&2
+  return 1
+}
 
 # == Prompt config ==
 
