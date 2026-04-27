@@ -117,7 +117,6 @@ function estyle-cfc() {
     d=${d%/##}
     [[ $PWD == $d(|/*) ]] && return 0
   done
-  echo 1 >&2
   return 1
 }
 
