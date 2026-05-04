@@ -1,0 +1,84 @@
+#!/usr/bin/env python
+
+from collections import namedtuple
+from dataclasses import dataclass
+import pathlib
+import sqlite3
+
+DB_PATH = "/home/haku/.config/faedupes/db"
+
+DbFile = namedtuple('DbFile',
+    field_names=['path', 'size', 'ctime', 'hash'],
+    defaults=[None])
+
+@dataclass
+class Stats:
+  files_added: int = 0
+  files_updated: int = 0
+
+def dbcon():
+  return sqlite3.connect(DB_PATH)
+
+def db_mktables():
+  pathlib.Path(DB_PATH).parent.mkdir(parents=True, exist_ok=True)
+  with dbcon() as db:
+    db.execute("CREATE TABLE IF NOT EXISTS files("
+               "path TEXT PRIMARY KEY NOT NULL,"
+               "size INTEGER NOT NULL,"
+               "ctime INTEGER NOT NULL,"
+               "hash TEXT)")
+
+def db_get_file(db, path):
+  rows = list(db.execute(
+      "SELECT path, size, ctime, hash FROM files"
+      f" WHERE path = ?", (str(path),)))
+  if len(rows) == 0:
+    return None
+  elif len(rows) > 1:
+    raise Error(f"Multiple rows for: {path}")
+  row = rows[0]
+  return DbFile(row[0], row[1], row[2], row[3])
+
+def db_add_files(db, paths_stats):
+  rows = [(str(path), stat.st_size, stat.st_ctime)
+          for path, stat in paths_stats]
+  db.executemany(
+      "INSERT INTO files (path, size, ctime) VALUES (?, ?, ?)", rows)
+
+def db_update_files(db, paths_stats):
+  rows = [(stat.st_size, stat.st_ctime, str(path))
+          for path, stat in paths_stats]
+  db.executemany(
+      "UPDATE files SET size=?, ctime=?, hash=null WHERE path=?", rows)
+
+def update_files(db, paths, stats):
+  to_add = []
+  to_update = []
+
+  for path in paths:
+    stat = path.stat()
+    dbf = db_get_file(db, path)
+    if dbf is None:
+      to_add += [(path, stat)]
+    elif dbf.size != stat.st_size or dbf.ctime != stat.st_ctime:
+      to_update += [(path, stat)]
+
+  db_add_files(db, to_add)
+  db_update_files(db, to_update)
+
+  stats.files_added += len(to_add)
+  stats.files_updated += len(to_update)
+
+def walk_files(start):
+  stats = Stats()
+  with dbcon() as db:
+    for root, dirs, files in start.walk():
+      paths = [start / root / f for f in files]
+      update_files(db, paths, stats)
+  print(stats)
+
+if __name__ == '__main__':
+  db_mktables()
+
+  pwd = pathlib.Path(".").resolve(strict=True)
+  walk_files(pwd)
