@@ -30,7 +30,7 @@ def db_mktables():
                "ctime INTEGER NOT NULL,"
                "hash TEXT)")
 
-def db_check_exists(db, dbfs):
+def db_check_files_exist(db, dbfs):
   keep = []
   to_rm = []
   for dbf in dbfs:
@@ -65,11 +65,25 @@ def db_update_files(db, paths_stats):
   db.executemany(
       "UPDATE files SET size=?, ctime=?, hash=null WHERE path=?", rows)
 
-def db_files_with_same_size(db, root):
+def db_files_with_same_size(db):
   rows = list(db.execute(
       "SELECT path, size, ctime, hash FROM files"
       " WHERE size IN (SELECT size FROM files"
       "  GROUP BY size HAVING COUNT(*) > 1)"))
+  return [DbFile(r[0], r[1], r[2], r[3]) for r in rows]
+
+def db_files_with_same_hash_in_dir(db, root):
+  like = str(root) + "/"
+  like = like.replace("\\", "\\\\")
+  like = like.replace("%", r"\%")
+  like = like.replace("_", r"\_")
+  like += "%"
+  rows = list(db.execute(
+      "SELECT path, size, ctime, hash FROM files"
+      " WHERE path LIKE ? ESCAPE ? AND hash IN"
+      " (SELECT hash FROM files"
+      "  WHERE hash IS NOT NULL"
+      "  GROUP BY hash HAVING COUNT(*) > 1)", (like, "\\")))
   return [DbFile(r[0], r[1], r[2], r[3]) for r in rows]
 
 def update_files(db, paths, stats):
@@ -102,28 +116,39 @@ def update_hashes(db, dbfs):
         or dbf.size != stat.st_size
         or dbf.ctime != stat.st_ctime):
       to_hash += (dbf,)
-  print(f"To hash: {len(to_hash)}")
 
-  rows = []
-  for dbf in to_hash:
-    rows += [(sha1(dbf.path), dbf.path)]
-  db.executemany(
-      "UPDATE files SET hash=? WHERE path=?", rows)
+  if len(to_hash) > 0:
+    print(f"To hash: {len(to_hash)}")
+    rows = []
+    # TODO batch so less work is lost if cancelled?
+    for dbf in to_hash:
+      rows += [(sha1(dbf.path), dbf.path)]
+    db.executemany(
+        "UPDATE files SET hash=? WHERE path=?", rows)
 
 def walk_files(start):
   stats = Stats()
   with dbcon() as db:
     for root, dirs, files in start.walk():
       paths = [start / root / f for f in files]
+      # TODO bigger DB batches?
       update_files(db, paths, stats)
-  print(stats)
+
+  if stats.files_added or stats.files_updated:
+    print(f"Files added:   {stats.files_added}")
+    print(f"Files updated: {stats.files_updated}")
 
 def find_dupes(root):
   with dbcon() as db:
-    size_dupes = db_files_with_same_size(db, root)
-  size_dupes = db_check_exists(db, size_dupes)
-  print(f"Size dupes: {len(size_dupes)}")
-  update_hashes(db, size_dupes)
+    size_dupes = db_files_with_same_size(db)
+    size_dupes = db_check_files_exist(db, size_dupes)
+    update_hashes(db, size_dupes)
+    hash_dupes = db_files_with_same_hash_in_dir(db, root)
+
+  if hash_dupes:
+    print(f"Hash dupes:    {len(hash_dupes)}")
+  for dbf in hash_dupes:
+    print(dbf.path)
 
 if __name__ == '__main__':
   db_mktables()
