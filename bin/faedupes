@@ -129,6 +129,20 @@ def update_files(db, paths, stats):
   stats.files_added += len(to_add)
   stats.files_updated += len(to_update)
 
+def walk_files(start):
+  stats = Stats()
+  with dbcon() as db:
+    all_paths = []
+    for root, dirs, files in start.walk():
+      paths = [start / root / f for f in files]
+      paths = [p for p in paths if p.is_file(follow_symlinks=False)]
+      paths = [p.resolve() for p in paths]
+      all_paths += paths
+    update_files(db, all_paths, stats)
+
+  if stats.files_added or stats.files_updated:
+    print(f"Files added, updated: {stats.files_added}, {stats.files_updated}")
+
 def sha1(path):
   with open(path, 'rb', buffering=0) as f:
     return hashlib.file_digest(f, 'sha1').hexdigest()
@@ -161,20 +175,6 @@ def update_hashes(db, dbfs):
       write_rows()
       batch_start = time.monotonic()
   write_rows()
-
-def walk_files(start):
-  stats = Stats()
-  with dbcon() as db:
-    all_paths = []
-    for root, dirs, files in start.walk():
-      paths = [start / root / f for f in files]
-      paths = [p for p in paths if p.is_file(follow_symlinks=False)]
-      paths = [p.resolve() for p in paths]
-      all_paths += paths
-    update_files(db, all_paths, stats)
-
-  if stats.files_added or stats.files_updated:
-    print(f"Files added, updated: {stats.files_added}, {stats.files_updated}")
 
 def safety_check(db, dbf_to_check, root):
   with_hash = db_files_with_hash(db, dbf_to_check.hash)
@@ -229,7 +229,6 @@ def safety_check(db, dbf_to_check, root):
     sys.exit(1)
 
   return keep
-
 
 def find_dupes(root):
   with dbcon() as db:
