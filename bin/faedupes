@@ -7,6 +7,7 @@ import hashlib
 import os
 import pathlib
 import sqlite3
+import time
 
 DB_PATH = "/home/haku/.config/faedupes/db"
 
@@ -124,14 +125,23 @@ def update_hashes(db, dbfs):
         or dbf.ctime != stat.st_ctime):
       to_hash += (dbf,)
 
-  if len(to_hash) > 0:
-    print(f"To hash: {len(to_hash)}")
-    rows = []
-    # TODO time batch so less work is lost if cancelled?
-    for dbf in to_hash:
-      rows += [(sha1(dbf.path), dbf.path)]
-    db.executemany(
-        "UPDATE files SET hash=? WHERE path=?", rows)
+  if len(to_hash) < 1:
+    return
+  print(f"To hash: {len(to_hash)}")
+
+  rows = []
+  def write_rows():
+    db.executemany("UPDATE files SET hash=? WHERE path=?", rows)
+    print(f"Wrote: {len(rows)} hashes")
+    rows.clear()
+
+  batch_start = time.monotonic()
+  for dbf in to_hash:
+    rows += [(sha1(dbf.path), dbf.path)]
+    if time.monotonic() - batch_start > 10:
+      write_rows()
+      batch_start = time.monotonic()
+  write_rows()
 
 def walk_files(start):
   stats = Stats()
