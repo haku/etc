@@ -193,9 +193,6 @@ def find_dupes(root):
     update_hashes(db, size_dupes)
     hash_dupes = db_files_with_same_hash_in_dir(db, root)
 
-  if hash_dupes:
-    print(f"Hash dupes:    {len(hash_dupes)}")
-
   with dbcon() as db:
     for dbf in hash_dupes:
       if safety_check(db, dbf):
