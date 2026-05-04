@@ -5,6 +5,7 @@ from dataclasses import dataclass
 import os
 import pathlib
 import sqlite3
+import hashlib
 
 DB_PATH = "/home/haku/.config/faedupes/db"
 
@@ -14,12 +15,12 @@ DbFile = namedtuple('DbFile',
 
 @dataclass
 class Stats:
+  files_cleaned: int = 0
   files_added: int = 0
   files_updated: int = 0
-  files_cleaned: int = 0
 
 def dbcon():
-  return sqlite3.connect(DB_PATH)
+  return sqlite3.connect(DB_PATH, autocommit=True)
 
 def db_mktables():
   pathlib.Path(DB_PATH).parent.mkdir(parents=True, exist_ok=True)
@@ -65,18 +66,10 @@ def db_update_files(db, paths_stats):
       "UPDATE files SET size=?, ctime=?, hash=null WHERE path=?", rows)
 
 def db_files_with_same_size(db, root):
-  like = str(root) + "/"
-  like = like.replace("\\", "\\\\")
-  like = like.replace("%", r"\%")
-  like = like.replace("_", r"\_")
-  like += "%"
-  escape = "\\"
-  print(like)
   rows = list(db.execute(
       "SELECT path, size, ctime, hash FROM files"
-      " WHERE path LIKE ? ESCAPE ? AND size IN"
-      " (SELECT size FROM files"
-      "  GROUP BY size HAVING COUNT(*) > 1)", (like, escape)))
+      " WHERE size IN (SELECT size FROM files"
+      "  GROUP BY size HAVING COUNT(*) > 1)"))
   return [DbFile(r[0], r[1], r[2], r[3]) for r in rows]
 
 def update_files(db, paths, stats):
@@ -97,6 +90,26 @@ def update_files(db, paths, stats):
   stats.files_added += len(to_add)
   stats.files_updated += len(to_update)
 
+def sha1(path):
+  with open(path, 'rb', buffering=0) as f:
+    return hashlib.file_digest(f, 'sha1').hexdigest()
+
+def update_hashes(db, dbfs):
+  to_hash = []
+  for dbf in dbfs:
+    stat = pathlib.Path(dbf.path).stat()
+    if (dbf.hash is None
+        or dbf.size != stat.st_size
+        or dbf.ctime != stat.st_ctime):
+      to_hash += (dbf,)
+  print(f"To hash: {len(to_hash)}")
+
+  rows = []
+  for dbf in to_hash:
+    rows += [(sha1(dbf.path), dbf.path)]
+  db.executemany(
+      "UPDATE files SET hash=? WHERE path=?", rows)
+
 def walk_files(start):
   stats = Stats()
   with dbcon() as db:
@@ -109,7 +122,8 @@ def walk_files(start):
 def find_dupes(root):
   with dbcon() as db:
     size_dupes = db_files_with_same_size(db, root)
-  print(size_dupes)
+  print(f"Size dupes: {len(size_dupes)}")
+  update_hashes(db, size_dupes)
 
 if __name__ == '__main__':
   db_mktables()
