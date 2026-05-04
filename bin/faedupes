@@ -149,6 +149,8 @@ def walk_files(start):
     for root, dirs, files in start.walk():
       paths = [start / root / f for f in files]
       paths = [p for p in paths if p.is_file(follow_symlinks=False)]
+      paths = [p.resolve() for p in paths]
+
       # TODO bigger DB batches to faster?
       update_files(db, paths, stats)
 
