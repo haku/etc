@@ -15,7 +15,6 @@ DbFile = namedtuple('DbFile',
 
 @dataclass
 class Stats:
-  files_cleaned: int = 0
   files_added: int = 0
   files_updated: int = 0
 
@@ -31,16 +30,17 @@ def db_mktables():
                "ctime INTEGER NOT NULL,"
                "hash TEXT)")
 
-def db_clean(db, stats):
+def db_check_exists(db, dbfs):
+  keep = []
   to_rm = []
-  for row in db.execute("SELECT path FROM FILES"):
-    path = row[0]
-    if not os.path.lexists(path):
-      print(path)
-      to_rm += (path,)
+  for dbf in dbfs:
+    if os.path.lexists(dbf.path):
+      keep += [dbf]
+    else:
+      to_rm += (dbf.path,)
   if len(to_rm) > 0:
     db.executemany("DELETE FROM files WHERE path=?", to_rm)
-  stats.files_cleaned += len(to_rm)
+  return keep
 
 def db_get_file(db, path):
   rows = list(db.execute(
@@ -113,7 +113,6 @@ def update_hashes(db, dbfs):
 def walk_files(start):
   stats = Stats()
   with dbcon() as db:
-    db_clean(db, stats)
     for root, dirs, files in start.walk():
       paths = [start / root / f for f in files]
       update_files(db, paths, stats)
@@ -122,6 +121,7 @@ def walk_files(start):
 def find_dupes(root):
   with dbcon() as db:
     size_dupes = db_files_with_same_size(db, root)
+  size_dupes = db_check_exists(db, size_dupes)
   print(f"Size dupes: {len(size_dupes)}")
   update_hashes(db, size_dupes)
 
