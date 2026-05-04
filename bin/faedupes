@@ -176,7 +176,7 @@ def walk_files(start):
   if stats.files_added or stats.files_updated:
     print(f"Files added, updated: {stats.files_added}, {stats.files_updated}")
 
-def safety_check(db, dbf_to_check):
+def safety_check(db, dbf_to_check, root):
   with_hash = db_files_with_hash(db, dbf_to_check.hash)
   if len(with_hash) < 2:
     print(f"Error: Files with same hash gone missing: {dbf_to_check.hash}")
@@ -199,21 +199,36 @@ def safety_check(db, dbf_to_check):
             if not os.path.samefile(dbf_to_check.path, f.path)]
   if len(others) < 1:
     print(f"Error: Other files where actually all the same file:")
-    print("\n".join(with_hash))
+    print(f"File: {dbf_to_check.path}")
+    print("Others:")
+    print("\n".join([f.path for f in with_hash]))
+    sys.exit(1)
+
+  root = root.resolve()
+  def is_in_root(path):
+    p = pathlib.Path(path).resolve()
+    return p.is_relative_to(root)
+
+  outsiders = [o for o in others if not is_in_root(o.path)]
+  if len(outsiders) < 1:
+    print(f"Error: Other files are all under this directory:")
+    print(f"File: {dbf_to_check.path}")
+    print("Others:")
+    print("\n".join([o.path for o in others]))
     sys.exit(1)
 
   keep = None
-  for other in others:
-    if filecmp.cmp(dbf_to_check.path, other.path, shallow=False):
-      keep = other
+  for o in outsiders:
+    if filecmp.cmp(dbf_to_check.path, o.path, shallow=False):
+      keep = o
       break
 
   if keep is None:
     print(f"Error: Failed to find an exact keep file in:")
-    print("\n".join(others))
+    print("\n".join([o.path for o in outsiders]))
     sys.exit(1)
 
-  return True
+  return keep
 
 
 def find_dupes(root):
@@ -225,8 +240,9 @@ def find_dupes(root):
 
   with dbcon() as db:
     for dbf in hash_dupes:
-      if safety_check(db, dbf):
-        print(dbf.path)
+      keep = safety_check(db, dbf, root)
+      if keep is not None:
+        print(f"{dbf.path}  ({keep.path})")
 
 if __name__ == '__main__':
   db_mktables()
