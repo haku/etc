@@ -2,11 +2,13 @@
 
 from collections import namedtuple
 from dataclasses import dataclass
+import argparse
 import filecmp
 import hashlib
 import os
 import pathlib
 import sqlite3
+import sys
 import time
 
 DB_PATH = "/home/haku/.config/faedupes/db"
@@ -19,6 +21,10 @@ DbFile = namedtuple('DbFile',
 class Stats:
   files_added: int = 0
   files_updated: int = 0
+
+argparser = argparse.ArgumentParser(allow_abbrev=False)
+argparser.add_argument('--reference', action="store_true")
+args = argparser.parse_args()
 
 def dbcon():
   return sqlite3.connect(DB_PATH, autocommit=False)
@@ -71,19 +77,26 @@ def db_update_files(db, paths_stats):
       "UPDATE files SET size=?, ctime=?, hash=null WHERE path=?", rows)
   db.commit()
 
-def db_files_with_same_size(db):
-  rows = list(db.execute(
-      "SELECT path, size, ctime, hash FROM files"
-      " WHERE size IN (SELECT size FROM files"
-      "  GROUP BY size HAVING COUNT(*) > 1)"))
-  return [DbFile(r[0], r[1], r[2], r[3]) for r in rows]
-
-def db_files_with_same_hash_in_dir(db, root):
-  like = str(root) + "/"
+def escape_path_for_like(path):
+  like = str(path) + "/"
   like = like.replace("\\", "\\\\")
   like = like.replace("%", r"\%")
   like = like.replace("_", r"\_")
   like += "%"
+  return like
+
+def db_files_with_sizes_from_dir(db, root):
+  like = escape_path_for_like(root)
+  rows = list(db.execute(
+      "SELECT path, size, ctime, hash FROM files"
+      " WHERE size IN"
+      " (SELECT size FROM files"
+      "  WHERE path LIKE ? ESCAPE ?"
+      "  GROUP BY size HAVING COUNT(*) > 1)", (like, "\\")))
+  return [DbFile(r[0], r[1], r[2], r[3]) for r in rows]
+
+def db_files_with_dupe_hashes_in_dir(db, root):
+  like = escape_path_for_like(root)
   rows = list(db.execute(
       "SELECT path, size, ctime, hash FROM files"
       " WHERE path LIKE ? ESCAPE ? AND hash IN"
@@ -168,27 +181,27 @@ def safety_check(db, dbf_to_check):
   with_hash = db_files_with_hash(db, dbf_to_check.hash)
   if len(with_hash) < 2:
     print(f"Error: Files with same hash gone missing: {dbf_to_check.hash}")
-    os.exit(1)
+    sys.exit(1)
 
   for dbf in with_hash:
     if not os.path.exists(dbf.path):
       print(f"Error: Other file does not exist: {dbf.path}")
-      os.exit(1)
+      sys.exit(1)
 
     if not os.path.isfile(dbf.path):
       print(f"Error: Not a regular file: {dbf.path}")
-      os.exit(1)
+      sys.exit(1)
 
     if os.path.islink(dbf.path):
       print(f"Error: Is a symlink: {dbf.path}")
-      os.exit(1)
+      sys.exit(1)
 
   others = [f for f in with_hash
             if not os.path.samefile(dbf_to_check.path, f.path)]
   if len(others) < 1:
     print(f"Error: Other files where actually all the same file:")
     print("\n".join(with_hash))
-    os.exit(1)
+    sys.exit(1)
 
   keep = None
   for other in others:
@@ -199,17 +212,17 @@ def safety_check(db, dbf_to_check):
   if keep is None:
     print(f"Error: Failed to find an exact keep file in:")
     print("\n".join(others))
-    os.exit(1)
+    sys.exit(1)
 
   return True
 
 
 def find_dupes(root):
   with dbcon() as db:
-    size_dupes = db_files_with_same_size(db)
+    size_dupes = db_files_with_sizes_from_dir(db, root)
     size_dupes = db_check_files_exist(db, size_dupes)
     update_hashes(db, size_dupes)
-    hash_dupes = db_files_with_same_hash_in_dir(db, root)
+    hash_dupes = db_files_with_dupe_hashes_in_dir(db, root)
 
   with dbcon() as db:
     for dbf in hash_dupes:
@@ -221,4 +234,9 @@ if __name__ == '__main__':
 
   pwd = pathlib.Path(".").resolve(strict=True)
   walk_files(pwd)
+
+  if args.reference:
+    print("Reference mode, skipping dupe search.")
+    sys.exit(0)
+
   find_dupes(pwd)
