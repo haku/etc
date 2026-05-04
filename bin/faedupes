@@ -21,7 +21,7 @@ class Stats:
   files_updated: int = 0
 
 def dbcon():
-  return sqlite3.connect(DB_PATH, autocommit=True)
+  return sqlite3.connect(DB_PATH, autocommit=False)
 
 def db_mktables():
   pathlib.Path(DB_PATH).parent.mkdir(parents=True, exist_ok=True)
@@ -31,6 +31,7 @@ def db_mktables():
                "size INTEGER NOT NULL,"
                "ctime INTEGER NOT NULL,"
                "hash TEXT)")
+    db.commit()
 
 def db_check_files_exist(db, dbfs):
   keep = []
@@ -42,6 +43,7 @@ def db_check_files_exist(db, dbfs):
       to_rm += (dbf.path,)
   if len(to_rm) > 0:
     db.executemany("DELETE FROM files WHERE path=?", to_rm)
+    db.commit()
   return keep
 
 def db_get_file(db, path):
@@ -60,12 +62,14 @@ def db_add_files(db, paths_stats):
           for path, stat in paths_stats]
   db.executemany(
       "INSERT INTO files (path, size, ctime) VALUES (?, ?, ?)", rows)
+  db.commit()
 
 def db_update_files(db, paths_stats):
   rows = [(stat.st_size, stat.st_ctime, str(path))
           for path, stat in paths_stats]
   db.executemany(
       "UPDATE files SET size=?, ctime=?, hash=null WHERE path=?", rows)
+  db.commit()
 
 def db_files_with_same_size(db):
   rows = list(db.execute(
@@ -132,6 +136,7 @@ def update_hashes(db, dbfs):
   rows = []
   def write_rows():
     db.executemany("UPDATE files SET hash=? WHERE path=?", rows)
+    db.commit()
     print(f"Wrote: {len(rows)} hashes")
     rows.clear()
 
@@ -146,13 +151,13 @@ def update_hashes(db, dbfs):
 def walk_files(start):
   stats = Stats()
   with dbcon() as db:
+    all_paths = []
     for root, dirs, files in start.walk():
       paths = [start / root / f for f in files]
       paths = [p for p in paths if p.is_file(follow_symlinks=False)]
       paths = [p.resolve() for p in paths]
-
-      # TODO bigger DB batches to faster?
-      update_files(db, paths, stats)
+      all_paths += paths
+    update_files(db, all_paths, stats)
 
   if stats.files_added or stats.files_updated:
     print(f"Files added:   {stats.files_added}")
