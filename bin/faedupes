@@ -24,6 +24,7 @@ class Stats:
 
 argparser = argparse.ArgumentParser(allow_abbrev=False)
 argparser.add_argument('--reference', action="store_true")
+argparser.add_argument('--verbose', action="store_true")
 args = argparser.parse_args()
 
 def dbcon():
@@ -176,6 +177,8 @@ def update_hashes(db, dbfs):
       batch_start = time.monotonic()
   write_rows()
 
+# if it is safe to delete the file, return the file that is being kept.
+# returns None if it is not a dupe and therefore is not safe to delete.
 def safety_check(db, dbf_to_check, root):
   with_hash = db_files_with_hash(db, dbf_to_check.hash)
   if len(with_hash) < 2:
@@ -198,7 +201,7 @@ def safety_check(db, dbf_to_check, root):
   others = [f for f in with_hash
             if not os.path.samefile(dbf_to_check.path, f.path)]
   if len(others) < 1:
-    print(f"Error: Other files where actually all the same file:")
+    print(f"Error: Other files were actually all the same file:")
     print(f"File: {dbf_to_check.path}")
     print("Others:")
     print("\n".join([f.path for f in with_hash]))
@@ -211,11 +214,12 @@ def safety_check(db, dbf_to_check, root):
 
   outsiders = [o for o in others if not is_in_root(o.path)]
   if len(outsiders) < 1:
-    print(f"Error: Other files are all under this directory:")
-    print(f"File: {dbf_to_check.path}")
-    print("Others:")
-    print("\n".join([o.path for o in others]))
-    sys.exit(1)
+    if args.verbose:
+      print(f"WARNING: Other files are all under this directory:")
+      print(f"File: {dbf_to_check.path}")
+      print("Others:")
+      print("\n".join([o.path for o in others]))
+    return None
 
   keep = None
   for o in outsiders:
@@ -223,10 +227,9 @@ def safety_check(db, dbf_to_check, root):
       keep = o
       break
 
-  if keep is None:
-    print(f"Error: Failed to find an exact keep file in:")
+  if keep is None and args.verbose:
+    print(f"WARNING: Failed to find an exact keep file in:")
     print("\n".join([o.path for o in outsiders]))
-    sys.exit(1)
 
   return keep
 
