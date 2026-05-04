@@ -174,8 +174,7 @@ def walk_files(start):
     update_files(db, all_paths, stats)
 
   if stats.files_added or stats.files_updated:
-    print(f"Files added:   {stats.files_added}")
-    print(f"Files updated: {stats.files_updated}")
+    print(f"Files added, updated: {stats.files_added}, {stats.files_updated}")
 
 def safety_check(db, dbf_to_check):
   with_hash = db_files_with_hash(db, dbf_to_check.hash)
