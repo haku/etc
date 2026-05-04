@@ -2,10 +2,11 @@
 
 from collections import namedtuple
 from dataclasses import dataclass
+import filecmp
+import hashlib
 import os
 import pathlib
 import sqlite3
-import hashlib
 
 DB_PATH = "/home/haku/.config/faedupes/db"
 
@@ -86,6 +87,12 @@ def db_files_with_same_hash_in_dir(db, root):
       "  GROUP BY hash HAVING COUNT(*) > 1)", (like, "\\")))
   return [DbFile(r[0], r[1], r[2], r[3]) for r in rows]
 
+def db_files_with_hash(db, hsh):
+  rows = list(db.execute(
+      "SELECT path, size, ctime, hash FROM files"
+      " WHERE hash=?", (hsh,)))
+  return [DbFile(r[0], r[1], r[2], r[3]) for r in rows]
+
 def update_files(db, paths, stats):
   to_add = []
   to_update = []
@@ -120,7 +127,7 @@ def update_hashes(db, dbfs):
   if len(to_hash) > 0:
     print(f"To hash: {len(to_hash)}")
     rows = []
-    # TODO batch so less work is lost if cancelled?
+    # TODO time batch so less work is lost if cancelled?
     for dbf in to_hash:
       rows += [(sha1(dbf.path), dbf.path)]
     db.executemany(
@@ -131,12 +138,53 @@ def walk_files(start):
   with dbcon() as db:
     for root, dirs, files in start.walk():
       paths = [start / root / f for f in files]
-      # TODO bigger DB batches?
+      paths = [p for p in paths if p.is_file(follow_symlinks=False)]
+      # TODO bigger DB batches to faster?
       update_files(db, paths, stats)
 
   if stats.files_added or stats.files_updated:
     print(f"Files added:   {stats.files_added}")
     print(f"Files updated: {stats.files_updated}")
+
+def safety_check(db, dbf_to_check):
+  with_hash = db_files_with_hash(db, dbf_to_check.hash)
+  if len(with_hash) < 2:
+    print(f"Error: Files with same hash gone missing: {dbf_to_check.hash}")
+    os.exit(1)
+
+  for dbf in with_hash:
+    if not os.path.exists(dbf.path):
+      print(f"Error: Other file does not exist: {dbf.path}")
+      os.exit(1)
+
+    if not os.path.isfile(dbf.path):
+      print(f"Error: Not a regular file: {dbf.path}")
+      os.exit(1)
+
+    if os.path.islink(dbf.path):
+      print(f"Error: Is a symlink: {dbf.path}")
+      os.exit(1)
+
+  others = [f for f in with_hash
+            if not os.path.samefile(dbf_to_check.path, f.path)]
+  if len(others) < 1:
+    print(f"Error: Other files where actually all the same file:")
+    print("\n".join(with_hash))
+    os.exit(1)
+
+  keep = None
+  for other in others:
+    if filecmp.cmp(dbf_to_check.path, other.path, shallow=False):
+      keep = other
+      break
+
+  if keep is None:
+    print(f"Error: Failed to find an exact keep file in:")
+    print("\n".join(others))
+    os.exit(1)
+
+  return True
+
 
 def find_dupes(root):
   with dbcon() as db:
@@ -147,8 +195,11 @@ def find_dupes(root):
 
   if hash_dupes:
     print(f"Hash dupes:    {len(hash_dupes)}")
-  for dbf in hash_dupes:
-    print(dbf.path)
+
+  with dbcon() as db:
+    for dbf in hash_dupes:
+      if safety_check(db, dbf):
+        print(dbf.path)
 
 if __name__ == '__main__':
   db_mktables()
