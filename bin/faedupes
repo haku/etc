@@ -157,7 +157,7 @@ def db_files_with_dupe_hashes_in_dir(db, root):
 def db_files_with_hash(db, hsh):
   rows = list(db.execute(
       "SELECT path, size, ctime, hash FROM files"
-      " WHERE hash=?", (hsh,)))
+      " WHERE hash=? ORDER BY path ASC", (hsh,)))
   return [DbFile(r[0], r[1], r[2], r[3]) for r in rows]
 
 def update_files(db, paths):
