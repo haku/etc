@@ -20,6 +20,7 @@ argparser = argparse.ArgumentParser(allow_abbrev=False)
 argparser.add_argument('--quick',     action="store_true")
 argparser.add_argument('--reference', action="store_true")
 argparser.add_argument('--verbose', '-v', action="count", default=0)
+argparser.add_argument('--write-script', type=pathlib.Path, metavar="PATH")
 args = argparser.parse_args()
 
 db_has_changed = False
@@ -299,6 +300,16 @@ def find_dupes(root):
     hash_dupes = db_files_with_dupe_hashes_in_dir(db, root)
     vprint(f"Hash dupes: {len(hash_dupes)}")
 
+  script = [
+      "#!/usr/bin/env bash",
+      "set -eu",
+  ]
+  def add_to_script(dbf, keep):
+    if not args.write_script:
+      return
+    # all on one like to make it easy to grep/filter.
+    script.append(f"rm -v \"{dbf.path.replace('"', r'\"')}\" # {keep.path}")
+
   dupe_count = 0
   dupe_size = 0
   with dbcon() as db:
@@ -307,9 +318,16 @@ def find_dupes(root):
       if keep is not None:
         rel_path = os.path.relpath(dbf.path, root)
         print(f"{rel_path}  ({keep.path})")
+        add_to_script(dbf, keep)
         dupe_count += 1
         dupe_size += dbf.size
   print(f"Dupes: {dupe_count} files, {fmt_size(dupe_size)}")
+
+  if args.write_script and dupe_count > 0:
+    script_path = pathlib.Path(args.write_script)
+    with open(script_path, 'w') as f:
+      f.write("\n".join(script))
+    print(f"Wrote script: {script_path}")
 
 def cleanup_and_exit():
   db_cleanup()
