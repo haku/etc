@@ -48,7 +48,7 @@ def db_check_files_exist(db, dbfs):
     if os.path.lexists(dbf.path):
       keep += [dbf]
     else:
-      to_rm += (dbf.path,)
+      to_rm += [(dbf.path,)]
   if len(to_rm) > 0:
     db.executemany("DELETE FROM files WHERE path=?", to_rm)
     db.commit()
