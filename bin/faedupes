@@ -23,8 +23,9 @@ class Stats:
   files_updated: int = 0
 
 argparser = argparse.ArgumentParser(allow_abbrev=False)
+argparser.add_argument('--quick',     action="store_true")
 argparser.add_argument('--reference', action="store_true")
-argparser.add_argument('--verbose', action="store_true")
+argparser.add_argument('--verbose',   action="store_true")
 args = argparser.parse_args()
 
 def dbcon():
@@ -222,10 +223,13 @@ def safety_check(db, dbf_to_check, root):
     return None
 
   keep = None
-  for o in outsiders:
-    if filecmp.cmp(dbf_to_check.path, o.path, shallow=False):
-      keep = o
-      break
+  if args.quick:
+    keep = outsiders[0]
+  else:
+    for o in outsiders:
+      if filecmp.cmp(dbf_to_check.path, o.path, shallow=False):
+        keep = o
+        break
 
   if keep is None and args.verbose:
     print(f"WARNING: Failed to find an exact keep file in:")
@@ -253,7 +257,10 @@ if __name__ == '__main__':
   walk_files(pwd)
 
   if args.reference:
-    print("Reference mode, skipping dupe search.")
+    print("Reference Mode: Skipping dupe search.")
     sys.exit(0)
+
+  if args.quick:
+    print("Quick Mode: Skipping byte-for-byte file comparisons.")
 
   find_dupes(pwd)
