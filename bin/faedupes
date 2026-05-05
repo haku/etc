@@ -132,13 +132,13 @@ def escape_path_for_like(path):
   return like
 
 def db_files_with_sizes_from_dir(db, root):
+  # TODO investigate creating a temp table for dupe sizes?
   like = escape_path_for_like(root)
   rows = list(db.execute(
-      "SELECT path, size, ctime, hash FROM files"
-      " WHERE size IN"
-      " (SELECT size FROM files"
-      "  WHERE path LIKE ? ESCAPE ?"
-      "  GROUP BY size HAVING COUNT(*) > 1)", (like, "\\")))
+      "SELECT path, size, ctime, hash FROM files WHERE"
+      " size IN (SELECT size FROM files  WHERE path LIKE ? ESCAPE ?)"
+      " AND size IN (SELECT size FROM files GROUP BY size HAVING COUNT(*) > 1)",
+      (like, "\\")))
   return [DbFile(r[0], r[1], r[2], r[3]) for r in rows]
 
 def db_files_with_dupe_hashes_in_dir(db, root):
