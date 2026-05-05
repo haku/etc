@@ -28,18 +28,48 @@ argparser.add_argument('--reference', action="store_true")
 argparser.add_argument('--verbose',   action="store_true")
 args = argparser.parse_args()
 
-def dbcon():
-  return sqlite3.connect(DB_PATH, autocommit=False)
+db_has_changed = False
+
+def dbcon(autocommit=False):
+  con = sqlite3.connect(DB_PATH, autocommit=autocommit)
+  #con.set_trace_callback(print)
+  return con
+
+def db_changed():
+  global db_has_changed
+  db_has_changed = True
+
+def db_cleanup():
+  global db_has_changed
+  if not db_has_changed:
+    return
+  with dbcon(autocommit=True) as db:
+    print("Optimising DB...")
+    db.execute("VACUUM")
+    db.execute("ANALYZE")
 
 def db_mktables():
   pathlib.Path(DB_PATH).parent.mkdir(parents=True, exist_ok=True)
-  with dbcon() as db:
+  with dbcon(autocommit=True) as db:
+    db.execute("PRAGMA journal_mode = WAL")
+    db.execute("PRAGMA synchronous = NORMAL")
+    db.execute("PRAGMA temp_store = MEMORY")
+
     db.execute("CREATE TABLE IF NOT EXISTS files("
                "path TEXT PRIMARY KEY NOT NULL,"
                "size INTEGER NOT NULL,"
                "ctime INTEGER NOT NULL,"
                "hash TEXT)")
-    db.commit()
+
+# these indexes are for:
+# EXPLAIN QUERY PLAN SELECT size FROM files WHERE path LIKE '/some/file/path/%' ESCAPE '\' GROUP BY size HAVING COUNT(*) > 1;
+# EXPLAIN QUERY PLAN SELECT hash FROM files WHERE hash IS NOT NULL GROUP BY hash HAVING COUNT(*) > 1;
+# EXPLAIN QUERY PLAN SELECT path, size, ctime, hash FROM files WHERE hash='some hash';
+    db.execute("CREATE INDEX IF NOT EXISTS files_path_size_idx "
+               "ON files (path,size)")
+    db.execute("CREATE INDEX IF NOT EXISTS files_hash_idx "
+               "ON files (hash,path,size,ctime) WHERE hash IS NOT NULL")
+
 
 def db_check_files_exist(db, dbfs):
   keep = []
@@ -52,6 +82,7 @@ def db_check_files_exist(db, dbfs):
   if len(to_rm) > 0:
     db.executemany("DELETE FROM files WHERE path=?", to_rm)
     db.commit()
+    db_changed()
   return keep
 
 def db_get_file(db, path):
@@ -66,18 +97,26 @@ def db_get_file(db, path):
   return DbFile(row[0], row[1], row[2], row[3])
 
 def db_add_files(db, paths_stats):
+  if len(paths_stats) < 1:
+    return
+
   rows = [(str(path), stat.st_size, stat.st_ctime)
           for path, stat in paths_stats]
   db.executemany(
       "INSERT INTO files (path, size, ctime) VALUES (?, ?, ?)", rows)
   db.commit()
+  db_changed()
 
 def db_update_files(db, paths_stats):
+  if len(paths_stats) < 1:
+    return
+
   rows = [(stat.st_size, stat.st_ctime, str(path))
           for path, stat in paths_stats]
   db.executemany(
       "UPDATE files SET size=?, ctime=?, hash=null WHERE path=?", rows)
   db.commit()
+  db_changed()
 
 def escape_path_for_like(path):
   like = str(path) + "/"
@@ -165,8 +204,12 @@ def update_hashes(db, dbfs):
   rows = []
   batch_start = time.monotonic()
   def write_rows():
+    if len(rows) < 1:
+      return
+
     db.executemany("UPDATE files SET hash=? WHERE path=?", rows)
     db.commit()
+    db_changed()
     dur = int(time.monotonic() - batch_start)
     print(f"Generated: {len(rows)} hashes in {dur} seconds")
     rows.clear()
@@ -250,6 +293,10 @@ def find_dupes(root):
       if keep is not None:
         print(f"{dbf.path}  ({keep.path})")
 
+def cleanup_and_exit():
+  db_cleanup()
+  sys.exit(0)
+
 if __name__ == '__main__':
   db_mktables()
 
@@ -258,9 +305,10 @@ if __name__ == '__main__':
 
   if args.reference:
     print("Reference Mode: Skipping dupe search.")
-    sys.exit(0)
+    cleanup_and_exit()
 
   if args.quick:
     print("Quick Mode: Skipping byte-for-byte file comparisons.")
 
   find_dupes(pwd)
+  cleanup_and_exit()
