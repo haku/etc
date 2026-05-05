@@ -176,6 +176,7 @@ def walk_files(start):
       paths = [p for p in paths if p.is_file(follow_symlinks=False)]
       paths = [p.resolve() for p in paths]
       all_paths += paths
+    print(f"Files here: {len(all_paths)}")
     update_files(db, all_paths)
 
 def sha1(path):
@@ -193,7 +194,7 @@ def update_hashes(db, dbfs):
 
   if len(to_hash) < 1:
     return
-  print(f"To hash: {len(to_hash)}")
+  print(f"Files to hash: {len(to_hash)}")
 
   rows = []
   batch_start = time.monotonic()
@@ -205,7 +206,7 @@ def update_hashes(db, dbfs):
     db.commit()
     db_changed()
     dur = int(time.monotonic() - batch_start)
-    print(f"Generated: {len(rows)} hashes in {dur} seconds")
+    print(f"Hashed: {len(rows)} / {dur} seconds")
     rows.clear()
 
   for dbf in to_hash:
@@ -220,26 +221,26 @@ def update_hashes(db, dbfs):
 def safety_check(db, dbf_to_check, root):
   with_hash = db_files_with_hash(db, dbf_to_check.hash)
   if len(with_hash) < 2:
-    print(f"Error: Files with same hash gone missing: {dbf_to_check.hash}")
+    print(f"ERROR: Files with same hash gone missing: {dbf_to_check.hash}")
     sys.exit(1)
 
   for dbf in with_hash:
     if not os.path.exists(dbf.path):
-      print(f"Error: Other file does not exist: {dbf.path}")
+      print(f"ERROR: Other file does not exist: {dbf.path}")
       sys.exit(1)
 
     if not os.path.isfile(dbf.path):
-      print(f"Error: Not a regular file: {dbf.path}")
+      print(f"ERROR: Not a regular file: {dbf.path}")
       sys.exit(1)
 
     if os.path.islink(dbf.path):
-      print(f"Error: Is a symlink: {dbf.path}")
+      print(f"ERROR: Is a symlink: {dbf.path}")
       sys.exit(1)
 
   others = [f for f in with_hash
             if not os.path.samefile(dbf_to_check.path, f.path)]
   if len(others) < 1:
-    print(f"Error: Other files were actually all the same file:")
+    print(f"ERROR: Other files were actually all the same file:")
     print(f"File: {dbf_to_check.path}")
     print("Others:")
     print("\n".join([f.path for f in with_hash]))
