@@ -19,14 +19,25 @@ DbFile = namedtuple('DbFile',
 argparser = argparse.ArgumentParser(allow_abbrev=False)
 argparser.add_argument('--quick',     action="store_true")
 argparser.add_argument('--reference', action="store_true")
-argparser.add_argument('--verbose',   action="store_true")
+argparser.add_argument('--verbose', '-v', action="count", default=0)
 args = argparser.parse_args()
 
 db_has_changed = False
 
+def vprint(msg):
+  if args.verbose:
+    print(msg)
+
+def fmt_size(size_bytes):
+  for unit in ['B', 'KiB', 'MiB', 'GiB']:
+    if size_bytes < 1024:
+      return f"{size_bytes:.2f} {unit}"
+    size_bytes /= 1024
+
 def dbcon(autocommit=False):
   con = sqlite3.connect(DB_PATH, autocommit=autocommit)
-  #con.set_trace_callback(print)
+  if args.verbose >= 2:
+    con.set_trace_callback(print)
   return con
 
 def db_changed():
@@ -279,14 +290,22 @@ def find_dupes(root):
   with dbcon() as db:
     size_dupes = db_files_with_sizes_from_dir(db, root)
     size_dupes = db_check_files_exist(db, size_dupes)
+    vprint(f"Size dupes: {len(size_dupes)}")
+
     update_hashes(db, size_dupes)
     hash_dupes = db_files_with_dupe_hashes_in_dir(db, root)
+    vprint(f"Hash dupes: {len(hash_dupes)}")
 
+  dupe_count = 0
+  dupe_size = 0
   with dbcon() as db:
     for dbf in hash_dupes:
       keep = safety_check(db, dbf, root)
       if keep is not None:
         print(f"{dbf.path}  ({keep.path})")
+        dupe_count += 1
+        dupe_size += dbf.size
+  print(f"Dupes: {dupe_count} files, {fmt_size(dupe_size)}")
 
 def cleanup_and_exit():
   db_cleanup()
