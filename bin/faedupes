@@ -159,6 +159,9 @@ def update_files(db, paths, stats):
 
   for path in paths:
     stat = path.stat()
+    if stat.st_size == 0:
+      continue
+
     dbf = db_get_file(db, path)
     if dbf is None:
       to_add += [(path, stat)]
