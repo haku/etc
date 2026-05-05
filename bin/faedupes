@@ -207,7 +207,8 @@ def update_hashes(db, dbfs):
 
   if len(to_hash) < 1:
     return
-  print(f"Files to hash: {len(to_hash)}")
+  size = sum([f.size for f in to_hash])
+  print(f"To hash: {len(to_hash)} files, {fmt_size(size)}")
 
   rows = []
   batch_start = time.monotonic()
