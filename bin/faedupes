@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 from collections import namedtuple
-from dataclasses import dataclass
 import argparse
 import filecmp
 import hashlib
@@ -16,11 +15,6 @@ DB_PATH = pathlib.Path.home() / ".config/faedupes/db"
 DbFile = namedtuple('DbFile',
     field_names=['path', 'size', 'ctime', 'hash'],
     defaults=[None])
-
-@dataclass
-class Stats:
-  files_added: int = 0
-  files_updated: int = 0
 
 argparser = argparse.ArgumentParser(allow_abbrev=False)
 argparser.add_argument('--quick',     action="store_true")
@@ -153,7 +147,7 @@ def db_files_with_hash(db, hsh):
       " WHERE hash=?", (hsh,)))
   return [DbFile(r[0], r[1], r[2], r[3]) for r in rows]
 
-def update_files(db, paths, stats):
+def update_files(db, paths):
   to_add = []
   to_update = []
 
@@ -171,11 +165,10 @@ def update_files(db, paths, stats):
   db_add_files(db, to_add)
   db_update_files(db, to_update)
 
-  stats.files_added += len(to_add)
-  stats.files_updated += len(to_update)
+  if len(to_add) or len(to_update):
+    print(f"Files added, updated: {len(to_add)}, {len(to_update)}")
 
 def walk_files(start):
-  stats = Stats()
   with dbcon() as db:
     all_paths = []
     for root, dirs, files in start.walk():
@@ -183,10 +176,7 @@ def walk_files(start):
       paths = [p for p in paths if p.is_file(follow_symlinks=False)]
       paths = [p.resolve() for p in paths]
       all_paths += paths
-    update_files(db, all_paths, stats)
-
-  if stats.files_added or stats.files_updated:
-    print(f"Files added, updated: {stats.files_added}, {stats.files_updated}")
+    update_files(db, all_paths)
 
 def sha1(path):
   with open(path, 'rb', buffering=0) as f:
