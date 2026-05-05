@@ -203,11 +203,11 @@ def update_hashes(db, dbfs):
     if (dbf.hash is None
         or dbf.size != stat.st_size
         or dbf.ctime != stat.st_ctime):
-      to_hash += (dbf,)
+      to_hash += [(dbf, stat)]
 
   if len(to_hash) < 1:
     return
-  size = sum([f.size for f in to_hash])
+  size = sum([f.size for f, s in to_hash])
   print(f"To hash: {len(to_hash)} files, {fmt_size(size)}")
 
   rows = []
@@ -216,15 +216,15 @@ def update_hashes(db, dbfs):
     if len(rows) < 1:
       return
 
-    db.executemany("UPDATE files SET hash=? WHERE path=?", rows)
+    db.executemany("UPDATE files SET hash=?,size=?,ctime=? WHERE path=?", rows)
     db.commit()
     db_changed()
     dur = int(time.monotonic() - batch_start)
     print(f"Hashed: {len(rows)} / {dur} seconds")
     rows.clear()
 
-  for dbf in to_hash:
-    rows += [(sha1(dbf.path), dbf.path)]
+  for dbf, stat in to_hash:
+    rows += [(sha1(dbf.path), stat.st_size, stat.st_ctime, dbf.path)]
     if time.monotonic() - batch_start > 10:
       write_rows()
       batch_start = time.monotonic()
