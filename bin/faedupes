@@ -11,7 +11,7 @@ import sqlite3
 import sys
 import time
 
-DB_PATH = "/home/haku/.config/faedupes/db"
+DB_PATH = pathlib.Path.home() / ".config/faedupes/db"
 
 DbFile = namedtuple('DbFile',
     field_names=['path', 'size', 'ctime', 'hash'],
