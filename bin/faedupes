@@ -149,7 +149,9 @@ def db_files_with_dupe_hashes_in_dir(db, root):
       " WHERE path LIKE ? ESCAPE ? AND hash IN"
       " (SELECT hash FROM files"
       "  WHERE hash IS NOT NULL"
-      "  GROUP BY hash HAVING COUNT(*) > 1)", (like, "\\")))
+      "  GROUP BY hash HAVING COUNT(*) > 1)"
+      "ORDER BY path ASC",
+      (like, "\\")))
   return [DbFile(r[0], r[1], r[2], r[3]) for r in rows]
 
 def db_files_with_hash(db, hsh):
@@ -302,7 +304,8 @@ def find_dupes(root):
     for dbf in hash_dupes:
       keep = safety_check(db, dbf, root)
       if keep is not None:
-        print(f"{dbf.path}  ({keep.path})")
+        rel_path = os.path.relpath(dbf.path, root)
+        print(f"{rel_path}  ({keep.path})")
         dupe_count += 1
         dupe_size += dbf.size
   print(f"Dupes: {dupe_count} files, {fmt_size(dupe_size)}")
