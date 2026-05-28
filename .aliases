@@ -62,8 +62,7 @@ hash-nix-git() {
 
 # vim.
 alias -- -='vim -R -'
-alias v-='vim -'
-alias v='vim'
+alias v='vim -p'
 alias vd='vimdiff'
 alias vs='vim -O'
 alias vt='vim -p'
