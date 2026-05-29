@@ -44,7 +44,7 @@ alias cns='cd "$HOME"/src/nixlings/rootlings/"$HOST"'
 alias lg='journalctl -n 25 -fu'
 alias lgu='journalctl -n 25 --user -fu'
 alias nix-shell='nix-shell --run $SHELL'
-alias scl='sudo systemctl'
+alias ctl='sudo systemctl'
 alias st='systemctl status'
 
 hash-nix-git() {
