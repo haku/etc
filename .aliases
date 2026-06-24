@@ -11,7 +11,7 @@ alias lnew='ls -lhrtc | tail'
 alias lnewr='find . -printf "%TY-%Tm-%Td %TH:%TM %p\n" | sort | tail'
 alias lbig='ls -lhrsS | tail'
 
-function adv_ls() {
+adv_ls() {
   alias  1='LC_ALL=C ls -1F  --group-directories-first'
   alias  l='LC_ALL=C ls -CF  --group-directories-first'
   alias ll='LC_ALL=C ls -alF --group-directories-first'
@@ -26,11 +26,29 @@ alias gh='cat ~/.zsh_history | grep --text'
 alias psg='ps aux | grep'
 alias pstree='ps -AHwef'
 
-function mkcd() {
+mkcd() {
     mkdir -p -- "$1" && cd -- "$1"
 }
+compdef mkcd=cd
 
-# os
+# safety
+alias mv='mv --no-clobber'
+alias mvi='mv --interactive'
+
+# systemd
+ctl() {
+  if [[ "$1" =~ ^(start|stop|restart|reload|reset-failed|reload-or-restart)$ ]] ; then
+    sudo systemctl "$@"
+  else
+    systemctl "$@"
+  fi
+}
+compdef ctl=systemctl
+alias st='systemctl status'
+alias lg='journalctl -n 25 -fu'
+alias lgu='journalctl -n 25 --user -fu'
+
+# nix
 cn() {
   local d="$HOME/src/nixlings"
   if [ -e "$d" ] ; then
@@ -41,11 +59,7 @@ cn() {
 }
 alias cng='cd "$HOME"/src/nixlings/mosslings/"$HOST"'
 alias cns='cd "$HOME"/src/nixlings/rootlings/"$HOST"'
-alias lg='journalctl -n 25 -fu'
-alias lgu='journalctl -n 25 --user -fu'
 alias nix-shell='nix-shell --run $SHELL'
-alias ctl='sudo systemctl'
-alias st='systemctl status'
 
 hash-nix-git() {
   local v="$1"
@@ -130,7 +144,7 @@ alias pip-upgrade='pip freeze --local | cut -d = -f 1  | xargs pip install -U'
 #alias node='env NODE_NO_READLINE=1 rlwrap node'
 
 alias share_http='python3 -m http.server 44444'
-function serve {
+serve() {
   port="${1:-44444}"
   ruby -run -e httpd . -p $port
 }
@@ -139,7 +153,7 @@ function serve {
 #alias gitgrep="find . \( \( ! -name .git -and ! -name target -and ! -name bin \) -o -prune \) -type f -print0 | xargs -0 grep --color"
 #alias gg='gitgrep'
 alias vigit='vim ~/.gitconfig'
-function s() {
+s() {
   if [ $# -lt 1 ] ; then
     git status . --short
   else
@@ -165,33 +179,33 @@ alias pull='git-pull-all-remotes'
 alias git-clean-all-the-things='git -c gc.reflogExpire=0 -c gc.reflogExpireUnreachable=0 -c gc.rerereresolved=0 -c gc.rerereunresolved=0 -c gc.pruneExpire=now gc'
 
 # Maths.
-function b() {
+b() {
   echo "$@" | bc
 }
-function hextobin() {
+hextobin() {
   in="$(echo $1 | tr "[:lower:]" "[:upper:]")"
   echo "ibase=16; obase=2; $in"|bc
 }
-function bintohex() {
+bintohex() {
   echo "obase=16; ibase=2; $1"|bc
 }
-function hextodec() {
+hextodec() {
   in=$(echo $1 | tr "[:lower:]" "[:upper:]")
   echo "ibase=16; $in"|bc
 }
-function dectohex() {
+dectohex() {
   echo "obase=16; $1"|bc
 }
-function bintodec() {
+bintodec() {
   echo "ibase=2; $1"|bc
 }
-function dectobin() {
+dectobin() {
   echo "obase=2; $1"|bc
 }
 
 # Time.
 alias utime='date +%s'
-function etime() {
+etime() {
   if [ "$(uname -s)" = "Linux" ] ; then
     date -d "@${1}"
   else
@@ -208,4 +222,4 @@ alias vlcgif='vlc --demux avformat'
 alias ffmpeg='ffmpeg -hide_banner'
 
 # Strings.
-function join { local IFS="$1"; shift; echo "$*"; }
+join() { local IFS="$1"; shift; echo "$*"; }
