@@ -57,7 +57,7 @@ cn() {
     cd /etc/nixos
   fi
 }
-alias cng='cd "$HOME"/src/nixlings/mosslings/"$HOST"'
+alias cng='cd "$HOME"/src/nixlings/glowies'
 alias cns='cd "$HOME"/src/nixlings/rootlings/"$HOST"'
 alias nix-shell='nix-shell --run $SHELL'
 
