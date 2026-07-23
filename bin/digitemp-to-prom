@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -eu
+
+# sudo modprobe -r ds2490
+# or add "blacklist ds2490" to /etc/modprobe.d/blacklist.conf
+
+# $ cat /etc/udev/rules.d/46_ds2490.rules
+# SUBSYSTEM=="usb", ATTR{idVendor}=="04fa", ATTR{idProduct}=="2490", GROUP="dialout", MODE="0660"
+
+# $ sudo ln -s /tmp/prom_digitemp /var/lib/prometheus/node-exporter/prom_digitemp.prom
+
+# $ crontab -l
+# * * * * * /home/pi/etc/bin/digitemp-to-prom > /dev/null 2>&1
+
+dt="/home/pi/3src/digitemp-3.3.2/digitemp_DS2490"
+if ! [ -x "$dt" ] ; then
+  exit 1
+fi
+
+read_sensor() {
+  local number="$1"
+
+  local t=''
+  for i in $(seq 0 9) ; do
+    t="$($dt -q -a -c '/home/pi/.digitemprc' -o 's%s=%.2C' | sed -rne "s/^s${number}=(.*)$/\1/p")"
+    if [ "$t" != "85.00" ] ; then break ; fi
+    sleep 1
+  done
+  echo "$t"
+}
+
+s0="$(read_sensor 0)"
+if [ -n "$s0" ] ; then
+  echo -e "# TYPE sensor_temperature_celsius gauge\nsensor_temperature_celsius{sensor_index=\"s0\"} $s0" \
+    > "/tmp/prom_digitemp_tmp"
+else
+  echo "" > "/tmp/prom_digitemp_tmp"
+fi
+mv "/tmp/prom_digitemp_tmp" "/tmp/prom_digitemp"
