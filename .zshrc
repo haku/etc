@@ -108,10 +108,12 @@ function estyle-cfc() {
   local d
   local -a cfc_dirs
   cfc_dirs=(
-      ${HOME}/cte(/)
       ${HOME}/etc(/)
       ${HOME}/src/*(/)
   )
+  if [ -e "${HOME}/cte" ] ; then
+    cfc_dirs+=( ${HOME}/cte(/) )
+  fi
 
   for d in ${cfc_dirs}; do
     d=${d%/##}
