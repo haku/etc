@@ -1,8 +1,5 @@
 # change which remote is checked: git branch --set-upstream-to=...
 _git_upstream_check() {
-  local root
-  root=$(git rev-parse --show-toplevel 2>/dev/null) || return
-
   local upstream
   upstream=$(git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null) || return
   local remote=${upstream%%/*}
@@ -11,6 +8,8 @@ _git_upstream_check() {
   url=$(git remote get-url "$remote" 2>/dev/null) || return
   [[ "$url" == git@* ]] || return
 
+  local root
+  root=$(git rev-parse --show-toplevel 2>/dev/null) || return
   local rel="${root#/}"
   local cache_root="${XDG_CACHE_HOME:-$HOME/.cache}/git-upstream-check"
   local stamp="$cache_root/$rel"
