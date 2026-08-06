@@ -1,9 +1,13 @@
 # change which remote is checked: git branch --set-upstream-to=...
 _git_upstream_check() {
   local upstream
-  upstream=$(git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null) || return
-  local remote=${upstream%%/*}
+  upstream=$(git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null)
+  if [ -z "$upstream" ] && [ -e .git ] ; then
+    print -P "%F{11}  upstream not set%f"
+    return
+  fi
 
+  local remote=${upstream%%/*}
   local url
   url=$(git remote get-url "$remote" 2>/dev/null) || return
   [[ "$url" == git@* ]] || return
