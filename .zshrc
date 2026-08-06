@@ -221,7 +221,7 @@ REPORTTIME=1 # notify on slow commands
 
 # == Any local changes? ==
 
-[[ -r "$HOME/.zshrc_local" ]] && source "$HOME/.zshrc_local"
+[[ -r "$HOME/.zshrc_local" ]] && . "$HOME/.zshrc_local"
 
 # == is ssh or sudo? ==
 
@@ -241,7 +241,7 @@ if [ -n "$SUDO_USER" ] || [ -n "$SUDO_COMMAND" ]; then
   SESSION_TYPE=sudo
 fi
 
-# == always tmux. ==
+# == always tmux ==
 
 if [ -z "$SESSION_TYPE" ] && [ -z "$TMUX" ] && which tmux > /dev/null 2>&1 ; then
   #export TERM="screen-256color"
