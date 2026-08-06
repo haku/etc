@@ -1,0 +1,17 @@
+{
+    "p2p-live-share.userName": "fae",
+    "workbench.startupEditor": "none",
+    "workbench.sideBar.location": "right",
+    "chat.agent.enabled": false,
+    "chat.disableAIFeatures": true,
+    "terminal.integrated.initialHint": false,
+    "workbench.colorTheme": "Witch Hazel Hypercolor",
+    "editor.tabSize": 2,
+    "workbench.editor.enablePreview": false,
+    "workbench.colorCustomizations": {
+        "[Witch Hazel Hypercolor]": {  // https://github.com/theacodes/witchhazel/blob/master/colors/witchhazel-hypercolor.vim
+            "editor.background": "#111",
+            "editorStickyScroll.border": "#AE81FF",
+        }
+    }
+}

@@ -2,10 +2,10 @@
 set -eu
 
 if [ ! -d "$HOME" ] ; then echo "Not found: $HOME" ; exit 1 ; fi
-ETC="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+etc="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 link() {
-  FROM="$ETC/$1"
+  FROM="$etc/$1"
   if [ ! -e "$FROM" ] ; then echo "Not found: $FROM" ; exit 1 ; fi
   TO="$HOME/$1"
   if ! [ -e "$TO" ] ; then
@@ -15,6 +15,18 @@ link() {
     popd > /dev/null
   else
     echo "Exists: $TO"
+  fi
+}
+
+lnhere() {
+  local from="$etc/$1"
+  if [ ! -e "$from" ] ; then echo "Not found: $from" ; exit 1 ; fi
+  local to="$(basename "$from")"
+  if ! [ -e "$to" ] ; then
+    echo "Linking: $to --> $from"
+    ln -s "$from" "$to"
+  else
+    echo "Exists: $to"
   fi
 }
 
@@ -44,4 +56,12 @@ link ".vim/colors/faerie.vim"
 if ! [ -e "$HOME/.zsh_history" ] && [ -e "$HOME/.bash_history" ] ; then
   echo "Using bash history as initial zsh history."
   cp -v "$HOME/.bash_history" "$HOME/.zsh_history"
+fi
+
+vscodiumdir="$HOME/.var/app/com.vscodium.codium/config/VSCodium/User"
+if [ -e "$vscodiumdir" ] ; then
+  pushd "$vscodiumdir"
+    lnhere "vscodium/keybindings.json" .
+    lnhere "vscodium/settings.json" .
+  popd
 fi
