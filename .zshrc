@@ -139,6 +139,8 @@ $ "
 export PS2="$(print '%{\e[0;94m%}>%{\e[0m%} ')"
 export RPS1=$'$(vcs_info_wrapper)'
 
+REPORTTIME=1 # notify on slow commands
+
 # == Keyboard ==
 # run `bindkey` to list all.
 
@@ -172,13 +174,7 @@ bindkey "\eOF" end-of-line
 bindkey '^[[A' up-line-or-history   # Fix cursor position on history recall
 bindkey '^[[B' down-line-or-history # as on Debian these default to vi-*.
 
-# == Aliases ==
-
-if [ -f ~/.aliases ]; then
-    . ~/.aliases
-fi
-
-# ==Helpers ==
+# == Helpers ==
 
 # Alt-S inserts "sudo " at the start of line.
 insert_sudo () { zle beginning-of-line; zle -U "sudo " }
@@ -196,28 +192,9 @@ fancy-ctrl-z () {
 zle -N fancy-ctrl-z
 bindkey '^Z' fancy-ctrl-z
 
-# == Current directory ==
+# == Other configs ==
 
-# disabled ssh split
-
-#function chpwd {
-#  if [ -n "$TMUX" ] ; then
-#    window_index=$(tmux display-message -p '#D' | sed 's/%//')
-#    tmux setenv "window_${window_index}_pwd" "$(pwd)"
-#  fi
-#  if [[ -t 1 ]] ; then print -Pn "\e]2;%~\a" ; fi
-#}
-
-#function zshexit {
-#  if [ -n "$TMUX" ] ; then
-#    window_index=$(tmux display-message -p '#D' | sed 's/%//')
-#    tmux setenv -u "window_${window_index}_pwd"
-#  fi
-#}
-
-# == Other options ==
-
-REPORTTIME=1 # notify on slow commands
+[ -f ~/.aliases ] && . ~/.aliases
 
 # == Any local changes? ==
 
