@@ -195,6 +195,7 @@ bindkey '^Z' fancy-ctrl-z
 # == Other configs ==
 
 [ -f ~/.aliases ] && . ~/.aliases
+[ -f ~/etc/git-upstream-check.sh ] && . ~/etc/git-upstream-check.sh
 
 # == Any local changes? ==
 
