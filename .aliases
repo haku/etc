@@ -9,6 +9,7 @@ alias la1='ls -A1'
 alias l='ls -CF'
 alias lnew='ls -lhrtc | tail'
 alias lnewr='find . -printf "%TY-%Tm-%Td %TH:%TM %p\n" | sort | tail'
+alias lold='ls -lhtc | tail'
 alias lbig='ls -lhrsS | tail'
 
 adv_ls() {
@@ -223,3 +224,5 @@ alias ffmpeg='ffmpeg -hide_banner'
 
 # Strings.
 join() { local IFS="$1"; shift; echo "$*"; }
+
+alias curl-time='curl -w "%{time_total}s"'
