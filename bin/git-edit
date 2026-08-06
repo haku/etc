@@ -5,6 +5,8 @@ files=()
 while read file ; do
   mime="$(file -bi "$file")"
   case "$mime" in
+    image/svg+xml\;*)
+      ;&
     text/*)
       ;&
     application/javascript*)
