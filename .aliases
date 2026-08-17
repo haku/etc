@@ -164,15 +164,16 @@ s() {
 compdef s=git
 alias sa='s add'
 alias sap='s add --patch'
-alias se='s edit'
-alias sl='s lg'
+alias sc='s commit -m'
 sd() {
   [ $# -lt 1 ] && s diff . || s diff "$@"
 }
 sdc() {
   [ $# -lt 1 ] && s diff --cached . || s diff --cached "$@"
 }
-alias sc='s commit -m'
+alias se='s edit'
+alias sl='s lg'
+alias sm='git merge'
 alias push='git-push-all-remotes'
 alias pull='git-pull-all-remotes'
 
