@@ -1,5 +1,4 @@
 #!/bin/sh
 s="$1"
 shift
-exec find . -not -path '*/.svn/*' -not -path '*/.git/*' -iname "*$s*"  "$@"
-
+exec find -L . -not -path '*/.svn/*' -not -path '*/.git/*' -iname "*$s*"  "$@"
