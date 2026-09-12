@@ -122,8 +122,32 @@ function estyle-cfc() {
   return 1
 }
 
+# == is ssh or sudo? ==
+
+if [ -n "$IN_NIX_SHELL" ]; then
+  SESSION_TYPE=nixshell
+fi
+
+if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+  SESSION_TYPE=ssh
+else
+  case $(ps -o comm= -p $PPID) in
+    sshd|*/sshd) SESSION_TYPE=ssh;;
+  esac
+fi
+
+if [ -n "$SUDO_USER" ] || [ -n "$SUDO_COMMAND" ]; then
+  SESSION_TYPE=sudo
+fi
+
 # == Prompt config ==
 
+ps_user() {
+  [ "$USER" = "fae" ] && echo "\e[0;93m%}%n" || echo "\e[0;91m%}%n"
+}
+ps_host() {
+  [ "$SESSION_TYPE" = "ssh" ] && echo "\e[0;94m%}%m" || echo "\e[0;93m%}%m"
+}
 ps_env() {
   [ -n "$DIRENV_FILE"  ] && echo " \e[1;95mdirenv\e[0m"
   [ -n "$IN_NIX_SHELL" ] && echo " \e[1;95mnix-shell\e[0m"
@@ -134,7 +158,7 @@ ps_timestamp() {
 }
 
 # https://stackoverflow.com/questions/4842424
-export PS1="$(print "%{\e[0;93m%}%n%{\e[0;94m%}@%{\e[0;93m%}%m%{\e[0;94m%}:%{\e[1;96m%}%~%{\e[0m%}\$(ps_env)  \$(ps_timestamp)")
+export PS1="$(print "\$(ps_user)%{\e[0;94m%}@\$(ps_host)%{\e[0;94m%}:%{\e[1;96m%}%~%{\e[0m%}\$(ps_env)  \$(ps_timestamp)")
 $ "
 export PS2="$(print '%{\e[0;94m%}>%{\e[0m%} ')"
 export RPS1=$'$(vcs_info_wrapper)'
@@ -200,24 +224,6 @@ bindkey '^Z' fancy-ctrl-z
 # == Any local changes? ==
 
 [[ -r "$HOME/.zshrc_local" ]] && . "$HOME/.zshrc_local"
-
-# == is ssh or sudo? ==
-
-if [ -n "$IN_NIX_SHELL" ]; then
-  SESSION_TYPE=nixshell
-fi
-
-if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-  SESSION_TYPE=ssh
-else
-  case $(ps -o comm= -p $PPID) in
-    sshd|*/sshd) SESSION_TYPE=ssh;;
-  esac
-fi
-
-if [ -n "$SUDO_USER" ] || [ -n "$SUDO_COMMAND" ]; then
-  SESSION_TYPE=sudo
-fi
 
 # == always tmux ==
 
