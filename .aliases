@@ -62,7 +62,7 @@ alias cng='cd "$HOME"/src/nixlings/glowies/gui'
 alias cns='cd "$HOME"/src/nixlings/rootlings/"$HOST"'
 alias nix-shell='nix-shell --run $SHELL'
 
-hash-nix-git() {
+nix-git-hash() {
   local v="$1"
   if [ -z "$v" ] ; then
     echo "missing version"
