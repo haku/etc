@@ -149,8 +149,8 @@ ps_host() {
   [ "$SESSION_TYPE" = "ssh" ] && echo "\e[0;94m%}%m" || echo "\e[0;93m%}%m"
 }
 ps_env() {
-  [ -n "$DIRENV_FILE"  ] && echo " \e[1;95mdirenv\e[0m"
-  [ -n "$IN_NIX_SHELL" ] && echo " \e[1;95mnix-shell\e[0m"
+  [ -n "$DIRENV_FILE"  ] && echo -n " \e[1;95mdirenv\e[0m"
+  [ -n "$IN_NIX_SHELL" ] && echo -n " \e[1;95mnix-shell\e[0m"
 }
 ps_timestamp() {
   # Colours https://en.wikipedia.org/wiki/ANSI_escape_code#3/4_bit
