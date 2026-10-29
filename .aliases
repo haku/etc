@@ -60,6 +60,7 @@ cn() {
 }
 alias cng='cd "$HOME"/src/nixlings/glowies/gui'
 alias cns='cd "$HOME"/src/nixlings/rootlings/"$HOST"'
+alias nix-dev='nix develop -c $SHELL'
 alias nix-shell='nix-shell --run $SHELL'
 
 nix-git-hash() {
